@@ -26,25 +26,14 @@ export class LogInComponent {
   http = inject(HttpClient);
   router = inject(Router);
   userService = inject(UserService);
-  onLogin(){
-    debugger;
-    this.http.post("https://malo-backend.onrender.com/api/auth/login", this.loginObj).subscribe((res:any)=>{
-      debugger;
-      if(res.result){
-        alert("Login success")
-      }else{
-        alert("error en contrase;a o usuario")
-      }
-    })
-  }
-  /*
+
   // Método de inicio de sesión
   onLogin(loginForm: NgForm) {
     if (loginForm.valid) {
       // Llamar a la API de inicio de sesión
-      this.http.post("http://localhost:5271/api/Auth/login", this.loginObj).subscribe(
+      this.http.post("https://malo-backend.onrender.com/api/auth/login", this.loginObj).subscribe(
         (res: any) => {
-          if (res.token) {
+          if (res.result) {
             localStorage.setItem('authToken', res.token);
             this.userService.setAuthenticationState(true);
             this.router.navigate(['/empleos/tablero']);
@@ -65,7 +54,7 @@ export class LogInComponent {
       this.errorMessage = "Por favor, completa el formulario correctamente.";
       this.clearMessages();
     }
-  }*/
+  }
   clearMessages() {
     setTimeout(() => {
       this.errorMessage = '';
@@ -74,5 +63,15 @@ export class LogInComponent {
   }
 }
 /*
-
+  onLogin(){
+    debugger;
+    this.http.post("https://malo-backend.onrender.com/api/auth/login", this.loginObj).subscribe((res:any)=>{
+      debugger;
+      if(res.result){
+        alert("Login success")
+      }else{
+        alert("error en contrase;a o usuario")
+      }
+    })
+  }
 */
