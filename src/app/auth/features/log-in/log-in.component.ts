@@ -31,7 +31,7 @@ export class LogInComponent {
   onLogin(loginForm: NgForm) {
     if (loginForm.valid) {
       // Llamar a la API de inicio de sesión
-      this.http.post("https://malo-backend.onrender.com/api/auth/login", this.loginObj).subscribe(
+      this.http.post("/api/auth/login", this.loginObj).subscribe(
         (res: any) => {
           if (res.result) {
             localStorage.setItem('authToken', res.token);
