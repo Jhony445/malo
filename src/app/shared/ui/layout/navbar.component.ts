@@ -38,7 +38,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
-      this.enableScroll(); // Restauramos el scroll en cada cambio de ruta
+      this.closeMenu(); // Cierra el menú en cada cambio de ruta
     });
   }
 
@@ -56,6 +56,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.disableScroll(); // Deshabilitamos el scroll cuando el menú está abierto
     } else {
       this.enableScroll(); // Habilitamos el scroll cuando el menú está cerrado
+    }
+  }
+
+  closeMenu() {
+    if (this.menuOpen) {
+      this.menuOpen = false;
+      this.enableScroll(); // Aseguramos que el scroll se restaure al cerrar el menú
     }
   }
 
