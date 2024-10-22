@@ -11,8 +11,8 @@
       <li><a routerLink="/nosotros">Nosotros</a></li>
       <!-- Opciones si NO está autenticado -->
       <ng-container *ngIf="!isAuthenticated">
-        <li><a routerLink="/auth/login">Iniciar sesión</a></li>
-        <li><a routerLink="/auth/sign-up">Regístrate</a></li>
+        <li><a href="/auth/login">Iniciar sesión</a></li>
+        <li><a href="/auth/sign-up">Regístrate</a></li>
       </ng-container>
       <!-- Opciones si está autenticado -->
       <ng-container *ngIf="isAuthenticated">

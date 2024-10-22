@@ -38,7 +38,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
-      this.closeMenu(); // Cierra el menú en cada cambio de ruta
+      setTimeout(() => this.closeMenu(), 0); // Cierra el menú en cada cambio de ruta
     });
   }
 
@@ -69,13 +69,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   disableScroll() {
     document.body.classList.add('no-scroll');
     document.addEventListener('touchmove', this.preventScroll, { passive: false });
-    document.addEventListener('scroll', this.preventScroll, { passive: false });
+    document.addEventListener('wheel', this.preventScroll, { passive: false });
   }
-
+  
   enableScroll() {
-    document.body.classList.remove('no-scroll'); // Restauramos el scroll
+    document.body.classList.remove('no-scroll');
     document.removeEventListener('touchmove', this.preventScroll);
-    document.removeEventListener('scroll', this.preventScroll);
+    document.removeEventListener('wheel', this.preventScroll);
   }
 
   preventScroll(event: Event) {
@@ -112,4 +112,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.routerSubscription.unsubscribe(); // Desuscribimos de los eventos del router
     document.removeEventListener('click', this.handleClickOutside.bind(this));
   }
+
+  
 }
