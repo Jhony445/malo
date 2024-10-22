@@ -35,41 +35,51 @@ export class LogInComponent {
       this.isLoading = true; 
       // Llamar a la API de inicio de sesión
       this.http.post("https://malo-backend.onrender.com/api/auth/login", this.loginObj).subscribe(
-         //this.http.post("/api/auth/login", this.loginObj).subscribe(
-         //http://localhost:5271/api/Auth/login
-         //https://malo-backend.onrender.com/api/auth/login
         (res: any) => {
           this.isLoading = false;
-          if (res.result/**token result */) {
+          // Validar si el resultado es exitoso con "result: true"
+          if (res.result) {
+            // Si el resultado es true, almacenar el token y navegar a la vista del usuario
             localStorage.setItem('authToken', res.token);
             this.userService.setAuthenticationState(true);
             this.router.navigate(['/usuario']);
           } else {
+            // Si result es false, mostrar mensaje de credenciales inválidas
             this.errorMessage = "Credenciales inválidas. Por favor, verifique su correo y contraseña.";
             this.clearMessages();
           }
         },
         (error: HttpErrorResponse) => {
           this.isLoading = false;
-          if (error.status === 500 || error.status === 401) {
-            this.errorMessage = "ERROR: Credenciales inválidas o error en el servidor.";
-          } else {
+          // Manejo de errores en caso de error del servidor o de credenciales inválidas
+          if (error.status === 401) {
+            // Error de autenticación (credenciales inválidas)
+            this.errorMessage = "ERROR: Credenciales inválidas.";
+          } else if (error.status === 500) {
+            // Error de servidor (500)
             this.errorMessage = "Error en el servidor. Por favor, inténtelo más tarde.";
+          } else {
+            // Otros errores que no sean 401 o 500
+            this.errorMessage = "Error inesperado. Inténtelo más tarde.";
           }
+          this.clearMessages();
         }
       );
     } else {
+      // Si el formulario no es válido
       this.errorMessage = "Por favor, completa el formulario correctamente.";
       this.clearMessages();
     }
   }
+  
+  // Función para limpiar mensajes después de 3 segundos
   clearMessages() {
     setTimeout(() => {
       this.errorMessage = '';
       this.successMessage = '';
     }, 3000);  // Los mensajes desaparecen después de 3 segundos
   }
-}
+}  
 /*
   onLogin(){
     debugger;
