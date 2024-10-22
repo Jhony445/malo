@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
 import { CommonModule } from '@angular/common'; // Importar CommonModule
 import { NotificationComponent } from '../../../shared/ui/notification/notification.component';
+import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
 
 @Component({
   selector: 'app-log-in',
   standalone: true,
-  imports: [FormsModule, CommonModule, NotificationComponent], // Agregar CommonModule aquí
+  imports: [FormsModule, CommonModule, NotificationComponent, LoaderComponent], // Agregar CommonModule aquí
   templateUrl: './log-in.component.html',
   styleUrls: ['./log-in.component.css']
 })
@@ -22,6 +23,7 @@ export class LogInComponent {
 
   errorMessage: string = '';  // Almacenará el mensaje de error
   successMessage: string = '';  // Almacenará el mensaje de éxito (opcional)
+  isLoading: boolean = false;
 
   http = inject(HttpClient);
   router = inject(Router);
@@ -30,12 +32,14 @@ export class LogInComponent {
   // Método de inicio de sesión
   onLogin(loginForm: NgForm) {
     if (loginForm.valid) {
+      this.isLoading = true; 
       // Llamar a la API de inicio de sesión
       this.http.post("https://malo-backend.onrender.com/api/auth/login", this.loginObj).subscribe(
          //this.http.post("/api/auth/login", this.loginObj).subscribe(
          //http://localhost:5271/api/Auth/login
          //https://malo-backend.onrender.com/api/auth/login
         (res: any) => {
+          this.isLoading = false;
           if (res.result/**token result */) {
             localStorage.setItem('authToken', res.token);
             this.userService.setAuthenticationState(true);
@@ -46,6 +50,7 @@ export class LogInComponent {
           }
         },
         (error: HttpErrorResponse) => {
+          this.isLoading = false;
           if (error.status === 500 || error.status === 401) {
             this.errorMessage = "ERROR: Credenciales inválidas o error en el servidor.";
           } else {
