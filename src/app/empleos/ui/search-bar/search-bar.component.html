@@ -1,7 +1,9 @@
 <div class="search-bar-container">
     <!-- Botón para móviles -->
     <div class="filters-button">
-      <button (click)="toggleFilters()">Mostrar filtros</button>
+      <button (click)="toggleFilters()">
+        {{ isFiltersOpen ? 'Ocultar filtros' : 'Mostrar filtros' }}
+      </button>
     </div>
     <!-- Barra de búsqueda -->
     <div class="search-bar" [ngClass]="{'is-visible': isFiltersOpen}">

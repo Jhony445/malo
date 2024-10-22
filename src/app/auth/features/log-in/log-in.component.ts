@@ -31,10 +31,12 @@ export class LogInComponent {
   onLogin(loginForm: NgForm) {
     if (loginForm.valid) {
       // Llamar a la API de inicio de sesión
-      this.http.post("/api/auth/login", this.loginObj).subscribe(
-        //this.http.post("/api/auth/login", this.loginObj).subscribe(
+      this.http.post("https://malo-backend.onrender.com/api/auth/login", this.loginObj).subscribe(
+         //this.http.post("/api/auth/login", this.loginObj).subscribe(
+         //http://localhost:5271/api/Auth/login
+         //https://malo-backend.onrender.com/api/auth/login
         (res: any) => {
-          if (res.result) {
+          if (res.result/**token result */) {
             localStorage.setItem('authToken', res.token);
             this.userService.setAuthenticationState(true);
             this.router.navigate(['/empleos/tablero']);

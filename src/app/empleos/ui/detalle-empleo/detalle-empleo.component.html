@@ -1,0 +1,31 @@
+<div class="detalle-container" *ngIf="empleo">
+    <div class="detalle-header">
+      <h2>{{ empleo.titulo }}</h2>
+      
+    </div>
+    <p class="salario">{{ empleo.salario }} Mensual</p>
+    <p class="empresa">{{ empleo.empresa }}</p>
+    <p class="ubicacion">{{ empleo.ubicacion }}</p>
+    
+    <div class="detalle-section">
+      <h3>Descripción del empleo</h3>
+      <p>{{ empleo.descripcion }}</p>
+    </div>
+  
+    <div class="detalle-section">
+      <h3>Requisitos</h3>
+      <ul>
+        <li *ngFor="let requisito of empleo.requisitos">{{ requisito }}</li>
+      </ul>
+    </div>
+  
+    <div class="detalle-section">
+      <h3>Beneficios</h3>
+      <ul>
+        <li *ngFor="let beneficio of empleo.beneficios">{{ beneficio }}</li>
+      </ul>
+    </div>
+  
+    <button class="btn-postularse">Postularse</button>
+  </div>
+  
