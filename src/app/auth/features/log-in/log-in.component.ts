@@ -43,7 +43,7 @@ export class LogInComponent {
           if (res.result/**token result */) {
             localStorage.setItem('authToken', res.token);
             this.userService.setAuthenticationState(true);
-            this.router.navigate(['/empleos/tablero']);
+            this.router.navigate(['/usuario']);
           } else {
             this.errorMessage = "Credenciales inválidas. Por favor, verifique su correo y contraseña.";
             this.clearMessages();

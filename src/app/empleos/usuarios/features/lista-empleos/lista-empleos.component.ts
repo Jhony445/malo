@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CardEmpleosComponent } from "../../ui/card-empleos/card-empleos.component";
+import { CardEmpleosComponent } from '../../ui/card-empleos/card-empleos.component';
 import { CommonModule } from '@angular/common';  // Importar 
 import { DetalleEmpleoComponent } from '../../ui/detalle-empleo/detalle-empleo.component';
 
