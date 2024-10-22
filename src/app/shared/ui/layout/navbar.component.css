@@ -110,6 +110,7 @@ header {
         padding: 2rem;
         box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .5);
         width: 80%;
+        height: 75%;
         /* Ocupa el 80% del ancho de la pantalla */
         border-radius: 10px 0 0 10px;
         z-index: 100;
@@ -143,6 +144,7 @@ header {
         color: #FF0000;
         font-weight: bold;
         margin-top: auto;
+        margin-bottom: 2rem;
         /* Asegura que el enlace esté siempre al final */
     }
 

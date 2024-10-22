@@ -16,13 +16,17 @@
       </ng-container>
       <!-- Opciones si está autenticado -->
       <ng-container *ngIf="isAuthenticated">
+        <li *ngIf="isOnProfilePage()">
+          <a routerLink="/usuario">Empleos</a>
+        </li>
         <li class="dropdown">
-          <a href="#" id="perfil" class="perfil" (click)="toggleProfileMenu($event)">Perfil</a>
+          <a href="usuario/perfil" id="perfil" class="perfil" (click)="toggleProfileMenu($event)">Perfil</a>
           <ul class="dropdown-content" [class.active]="profileMenuOpen">
-            <li><a routerLink="/configuracion">Configuración</a></li>
+            <li><a href="usuario/perfil">Configuración</a></li>
             <li><a href="#" class="logout" (click)="logout()">Cerrar sesión</a></li>
           </ul>
         </li>
+
       </ng-container>
     </ul>
   </nav>

@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { UserService } from '../../../core/services/user.service'; // Mantengo UserService
-import { CommonModule } from '@angular/common'; // Importa CommonModule
+import { RouterModule, Router, NavigationEnd } from '@angular/router'; // Importa Router y NavigationEnd
+import { UserService } from '../../../core/services/user.service';
+import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators'; // Importamos el operador 'filter'
 
 @Component({
   selector: 'app-navbar',
@@ -15,10 +16,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   menuOpen = false;
   profileMenuOpen = false;
   isAuthenticated = false;
-  user = { email: '' };//name: '' 
+  user = { email: '' };
   private authSubscription: Subscription;
+  private routerSubscription: Subscription;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private router: Router) {
     // Suscripción a cambios de autenticación
     this.authSubscription = this.userService.isAuthenticated$.subscribe(isAuthenticated => {
       this.isAuthenticated = isAuthenticated;
@@ -26,12 +28,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
         const userData = this.userService.getUserData();
         if (userData) {
           this.user.email = userData.email;
-          //this.user.name = userData.name;
         }
       } else {
-        this.user = { email: '' };//, name: ''
+        this.user = { email: '' };
       }
     });
+
+    // Detectamos cambio de ruta
+    this.routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.enableScroll(); // Restauramos el scroll en cada cambio de ruta
+    });
+  }
+
+  isOnProfilePage(): boolean {
+    return this.router.url === '/usuario/perfil';
   }
 
   ngOnInit(): void {
@@ -40,18 +52,25 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
-    
     if (this.menuOpen) {
-      document.body.classList.add('no-scroll');
-      document.addEventListener('touchmove', this.preventScroll, { passive: false });
-      document.addEventListener('scroll', this.preventScroll, { passive: false });
+      this.disableScroll(); // Deshabilitamos el scroll cuando el menú está abierto
     } else {
-      document.body.classList.remove('no-scroll');
-      document.removeEventListener('touchmove', this.preventScroll);
-      document.removeEventListener('scroll', this.preventScroll);
+      this.enableScroll(); // Habilitamos el scroll cuando el menú está cerrado
     }
   }
-  
+
+  disableScroll() {
+    document.body.classList.add('no-scroll');
+    document.addEventListener('touchmove', this.preventScroll, { passive: false });
+    document.addEventListener('scroll', this.preventScroll, { passive: false });
+  }
+
+  enableScroll() {
+    document.body.classList.remove('no-scroll'); // Restauramos el scroll
+    document.removeEventListener('touchmove', this.preventScroll);
+    document.removeEventListener('scroll', this.preventScroll);
+  }
+
   preventScroll(event: Event) {
     event.preventDefault();
   }
@@ -76,12 +95,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   logout(): void {
     this.userService.clearToken();
     this.isAuthenticated = false;
-    this.user = { email: '' };//, name: ''
+    this.user = { email: '' };
     this.profileMenuOpen = false;
+    this.enableScroll(); // Restauramos el scroll al hacer logout
   }
 
   ngOnDestroy() {
     this.authSubscription.unsubscribe();
+    this.routerSubscription.unsubscribe(); // Desuscribimos de los eventos del router
     document.removeEventListener('click', this.handleClickOutside.bind(this));
   }
 }

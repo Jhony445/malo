@@ -1,6 +1,6 @@
-import { Routes } from '@angular/router';
+import { Routes } from '@angular/router'; 
 import { DashboardComponent } from './dashboard/dashboard.component'; 
-import { UsuariosComponent } from './empleos/usuarios/usuarios.component';
+import { UsuariosComponent } from './empleos/usuarios/usuarios.component'; 
 
 export const appRoutes: Routes = [
   { path: '', component: DashboardComponent },  
@@ -9,8 +9,9 @@ export const appRoutes: Routes = [
     loadChildren: () => import('./auth/features/auth.routes').then(m => m.AUTH_ROUTES)  // Lazy load para auth
   },
   {
-    path: 'usuario', // Agrégale la ruta base para empleos
-    component: UsuariosComponent// Usa las rutas importadas aquí
+    path: 'usuario', // Ruta base para usuarios
+    component: UsuariosComponent, // Componente principal para la ruta usuario
+    loadChildren: () => import('./empleos/usuarios/usuarios.routes').then(m => m.usuariosRoutes) // Cargar las rutas de usuarios
   },
   { path: '**', redirectTo: '' }  
 ];
