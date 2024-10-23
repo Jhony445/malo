@@ -1,0 +1,45 @@
+<div class="detalle-container" *ngIf="empleo">
+  <div class="detalle-header">
+    <h2 *ngIf="!modoEdicion">{{ empleo.titulo }}</h2>
+    <input *ngIf="modoEdicion" [(ngModel)]="empleo.titulo" class="input-editar" />
+  </div>
+
+  <p *ngIf="!modoEdicion" class="salario">{{ empleo.salario }} Mensual</p>
+  <input *ngIf="modoEdicion" [(ngModel)]="empleo.salario" class="input-editar" placeholder="Salario" />
+
+  <p *ngIf="!modoEdicion" class="empresa">{{ empleo.empresa }}</p>
+  <input *ngIf="modoEdicion" [(ngModel)]="empleo.empresa" class="input-editar" placeholder="Empresa" />
+
+  <p *ngIf="!modoEdicion" class="ubicacion">{{ empleo.ubicacion }}</p>
+  <input *ngIf="modoEdicion" [(ngModel)]="empleo.ubicacion" class="input-editar" placeholder="Ubicación" />
+
+  <div class="detalle-section">
+    <h3>Descripción del empleo</h3>
+    <p *ngIf="!modoEdicion">{{ empleo.descripcion }}</p>
+    <textarea *ngIf="modoEdicion" [(ngModel)]="empleo.descripcion" class="input-editar"></textarea>
+  </div>
+
+  <div class="detalle-section">
+    <h3>Requisitos</h3>
+    <ul *ngIf="!modoEdicion">
+      <li *ngFor="let requisito of empleo.requisitos">{{ requisito }}</li>
+    </ul>
+    <textarea *ngIf="modoEdicion" [(ngModel)]="empleo.requisitos" class="input-editar"></textarea>
+  </div>
+
+  <div class="detalle-section">
+    <h3>Beneficios</h3>
+    <ul *ngIf="!modoEdicion">
+      <li *ngFor="let beneficio of empleo.beneficios">{{ beneficio }}</li>
+    </ul>
+    <textarea *ngIf="modoEdicion" [(ngModel)]="empleo.beneficios" class="input-editar"></textarea>
+  </div>
+
+  <!-- Botones Editar y Eliminar -->
+  <div class="action-buttons">
+    <button *ngIf="!modoEdicion" class="btn-editar" (click)="activarEdicion()">Editar</button>
+    <button *ngIf="modoEdicion" class="btn-guardar" (click)="guardarCambios()">Guardar</button>
+    <button *ngIf="modoEdicion" class="btn-cancelar" (click)="modoEdicion = false">Cancelar</button>
+    <button class="btn-eliminar">Eliminar</button>
+  </div>
+</div>

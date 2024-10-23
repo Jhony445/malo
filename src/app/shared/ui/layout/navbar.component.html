@@ -8,7 +8,8 @@
       <p class="user-email">{{ user.email }}</p>
     </div>
     <ul class="nav-list">
-      <li><a routerLink="/nosotros">Nosotros</a></li>
+      <li><a routerLink="/nosotros">Inicio</a></li>
+      <li><a routerLink="/usuario">Empleos</a></li>
       <!-- Opciones si NO está autenticado -->
       <ng-container *ngIf="!isAuthenticated">
         <li><a href="/auth/login">Iniciar sesión</a></li>

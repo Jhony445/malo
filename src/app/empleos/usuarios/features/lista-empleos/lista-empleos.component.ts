@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CardEmpleosComponent } from '../../ui/card-empleos/card-empleos.component';
 import { CommonModule } from '@angular/common';  // Importar 
 import { DetalleEmpleoComponent } from '../../ui/detalle-empleo/detalle-empleo.component';
+import { TituloComponent } from "../../../../shared/ui/titulo/titulo.component";
 
 @Component({
   selector: 'app-lista-empleos',
   standalone: true,
-  imports: [CommonModule,CardEmpleosComponent, DetalleEmpleoComponent],
+  imports: [CommonModule, CardEmpleosComponent, DetalleEmpleoComponent, TituloComponent],
   templateUrl: './lista-empleos.component.html',
   styleUrl: './lista-empleos.component.css'
 })
