@@ -1,10 +1,10 @@
-:host {
+.body {
   display: flex;
   flex-direction: column;
   height: 100vh;
   margin: 0;
   padding: 0;
-  background-image: url('../../../../../public/sign-up.jpg');
+  background-image: url('/sign-up.jpg');
   background-size: 37rem;
   background-position: right 13% top;
   background-repeat: no-repeat;
@@ -19,26 +19,30 @@
 .container {
   width: 100%;
   padding: 0 13%;
+  min-height: 23.2rem;
 }
 
 .clearfix {
   clear: both;
 }
 
-.form-1, 
-.form-2, 
-.form-3 h1 {
+.form-1 h1, 
+.form-2 h1, 
+.form-3 h1,
+.form-4 h1 {
   color: #3066be;
+  margin-bottom: 1rem;
 }
 
-h1 {
-  margin-bottom: 16px;
+.form-5 h1{
+  max-width: 50%;
 }
 
 .form-1, 
 .form-2, 
 .form-3, 
-.form-4 {
+.form-4,
+.form-5 {
   padding-top: 7%;
 }
 
@@ -77,7 +81,8 @@ h1 {
 
 .conti-1, 
 .conti-2, 
-.conti-3 {
+.conti-3,
+.conti-4 {
   padding: 0.625rem 1.875rem;
   margin-top: 0.625rem;
   font-size: 1rem;
@@ -119,7 +124,8 @@ button:enabled {
 
 .bot-icon-1,
 .bot-icon-2,
-.bot-icon-3 {
+.bot-icon-3,
+.bot-icon-4 {
   font-size: 1.875rem;
   color: #c7c7c7;
   cursor: pointer;
@@ -128,8 +134,9 @@ button:enabled {
 
 .bot-icon-1.active,
 .bot-icon-2.active,
-.bot-icon-3.active {
-  color: #0254b7;
+.bot-icon-3.active,
+.bot-icon-4.active {
+  color: #3066be;
 }
 
 .step-1 {
@@ -140,9 +147,10 @@ button:enabled {
 /* Líneas de conexión entre los pasos */
 .line-1,
 .line-2,
-.line-3 {
+.line-3,
+.line-4 {
   height: 0.125rem;
-  width: 12.5rem;
+  width: 75%;
   position: absolute;
   top: 50%;
   left: 2.5rem;
@@ -152,8 +160,9 @@ button:enabled {
 
 .line-1.active,
 .line-2.active,
-.line-3.active {
-  background-color: #0254b7;
+.line-3.active,
+.line-4.active {
+  background-color: #3066be;
 }
 
 
@@ -170,12 +179,9 @@ button {
   pointer-events: none;
 }
 
-.progress-final{
-  margin: 21.5625rem 13%;
-}
 
 @media (max-width: 68.125rem) {
-  :host {
+  .body {
     background-image: none;
   }
   .form-group input {
@@ -183,7 +189,8 @@ button {
   }
   .line-1, 
   .line-2, 
-  .line-3 {
+  .line-3,
+  .line-4 {
     width: 70%;
   }
   .progress-bar {
@@ -196,14 +203,16 @@ button {
   }
   .line-1, 
   .line-2, 
-  .line-3 {
+  .line-3,
+  .line-4 {
     width: 50%;
   }
 }
 @media (max-width: 22.5rem) {
   .line-1, 
   .line-2, 
-  .line-3 {
+  .line-3,
+  .line-4 {
     display: none;
   }
 }

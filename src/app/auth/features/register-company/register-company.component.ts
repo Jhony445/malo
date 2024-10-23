@@ -7,26 +7,23 @@ import { Router } from '@angular/router';
   selector: 'app-sign-up',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css'],
+  templateUrl: './register-company.component.html',
+  styleUrls: ['./register-company.component.css'],
 })
-export class SignUpComponent {
+export class RegisterCompany {
   currentStep = 1;
 
+  // Actualización de las propiedades
   nombre = '';
-  apellidos = '';
-  telefono = '';
-  localidad = '';
-  estado = '';
-  municipio = '';
-  fechaNacimiento = '';
-  correo = '';
+  industria = '';
+  ubicacion = '';
+  email = '';
   contrasena = '';
-  confirmPass = '';
+  confirmarContrasena = '';
   router = inject(Router);
 
   nextStep() {
-    if (this.currentStep < 5) {
+    if (this.currentStep < 3) {
       this.currentStep++;
     }
   }
@@ -41,24 +38,18 @@ export class SignUpComponent {
     this.currentStep = step;
   }
 
+  // Validación del Formulario 1
   isForm1Valid(): boolean {
-    return !!this.nombre && !!this.apellidos;
-  }
-  
-  isForm2Valid(): boolean {
-    return !!this.telefono && !!this.fechaNacimiento;
-  }
-  
-  isForm3Valid(): boolean {
-    return !!this.localidad && !!this.estado && !!this.municipio;
+    return !!this.nombre && !!this.industria && !!this.ubicacion;
   }
 
-  isForm4Valid(): boolean {
-    return !!this.correo && !!this.contrasena && !!this.confirmPass;
+  // Validación del Formulario 2
+  isForm2Valid(): boolean {
+    return !!this.email && !!this.contrasena && this.contrasena === this.confirmarContrasena;
   }
-  
+
   finishRegister() {
-    if(this.isForm1Valid() && this.isForm2Valid() && this.isForm3Valid() && this.isForm4Valid()){
+    if(this.isForm1Valid() && this.isForm2Valid()){
       this.currentStep++;
     }else{
       this.currentStep = 1;

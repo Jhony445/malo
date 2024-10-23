@@ -1,0 +1,64 @@
+<div class="body">
+  <div class="formulario">
+    <!-- Form 1: Datos personales y ubicación -->
+    <div *ngIf="currentStep === 1" class="form-1">
+      <div class="container">
+        <h1><i class="fa fa-user-o"></i>&nbsp; Datos de la empresa</h1>
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" class="input_1" [(ngModel)]="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="industria">Industria</label>
+          <input type="text" id="industria" class="input_1" [(ngModel)]="industria" required>
+        </div>
+        <div class="form-group">
+          <label for="ubicacion">Ubicación</label>
+          <input type="text" id="ubicacion" class="input_1" [(ngModel)]="ubicacion" required>
+        </div>
+        <button class="conti-1" (click)="nextStep()" [disabled]="!isForm1Valid()">Siguiente &nbsp;></button>
+      </div>
+    </div>
+
+    <!-- Form 2: Credenciales -->
+    <div *ngIf="currentStep === 2" class="form-2">
+      <div class="container">
+        <h1><i class="fa fa-list-alt"></i>&nbsp; Credenciales</h1>
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" class="input_2" [(ngModel)]="email" required>
+        </div>
+        <div class="form-group">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" class="input_2" [(ngModel)]="contrasena" required>
+        </div>
+        <div class="form-group">
+          <label for="confirmarContrasena">Confirmar Contraseña</label>
+          <input type="password" id="confirmarContrasena" class="input_2" [(ngModel)]="confirmarContrasena" required>
+        </div>
+        <button class="back" (click)="previousStep()"><&nbsp; Anterior</button>
+        <button class="conti-2" (click)="finishRegister()" [disabled]="!isForm2Valid()">Siguiente &nbsp;></button>
+      </div>
+    </div>
+
+    <!-- Form 3: Felicitaciones -->
+    <div *ngIf="currentStep === 3" class="form-3">
+      <div class="container">
+        <h1>¡Felicidades! ya puedes comenzar a crear nuevas oportunidades...</h1>
+        <button (click)="goToSignIn()" class="conti-3">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barra de progreso -->
+  <div class="progress-bar" [ngClass]="{ 'progress-final': currentStep === 3 }">
+    <div class="step-1">
+      <i class="fa fa-user-o bot-icon-1" [ngClass]="{ 'disabled-icon': currentStep === 3 }" (click)="currentStep !== 3 ? goToStep(1) : null" [class.active]="currentStep >= 1"></i>
+      <div class="line-1" [ngStyle]="{'background-color': currentStep > 1 ? '#3c3744' : '#c7c7c7'}"></div>
+    </div>
+    <div class="step-1">
+      <i class="fa fa-list-alt bot-icon-2" [ngClass]="{ 'disabled-icon': currentStep === 3 }" (click)="currentStep !== 3 ? goToStep(2) : null" [class.active]="currentStep >= 2"></i>
+      <div class="line-2" [ngStyle]="{'background-color': currentStep > 2 ? '#3c3744' : '#c7c7c7'}"></div>
+    </div>
+  </div>
+</div>
