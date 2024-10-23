@@ -25,3 +25,7 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## MALO pipeline
+
+[![Build Status](https://dev.azure.com/213000010047/Manos%20a%20la%20obra/_apis/build/status%2FJhony445.malo?branchName=main)](https://dev.azure.com/213000010047/Manos%20a%20la%20obra/_build/latest?definitionId=2&branchName=main)
