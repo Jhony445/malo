@@ -3,19 +3,25 @@
   <button id="abrir" class="abrir-menu" (click)="toggleMenu()"><i class="fas fa-bars"></i></button>
   <nav class="nav" id="nav" [class.visible]="menuOpen">
     <button class="cerrar-menu" id="cerrar" (click)="toggleMenu()"><i class="fas fa-times"></i></button>
-    <!-- Información del usuario solo visible si está autenticado -->
     <div class="user-info" *ngIf="isAuthenticated">
       <p class="user-email">{{ user.email }}</p>
     </div>
     <ul class="nav-list">
       <li><a routerLink="/nosotros">Inicio</a></li>
-      <li><a routerLink="/usuario">Empleos</a></li>
-      <!-- Opciones si NO está autenticado -->
+
+      <!-- Cambiamos la ruta y el texto según el rol del usuario -->
+      <li>
+        <a *ngIf="user.rol === 'Empresa'; else userJobs" routerLink="/empresa">Mis empleos</a>
+        <ng-template #userJobs>
+          <a routerLink="/usuario">Empleos</a>
+        </ng-template>
+      </li>
+
       <ng-container *ngIf="!isAuthenticated">
         <li><a href="/auth/login">Iniciar sesión</a></li>
         <li><a href="/auth/sign-up">Regístrate</a></li>
       </ng-container>
-      <!-- Opciones si está autenticado -->
+      
       <ng-container *ngIf="isAuthenticated">
         <li *ngIf="isOnProfilePage()">
           <a routerLink="/usuario">Empleos</a>
@@ -27,7 +33,6 @@
             <li><a href="#" class="logout" (click)="logout()">Cerrar sesión</a></li>
           </ul>
         </li>
-
       </ng-container>
     </ul>
   </nav>

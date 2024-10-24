@@ -3,6 +3,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { UsuariosComponent } from './empleos/usuarios/usuarios.component';
 import { empresasComponent } from './empleos/empresas/empresas.component'; 
 
+import { UserGuard } from './core/guards/user.guard';
+import { AdminGuard } from './core/guards/admin.guard';
+import { EmpresaGuard } from './core/guards/empresa.guard';
+
 export const appRoutes: Routes = [
   { path: '', component: DashboardComponent },  
   {
@@ -10,14 +14,16 @@ export const appRoutes: Routes = [
     loadChildren: () => import('./auth/features/auth.routes').then(m => m.AUTH_ROUTES)  // Lazy load para auth
   },
   {
-    path: 'usuario', // Ruta base para usuarios
-    component: UsuariosComponent, // Componente principal para la ruta usuario
-    loadChildren: () => import('./empleos/usuarios/usuarios.routes').then(m => m.usuariosRoutes) // Cargar las rutas de usuarios
+    path: 'usuario',
+    component: UsuariosComponent,
+    loadChildren: () => import('./empleos/usuarios/usuarios.routes').then(m => m.usuariosRoutes),
+    //canActivate: [UserGuard]
   },
   {
-    path: 'empresa', // Ruta base para usuarios
-    component: empresasComponent, // Componente principal para la ruta usuario
-    loadChildren: () => import('./empleos/empresas/empresas.routes').then(m => m.empresasRoutes) // Cargar las rutas de usuarios
+    path: 'empresa',
+    component: empresasComponent,
+    loadChildren: () => import('./empleos/empresas/empresas.routes').then(m => m.empresasRoutes),
+    canActivate: [EmpresaGuard]
   },
   { path: '**', redirectTo: '' }  
 ];
