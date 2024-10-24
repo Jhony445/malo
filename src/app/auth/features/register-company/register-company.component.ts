@@ -15,18 +15,23 @@ import { NotificationComponent } from '../../../shared/ui/notification/notificat
 })
 export class RegisterCompany {
   currentStep = 1;
-  
+  //datos empresa
   nombre = '';
   industria = '';
   ubicacion = '';
-  email = '';
+  correo = '';
   contrasena = '';
-  confirmarContrasena = '';
-
+  confirmPass = '';
+  nombreTouched: boolean = false;
+  industriaTouched: boolean = false;
+  ubicacionTouched: boolean = false;
+  emailTouched: boolean = false;
+  contrasenaTouched: boolean = false;
+  confirmPassTouched: boolean = false;
+  //otros
   router = inject(Router);
-  http = inject(HttpClient); // Inyecta HttpClient directamente
+  http = inject(HttpClient);
   isLoading: boolean = false;
-
   errorMessage: string = '';
 
   nextStep() {
@@ -50,9 +55,30 @@ export class RegisterCompany {
   }
 
   isForm2Valid(): boolean {
-    return !!this.email && !!this.contrasena && this.contrasena === this.confirmarContrasena;
+    return this.isEmailValid(this.correo) && 
+           this.isPasswordValid(this.contrasena) && 
+           this.doPasswordsMatch(this.contrasena, this.confirmPass)
   }
 
+  isEmailValid(correo: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(correo);
+  }
+  
+  isPasswordValid(password: string): boolean {
+    return password.length >= 5;
+  }
+  
+  doPasswordsMatch(password: string, confirmPassword: string): boolean {
+    return password === confirmPassword;
+  }
+
+  // Función para verificar si un campo no está vacío
+  isNotEmpty(value: string): boolean {
+    return value.trim().length > 0;
+  }
+
+  //insertar empresa
   finishRegister() {
     if (this.isForm1Valid() && this.isForm2Valid()) {
       const empresaData = {
@@ -60,7 +86,7 @@ export class RegisterCompany {
         industria: this.industria,
         ubicacion: this.ubicacion,
         contrasena: this.contrasena,
-        email: this.email,
+        email: this.correo,
       };
 
       this.isLoading = true;
@@ -74,7 +100,7 @@ export class RegisterCompany {
           },
           error: (error) => {
             this.isLoading = false;
-            this.errorMessage = "La empresa ya existe"
+            this.errorMessage = "¡Ups, La empresa ya existe!"
             console.error('Error al registrar la empresa', error);
             this.clearMessages();
           }

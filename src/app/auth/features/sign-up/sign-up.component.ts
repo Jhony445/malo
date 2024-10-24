@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,24 +13,42 @@ import { NotificationComponent } from '../../../shared/ui/notification/notificat
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css'],
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnInit {
   currentStep = 1;
-
+  //datos usuario
   nombre = '';
   apellidos = '';
   telefono = '';
-  localidad = '';
-  estado = '';
-  municipio = '';
   fechaNacimiento = '';
   correo = '';
   contrasena = '';
   confirmPass = '';
-
+  telefonoTouched: boolean = false;
+  emailTouched: boolean = false;
+  passwordTouched: boolean = false;
+  confirmPassTouched: boolean = false;
+  nombreTouched: boolean = false;
+  apellidosTouched: boolean = false;
+  fechaNacimientoTouched: boolean = false;
+  estadoTouched: boolean = false;
+  municipioTouched: boolean = false;
+  localidadTouched: boolean = false;
+  //ubicacion
+  estados: any[] = [];
+  municipios: any[] = [];
+  localidades: any[] = [];
+  estado: string = '';
+  municipio: string= '';
+  localidad: string= '';
+  //otros
   router = inject(Router);
   http = inject(HttpClient);
   isLoading: boolean = false;
   errorMessage: string = '';
+
+  ngOnInit(): void {
+    this.getEstados();
+  }
 
   nextStep() {
     if (this.currentStep < 5) {
@@ -61,11 +79,76 @@ export class SignUpComponent {
   }
 
   isForm4Valid(): boolean {
-    return !!this.correo && !!this.contrasena && !!this.confirmPass;
+    return this.isEmailValid(this.correo) && 
+           this.isPasswordValid(this.contrasena) && 
+           this.doPasswordsMatch(this.contrasena, this.confirmPass) &&
+           this.isPhoneValid(this.telefono);
   }
   
+  isEmailValid(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+  
+  isPasswordValid(password: string): boolean {
+    return password.length >= 5;
+  }
+  
+  doPasswordsMatch(password: string, confirmPassword: string): boolean {
+    return password === confirmPassword;
+  }
+  
+  isPhoneValid(telefono: string): boolean {
+    const phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(telefono);
+  }
+  
+  // Función para verificar si un campo no está vacío
+  isNotEmpty(value: string): boolean {
+    return value.trim().length > 0;
+  }
+
+  //Obtener estados al iniciar
+  getEstados(): void{
+    this.http.get<any>('https://gaia.inegi.org.mx/wscatgeo/v2/mgee/').subscribe(response => {
+      this.estados = response.datos;
+    }, error =>{
+      console.error('Error al obtener los estados', error);
+    })
+  }
+  //obtener municipios al seleccionar estado
+  onEstadoChange(cvegeo: string): void{
+    if(cvegeo){
+      this.http.get<any>(`https://gaia.inegi.org.mx/wscatgeo/v2/mgem/${cvegeo}`).subscribe(response => {
+        this.municipios = response.datos
+      }, error =>{
+        console.error('Error al obtener los municipios', error);
+      })
+    }else{
+      this.municipios = [];
+    }
+  }
+  //obtener localidades al seleccionar municipio
+  onMunicipioChange(cvegeo: string): void{
+    if(cvegeo){
+      this.http.get<any>(`https://gaia.inegi.org.mx/wscatgeo/v2/localidades/${cvegeo}`).subscribe(response => {
+        this.localidades = response.datos
+      }, error =>{
+        console.error('Error al obtener los municipios', error);
+      })
+    }else{
+      this.localidades = [];
+    }
+  }
+  
+  //insertar usuario
   finishRegister() {
     if(this.isForm1Valid() && this.isForm2Valid() && this.isForm3Valid() && this.isForm4Valid()){
+      // Encuentra los nombres correspondientes al cvegeo seleccionado
+      const estadoNombre = this.estados.find(e => e.cvegeo === this.estado)?.nomgeo || '';
+      const municipioNombre = this.municipios.find(m => m.cvegeo === this.municipio)?.nomgeo || '';
+      const localidadNombre = this.localidades.find(l => l.cvegeo === this.localidad)?.nomgeo || '';
+
       const userData ={
         nombre: this.nombre,
         apellido: this.apellidos,
@@ -73,9 +156,9 @@ export class SignUpComponent {
         contrasena: this.confirmPass,
         fecha_nacimiento: this.fechaNacimiento,
         telefono: this.telefono,
-        estado_id: 1,
-        municipio_id: 1,
-        localidad_id: 1,
+        estado_id: estadoNombre,
+        municipio_id: municipioNombre,
+        localidad_id: localidadNombre,
         habilidades: '',
         descripcion: '',
         imagen_perfil: '',
@@ -92,7 +175,7 @@ export class SignUpComponent {
           },
           error: (error) => {
             this.isLoading = false;
-            this.errorMessage = "Error al registrar usuario"
+            this.errorMessage = "¡Ups, El correo ya éxiste!"
             console.error('Error al registrar la empresa', error);
             this.clearMessages();
           }

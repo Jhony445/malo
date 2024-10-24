@@ -110,7 +110,9 @@
   }
   
   .error {
-    border-bottom: 1px solid red;
+    color: red !important;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
   }
   
   /* Barra de progreso - excluida de los cambios de alineación */
