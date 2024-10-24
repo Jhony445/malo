@@ -1,26 +1,9 @@
-.parent {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    /* Ajusta las columnas a estar más cerca */
-    grid-template-rows: 1fr auto;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 10px;
-    min-height: 100vh;
-    padding-bottom: 20px;
-    justify-items: center;
-    align-items: center;
-    align-items: stretch;
-}
 
 .container {
-    max-width: 1000px;
+    width: 100%;
     margin: 20px auto;
     padding: 20px;
     background-color: #fff;
-    border-radius: 10px;
     min-height: 100vh;
     width: 100%;
 }
@@ -101,6 +84,8 @@ button:hover {
 
     .container {
         padding: 10px;
+        max-width: 90%; /* Asegura que el ancho no supere el 100% en móviles */
+        box-sizing: border-box; /* Incluye padding y border en el tamaño total */
     }
 
     fieldset {
