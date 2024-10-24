@@ -23,6 +23,7 @@
     <!-- Form 2: Credenciales -->
     <div *ngIf="currentStep === 2" class="form-2">
       <div class="container">
+        <app-notification *ngIf="errorMessage" [message]="errorMessage" [isError]="true"></app-notification>
         <h1><i class="fa fa-list-alt"></i>&nbsp; Credenciales</h1>
         <div class="form-group">
           <label for="email">Correo electrónico</label>
@@ -61,4 +62,5 @@
       <div class="line-2" [ngStyle]="{'background-color': currentStep > 2 ? '#3c3744' : '#c7c7c7'}"></div>
     </div>
   </div>
+  <app-loader *ngIf="isLoading"></app-loader>
 </div>

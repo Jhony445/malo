@@ -16,7 +16,7 @@
       </div>
     </div>
     
-    <!-- Form 3: Datos personales -->
+    <!-- Form 2: Datos personales -->
     <div *ngIf="currentStep === 2" class="form-2">
       <div class="container">
         <h1><i class="fa fa-user-o"></i>&nbsp; Datos personales </h1>
@@ -80,6 +80,7 @@
     <!-- Form 4: Credenciales -->
     <div *ngIf="currentStep === 4" class="form-4">
       <div class="container">
+        <app-notification *ngIf="errorMessage" [message]="errorMessage" [isError]="true"></app-notification>
         <h1><i class="fa fa-list-alt"></i>&nbsp; Completa tu cuenta </h1>
         <div class="form-group">
           <label for="correo">Correo electrónico</label>
@@ -138,4 +139,5 @@
         <div class="line-4" [ngStyle]="{'background-color': currentStep > 4 ? '#0254b7' : '#c7c7c7'}"></div>
       </div>
   </div>
+  <app-loader *ngIf="isLoading"></app-loader>
 </div>
