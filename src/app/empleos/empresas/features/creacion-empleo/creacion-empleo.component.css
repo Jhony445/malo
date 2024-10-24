@@ -1,0 +1,113 @@
+.parent {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    /* Ajusta las columnas a estar más cerca */
+    grid-template-rows: 1fr auto;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    min-height: 100vh;
+    padding-bottom: 20px;
+    justify-items: center;
+    align-items: center;
+    align-items: stretch;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    min-height: 100vh;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+fieldset {
+    border: 2px solid #007bff; /* Cambié de dashed a solid */
+    padding: 20px;
+    border-radius: 8px;
+}
+
+legend {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px; /* Agrega más espacio entre los inputs */
+}
+
+label {
+    font-weight: bold;
+    color: #007bff;
+}
+
+input, textarea {
+    padding: 10px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    margin-bottom: 15px; /* Agrega espacio entre los inputs */
+}
+
+input:focus, textarea:focus {
+    border-color: #0056b3;
+}
+
+button {
+    padding: 10px;
+    font-size: 1.2rem;
+    background-color: #0008ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: center;
+}
+
+button:hover {
+    background-color: #0f8100;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    fieldset {
+        padding: 15px;
+    }
+
+    button {
+        width: 100%;
+    }
+}

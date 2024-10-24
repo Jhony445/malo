@@ -1,0 +1,63 @@
+<div class="container">
+    <h1>Creación de Empleo</h1>
+    <form>
+        <div class="form-grid">
+            <!-- Columna izquierda -->
+            <div class="form-section">
+                <fieldset>
+                    <legend>Datos del Empleo</legend>
+
+                    <div class="form-group">
+                        <label for="titulo">Título del Empleo</label>
+                        <input type="text" id="titulo" placeholder="Ingresa el título del empleo">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ubicacion">Ubicación</label>
+                        <input type="text" id="ubicacion" placeholder="Ingresa la ubicación">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="salarioMin">Salario Mínimo</label>
+                        <input type="number" id="salarioMin" placeholder="Salario mínimo">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="habilidades">Habilidades</label>
+                        <input type="text" id="habilidades" placeholder="habilidades">
+                    </div>
+
+                   
+                </fieldset>
+            </div>
+
+            <!-- Columna derecha -->
+            <div class="form-section">
+                <fieldset>
+                    <legend>Más Información</legend>
+
+                    <div class="form-group">
+                        <label for="descripcion">Descripción</label>
+                        <textarea id="descripcion" placeholder="Descripción del empleo"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="horario">Horario</label>
+                        <input type="text" id="horario" placeholder="Ingresa el horario de trabajo">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="salarioMax">Salario Máximo</label>
+                        <input type="number" id="salarioMax" placeholder="Salario máximo">
+                    </div>
+                    <div class="form-group">
+                        <label for="imagen">Subir Imagen</label>
+                        <input type="file" id="imagen" accept="image/*">
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <button type="submit">Crear Empleo</button>
+    </form>
+</div>

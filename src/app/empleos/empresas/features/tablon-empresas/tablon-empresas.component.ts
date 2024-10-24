@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { CardEmpleosEmpresaComponent } from '../../ui/card-empleos-empresa/card-empleos-empresa.component';
 import { DetalleEmpleoEmpresaComponent } from '../../ui/detalle-empleo-empresa/detalle-empleo-empresa.component';
 import { TituloComponent } from '../../../../shared/ui/titulo/titulo.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tablon-empresas',
   standalone: true,
   imports: [CommonModule, CardEmpleosEmpresaComponent, DetalleEmpleoEmpresaComponent, TituloComponent],
   templateUrl: './tablon-empresas.component.html',
-  styleUrl: './tablon-empresas.component.css'
+  styleUrls: ['./tablon-empresas.component.css'] // Cambié `styleUrl` a `styleUrls`
 })
 export class TablonEmpresasComponent {
   empleos: any[] = [
@@ -67,6 +68,8 @@ export class TablonEmpresasComponent {
   currentPage: number = 1; // Página actual
   selectedEmpleoIndex: number | null = null;
 
+  constructor(private router: Router) {} // Inyección del servicio Router
+
   get paginatedEmpleos() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     return this.empleos.slice(startIndex, startIndex + this.itemsPerPage);
@@ -85,7 +88,10 @@ export class TablonEmpresasComponent {
   }
 
   onCardClick(index: number) {
-    this.selectedEmpleoIndex = index; // Actualiza el índice de la tarjeta seleccionada
+    this.selectedEmpleoIndex = index;
   }
 
+  onPublicarEmpleo() {
+    this.router.navigate(['empresa/crear']);
+  }
 }
