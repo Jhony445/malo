@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
 import { NotificationComponent } from '../../../shared/ui/notification/notification.component';
+import { EmailService } from '../../services/email.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class SignUpComponent implements OnInit {
   correo = '';
   contrasena = '';
   confirmPass = '';
+  codigoInp = '';
   telefonoTouched: boolean = false;
   emailTouched: boolean = false;
   passwordTouched: boolean = false;
@@ -34,6 +36,8 @@ export class SignUpComponent implements OnInit {
   estadoTouched: boolean = false;
   municipioTouched: boolean = false;
   localidadTouched: boolean = false;
+  codigoInpTouched: boolean = false;
+  emailButtonClicked: boolean = false;
   //ubicacion
   estados: any[] = [];
   municipios: any[] = [];
@@ -45,6 +49,8 @@ export class SignUpComponent implements OnInit {
   router = inject(Router);
   http = inject(HttpClient);
   isLoading: boolean = false;
+  emailSent: boolean = false;
+  verificationCode: string = '';
   errorMessage: string = '';
 
   ngOnInit(): void {
@@ -72,7 +78,7 @@ export class SignUpComponent implements OnInit {
   }
   
   isForm2Valid(): boolean {
-    return !!this.telefono && !!this.fechaNacimiento;
+    return !!this.isPhoneValid(this.telefono) && !!this.fechaNacimiento;
   }
   
   isForm3Valid(): boolean {
@@ -81,9 +87,13 @@ export class SignUpComponent implements OnInit {
 
   isForm4Valid(): boolean {
     return this.isEmailValid(this.correo) && 
-           this.isPasswordValid(this.contrasena) && 
-           this.doPasswordsMatch(this.contrasena, this.confirmPass) &&
-           this.isPhoneValid(this.telefono);
+           this.isCodigoValid(this.codigoInp, this.verificationCode);
+           
+  }
+
+  isForm5Valid(): boolean{
+    return this.isPasswordValid(this.contrasena) && 
+           this.doPasswordsMatch(this.contrasena, this.confirmPass)
   }
   
   isEmailValid(email: string): boolean {
@@ -103,10 +113,39 @@ export class SignUpComponent implements OnInit {
     const phoneRegex = /^[0-9]{10}$/;
     return phoneRegex.test(telefono);
   }
+
+  isCodigoValid(codigo: string,  verificationCode: string): boolean {
+    return  codigo.length === 6  && codigo === verificationCode;
+  }
   
   // Función para verificar si un campo no está vacío
   isNotEmpty(value: string): boolean {
     return value.trim().length > 0;
+  }
+
+  //Enviar correo
+  constructor(private emailService: EmailService){}
+  sendEmail(){
+    this.verificationCode = this.emailService.generateRandomCode();
+    this.isLoading = true;
+
+    this.emailService.sendEmail(this.nombre, this.verificationCode, this.correo)
+    .then(()=>{
+      this.isLoading = false;
+      this.emailSent = true;
+      this.emailButtonClicked = true;
+
+      //Activar temporizador 60s
+      setTimeout(() =>{
+        this.verificationCode = '';
+        this.emailButtonClicked = false;
+      }, 40000);
+      setTimeout(() => (this.emailSent = false), 3000);
+    }).catch((error) =>{
+      this.isLoading =false;
+      this.emailButtonClicked = false;
+      console.error('Error al enviar el código:', error)
+    })
   }
 
   //Obtener estados al iniciar
@@ -144,7 +183,7 @@ export class SignUpComponent implements OnInit {
   
   //insertar usuario
   finishRegister() {
-    if(this.isForm1Valid() && this.isForm2Valid() && this.isForm3Valid() && this.isForm4Valid()){
+    if(this.isForm1Valid() && this.isForm2Valid() && this.isForm3Valid() && this.isForm4Valid() && this.isForm5Valid()){
       // Encuentra los nombres correspondientes al cvegeo seleccionado
       const estadoNombre = this.estados.find(e => e.cvegeo === this.estado)?.nomgeo || '';
       const municipioNombre = this.municipios.find(m => m.cvegeo === this.municipio)?.nomgeo || '';

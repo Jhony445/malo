@@ -29,12 +29,13 @@
 .form-1 h1, 
 .form-2 h1, 
 .form-3 h1,
-.form-4 h1 {
+.form-4 h1,
+.form-5 h1 {
   color: #3066be;
   margin-bottom: 1rem;
 }
 
-.form-5 h1{
+.form-6 h1{
   max-width: 50%;
 }
 
@@ -42,7 +43,8 @@
 .form-2, 
 .form-3, 
 .form-4,
-.form-5 {
+.form-5,
+.form-6 {
   padding-top: 7%;
 }
 
@@ -74,6 +76,12 @@
   background: none;
 }
 
+.sendEmail{
+  margin-bottom: 1rem !important;
+  margin-top: -0.5rem !important;
+  width: 35%;
+}
+
 .form-group label {
   font-size: 1.1rem;
   color: #3066be;
@@ -82,7 +90,9 @@
 .conti-1, 
 .conti-2, 
 .conti-3,
-.conti-4 {
+.conti-4,
+.conti-5,
+.sendEmail {
   padding: 0.625rem 1.875rem;
   margin-top: 0.625rem;
   font-size: 1rem;
@@ -127,7 +137,8 @@ button:enabled {
 .bot-icon-1,
 .bot-icon-2,
 .bot-icon-3,
-.bot-icon-4 {
+.bot-icon-4,
+.bot-icon-5 {
   font-size: 1.875rem;
   color: #c7c7c7;
   cursor: pointer;
@@ -137,7 +148,8 @@ button:enabled {
 .bot-icon-1.active,
 .bot-icon-2.active,
 .bot-icon-3.active,
-.bot-icon-4.active {
+.bot-icon-4.active,
+.bot-icon-5.active {
   color: #3066be;
 }
 
@@ -150,9 +162,10 @@ button:enabled {
 .line-1,
 .line-2,
 .line-3,
-.line-4 {
+.line-4,
+.line-5 {
   height: 0.125rem;
-  width: 75%;
+  width: 60%;
   position: absolute;
   top: 50%;
   left: 2.5rem;
@@ -163,7 +176,8 @@ button:enabled {
 .line-1.active,
 .line-2.active,
 .line-3.active,
-.line-4.active {
+.line-4.active,
+.line-5.active {
   background-color: #3066be;
 }
 
@@ -193,8 +207,9 @@ button {
   .line-1, 
   .line-2, 
   .line-3,
-  .line-4 {
-    width: 70%;
+  .line-4,
+  .line-5 {
+    width: 50%;
   }
   .progress-bar {
     max-width: 35rem;
@@ -208,15 +223,8 @@ button {
   .line-1, 
   .line-2, 
   .line-3,
-  .line-4 {
-    width: 50%;
-  }
-}
-@media (max-width: 22.5rem) {
-  .line-1, 
-  .line-2, 
-  .line-3,
-  .line-4 {
+  .line-4,
+  .line-5 {
     display: none;
   }
 }

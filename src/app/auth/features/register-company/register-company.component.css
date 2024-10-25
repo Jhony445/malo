@@ -31,7 +31,8 @@
   
   .form-1 h1, 
   .form-2 h1, 
-  .form-3 h1 {
+  .form-3 h1,
+  .form-4 h1 {
     color: #3c3744;
     margin-bottom: 16px;
     margin-left: -60%;
@@ -78,9 +79,17 @@
     color: #3c3744;
   }
   
+  .sendEmail{
+    margin-bottom: 1rem !important;
+    margin-top: -0.5rem !important;
+    width: 100%;
+  }
+
   .conti-1, 
   .conti-2, 
-  .conti-3 {
+  .conti-3,
+  .conti-4,
+  .sendEmail {
     padding: 0.625rem 1.875rem;
     margin-top: 0.625rem;
     font-size: 1rem;
@@ -125,7 +134,8 @@
   }
   
   .bot-icon-1,
-  .bot-icon-2 {
+  .bot-icon-2,
+  .bot-icon-3 {
     font-size: 1.875rem;
     color: #c7c7c7;
     cursor: pointer;
@@ -133,7 +143,8 @@
   }
   
   .bot-icon-1.active,
-  .bot-icon-2.active {
+  .bot-icon-2.active,
+  .bot-icon-3.active {
     color: #3c3744;
   }
   
@@ -144,7 +155,8 @@
   
   /* Líneas de conexión entre los pasos */
   .line-1,
-  .line-2 {
+  .line-2,
+  .line-3 {
     height: 0.125rem;
     width: 75%;
     position: absolute;
@@ -155,7 +167,8 @@
   }
   
   .line-1.active,
-  .line-2.active {
+  .line-2.active,
+  .line-3.active {
     background-color: #3c3744;
   }
   
