@@ -4,35 +4,34 @@
     <input *ngIf="modoEdicion" [(ngModel)]="empleo.titulo" class="input-editar" />
   </div>
 
-  <p *ngIf="!modoEdicion" class="salario">{{ empleo.salario }} Mensual</p>
-  <input *ngIf="modoEdicion" [(ngModel)]="empleo.salario" class="input-editar" placeholder="Salario" />
+  <p *ngIf="!modoEdicion" class="salario">$ {{ empleo.salario_maximo }} Maximo</p>
+  <input *ngIf="modoEdicion" [(ngModel)]="empleo.salario_maximo" class="input-editar" placeholder="Salario" />
 
-  <p *ngIf="!modoEdicion" class="empresa">{{ empleo.empresa }}</p>
-  <input *ngIf="modoEdicion" [(ngModel)]="empleo.empresa" class="input-editar" placeholder="Empresa" />
+  <p *ngIf="!modoEdicion" class="salario-minimo">$ {{ empleo.salario_minimo }} Salario minimo</p>
+  <input *ngIf="modoEdicion" [(ngModel)]=" empleo.salario_minimo" class="input-editar" placeholder="Salario minimo" />
 
   <p *ngIf="!modoEdicion" class="ubicacion">{{ empleo.ubicacion }}</p>
   <input *ngIf="modoEdicion" [(ngModel)]="empleo.ubicacion" class="input-editar" placeholder="Ubicación" />
+
+  <!-- Imagen o campo de URL según el modo -->
+  <div class="detalle-imagen" *ngIf="!modoEdicion">
+    <img [src]="empleo.multimediaContenido" alt="{{ empleo.titulo }}" *ngIf="empleo.multimediaContenido">
+  </div>
+  <div *ngIf="modoEdicion">
+    <label for="urlImagen">URL de la Imagen:</label>
+    <input id="urlImagen" [(ngModel)]="empleo.multimediaContenido" class="input-editar" placeholder="Ingrese URL de la imagen" />
+  </div>
+
+  <!-- Agregar el horario -->
+  <div class="detalle-section">
+    <h3>Horario</h3>
+    <p>{{ empleo.horario }}</p>
+  </div>
 
   <div class="detalle-section">
     <h3>Descripción del empleo</h3>
     <p *ngIf="!modoEdicion">{{ empleo.descripcion }}</p>
     <textarea *ngIf="modoEdicion" [(ngModel)]="empleo.descripcion" class="input-editar"></textarea>
-  </div>
-
-  <div class="detalle-section">
-    <h3>Requisitos</h3>
-    <ul *ngIf="!modoEdicion">
-      <li *ngFor="let requisito of empleo.requisitos">{{ requisito }}</li>
-    </ul>
-    <textarea *ngIf="modoEdicion" [(ngModel)]="empleo.requisitos" class="input-editar"></textarea>
-  </div>
-
-  <div class="detalle-section">
-    <h3>Beneficios</h3>
-    <ul *ngIf="!modoEdicion">
-      <li *ngFor="let beneficio of empleo.beneficios">{{ beneficio }}</li>
-    </ul>
-    <textarea *ngIf="modoEdicion" [(ngModel)]="empleo.beneficios" class="input-editar"></textarea>
   </div>
 
   <!-- Botones Editar y Eliminar -->

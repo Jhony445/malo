@@ -58,6 +58,10 @@ input, textarea {
     margin-bottom: 15px; /* Agrega espacio entre los inputs */
 }
 
+textarea#descripcion {
+    height: 142px; /* Ajusta el valor según la altura deseada */
+}
+
 input:focus, textarea:focus {
     border-color: #0056b3;
 }
@@ -77,6 +81,31 @@ button:hover {
     background-color: #0f8100;
 }
 
+select {
+    padding: 10px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    margin-bottom: 15px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    appearance: none; /* Oculta el estilo predeterminado del navegador */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23007bff' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 10px 6px;
+}
+
+select:focus {
+    border-color: #0056b3;
+}
+
+select option {
+    color: #333;
+}
+
 @media (max-width: 768px) {
     .form-grid {
         grid-template-columns: 1fr;
@@ -93,6 +122,10 @@ button:hover {
     }
 
     button {
+        width: 100%;
+    }
+
+    select {
         width: 100%;
     }
 }

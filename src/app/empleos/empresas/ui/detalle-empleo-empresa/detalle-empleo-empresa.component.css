@@ -30,6 +30,12 @@
   font-weight: bold;
 }
 
+.salario-minimo {
+  font-size: 1.2em;
+  color: #6c95f6;
+  font-weight: bold;
+}
+
 .empresa {
   font-size: 1em;
   color: #7f8c8d;
@@ -136,4 +142,32 @@
 
 .btn-cancelar:hover {
   background-color: #5a6268;
+}
+
+
+/* Contenedor de la imagen */
+.detalle-imagen {
+  display: flex;
+  justify-content: center; /* Centrar la imagen */
+  margin-bottom: 15px; /* Espacio inferior */
+}
+
+/* Estilos para la imagen dentro del contenedor */
+.detalle-imagen img {
+  max-width: 100%; /* Asegura que la imagen no se salga horizontalmente */
+  max-height: 300px; /* Altura máxima para limitar imágenes muy altas */
+  width: auto; /* Mantiene el aspecto de la imagen */
+  border-radius: 8px; /* Bordes redondeados para armonizar con el diseño */
+  object-fit: cover; /* Ajusta la imagen para llenar el espacio sin deformarse */
+}
+
+/* Estilo del campo URL en modo edición */
+.input-editar {
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+  box-sizing: border-box;
 }

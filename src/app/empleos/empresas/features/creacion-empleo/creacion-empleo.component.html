@@ -1,63 +1,68 @@
+<!-- creacion-empleo.component.html -->
 <div class="container">
-    <h1>Creación de Empleo</h1>
-    <form>
-        <div class="form-grid">
-            <!-- Columna izquierda -->
-            <div class="form-section">
-                <fieldset>
-                    <legend>Datos del Empleo</legend>
-
-                    <div class="form-group">
-                        <label for="titulo">Título del Empleo</label>
-                        <input type="text" id="titulo" placeholder="Ingresa el título del empleo">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="ubicacion">Ubicación</label>
-                        <input type="text" id="ubicacion" placeholder="Ingresa la ubicación">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="salarioMin">Salario Mínimo</label>
-                        <input type="number" id="salarioMin" placeholder="Salario mínimo">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="habilidades">Habilidades</label>
-                        <input type="text" id="habilidades" placeholder="habilidades">
-                    </div>
-
-                   
-                </fieldset>
-            </div>
-
-            <!-- Columna derecha -->
-            <div class="form-section">
-                <fieldset>
-                    <legend>Más Información</legend>
-
-                    <div class="form-group">
-                        <label for="descripcion">Descripción</label>
-                        <textarea id="descripcion" placeholder="Descripción del empleo"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="horario">Horario</label>
-                        <input type="text" id="horario" placeholder="Ingresa el horario de trabajo">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="salarioMax">Salario Máximo</label>
-                        <input type="number" id="salarioMax" placeholder="Salario máximo">
-                    </div>
-                    <div class="form-group">
-                        <label for="imagen">Subir Imagen</label>
-                        <input type="file" id="imagen" accept="image/*">
-                    </div>
-                </fieldset>
-            </div>
-        </div>
-
-        <button type="submit">Crear Empleo</button>
-    </form>
+  <h1>Creación de Empleo</h1>
+  <form [formGroup]="empleoForm" (ngSubmit)="crearEmpleo()">
+    <div class="form-grid">
+      <div class="form-section">
+        <fieldset>
+          <legend>Datos del Empleo</legend>
+          <div class="form-group">
+            <label for="titulo">Título del Empleo</label>
+            <input type="text" id="titulo" formControlName="titulo" placeholder="Ingresa el título del empleo">
+          </div>
+          <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" formControlName="descripcion" placeholder="Descripción del empleo"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="ubicacion">Ubicación</label>
+            <input type="text" id="ubicacion" formControlName="ubicacion" placeholder="Ingresa la ubicación">
+          </div>
+          <div class="form-group">
+            <label for="horario">Horario</label>
+            <select id="horario" formControlName="horario">
+              <option value="">Selecciona un horario</option>
+              <option value="medio tiempo">Medio Tiempo</option>
+              <option value="completo">Tiempo Completo</option>
+              <option value="temporal">Temporal</option>
+              <option value="freelance">Freelance</option>
+            </select>
+          </div>
+        </fieldset>
+      </div>
+      <div class="form-section">
+        <fieldset>
+          <legend>Más Información</legend>
+          <div class="form-group">
+            <label for="salarioMinimo">Salario Mínimo</label>
+            <input type="number" id="salarioMinimo" formControlName="salarioMinimo" placeholder="Salario mínimo">
+          </div>
+          <div class="form-group">
+            <label for="salarioMaximo">Salario Máximo</label>
+            <input type="number" id="salarioMaximo" formControlName="salarioMaximo" placeholder="Salario máximo">
+          </div>
+          <div class="form-group">
+            <label for="multimediaNombre">Nombre de la imagen</label>
+            <input type="text" id="multimediaNombre" formControlName="multimediaNombre" placeholder="Titulo de la imagen">
+          </div>
+          <div class="form-group">
+            <label for="multimediaTipo">Tipo de imagen</label>
+            <select id="multimediaTipo" formControlName="multimediaTipo">
+              <option value="">Selecciona un tipo de imagen</option>
+              <option value="jpg">JPG</option>
+              <option value="png">PNG</option>
+              <option value="gif">GIF</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="multimediaContenido">URL de la imagen</label>
+            <input type="text" id="multimediaContenido" formControlName="multimediaContenido" placeholder="URL de la imagen">
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <app-notification *ngIf="errorMessage" [message]="errorMessage" [isError]="true"></app-notification>
+    <button type="submit">Crear Empleo</button>
+    <app-loader *ngIf="isLoading"></app-loader>
+  </form>
 </div>

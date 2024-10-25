@@ -3,24 +3,21 @@
     <!-- Lista de empleos -->
     <div class="empleos-lista">
       <app-titulo [primeraPalabra]="'Tus'" [segundaPalabra]="'Empleos'"></app-titulo>
-      <app-card-empleos-empresa 
-        *ngFor="let empleo of paginatedEmpleos; let i = index" 
-        [empleo]="empleo"
-        [selected]="selectedEmpleoIndex === i + (currentPage - 1) * itemsPerPage" 
+      <app-card-empleos-empresa *ngFor="let empleo of paginatedEmpleos; let i = index" [empleo]="empleo"
+        [selected]="selectedEmpleoIndex === i + (currentPage - 1) * itemsPerPage"
         (cardClick)="onCardClick(i + (currentPage - 1) * itemsPerPage)">
       </app-card-empleos-empresa>
       <div class="pagination">
         <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
-        <span>Página {{ currentPage }} de {{ (empleos.length / itemsPerPage) | number: '1.0-0' }}</span>
-        <button (click)="nextPage()" [disabled]="currentPage * itemsPerPage >= empleos.length">Siguiente</button>
+        <span>Página {{ currentPage }} de {{ totalPages }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
       </div>
     </div>
   </div>
   <div class="div2">
-    <!-- Botón "¡Publica tu empleo!" arriba del detalle -->
-     <br>
-    <app-detalle-empleo-empresa *ngIf="selectedEmpleoIndex !== null" [empleo]="empleos[selectedEmpleoIndex]"></app-detalle-empleo-empresa>
+    <br>
+    <app-detalle-empleo-empresa *ngIf="selectedEmpleoIndex !== null" [empleo]="empleos[selectedEmpleoIndex] ">
+    </app-detalle-empleo-empresa>
     <button class="publicar-empleo-btn" (click)="onPublicarEmpleo()">¡Publica tu empleo!</button>
   </div>
 </div>
-
