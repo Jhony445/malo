@@ -35,7 +35,7 @@ export class UserService {
       }
       return false;
     }
-    return true; // No hay token, por lo que se considera expirado
+    return true;
   }
 
   clearToken(): void {
