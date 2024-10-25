@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Importar CommonModule para usar *ngFor
+import { CommonModule } from '@angular/common';
 import { UserService } from '../../../../core/services/user.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-detalle-empleo',
-  standalone: true,  // Asegurarse de que el componente es standalone
-  imports: [CommonModule], // Añadir CommonModule para que funcione *ngFor
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './detalle-empleo.component.html',
   styleUrls: ['./detalle-empleo.component.css']
 })

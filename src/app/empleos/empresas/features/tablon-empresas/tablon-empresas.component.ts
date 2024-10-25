@@ -21,6 +21,7 @@ export class TablonEmpresasComponent implements OnInit {
   currentPage: number = 1; // Página actual
   totalPages: number = 1; // Total de páginas
   selectedEmpleoIndex: number | null = null;
+  isLoading: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -36,7 +37,7 @@ export class TablonEmpresasComponent implements OnInit {
       console.error('No se encontró el ID de la empresa autenticada.');
     }
   }
-
+  
   fetchEmpleos(empresaId: string) {
     this.http.get<any[]>('https://malo-backend-empleos.onrender.com/api/Empleo/GetEmpleos')
       .subscribe(
@@ -77,6 +78,4 @@ export class TablonEmpresasComponent implements OnInit {
   onPublicarEmpleo() {
     this.router.navigate(['empresa/crear']);
   }
-
-  
 }

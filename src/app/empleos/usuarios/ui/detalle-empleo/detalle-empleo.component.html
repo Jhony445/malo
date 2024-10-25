@@ -2,15 +2,29 @@
   <div class="detalle-header">
     <h2>{{ empleo.titulo }}</h2>
   </div>
-  <p class="salario">{{ empleo.salario }} Mensual</p>
-  <p class="empresa">{{ empleo.empresa }}</p>
-  <p class="ubicacion">{{ empleo.ubicacion }}</p>
   
+  <p class="salario">$ {{ empleo.salario_maximo }} Máximo</p>
+  <p class="salario-minimo">$ {{ empleo.salario_minimo }} Mínimo</p>
+  <p class="ubicacion">{{ empleo.ubicacion }}</p>
+
+  <!-- Imagen del empleo -->
+  <div class="detalle-imagen" *ngIf="empleo.multimediaContenido">
+    <img [src]="empleo.multimediaContenido" alt="{{ empleo.titulo }}">
+  </div>
+
+  <!-- Sección del horario -->
+  <div class="detalle-section">
+    <h3>Horario</h3>
+    <p>{{ empleo.horario }}</p>
+  </div>
+
+  <!-- Descripción del empleo -->
   <div class="detalle-section">
     <h3>Descripción del empleo</h3>
     <p>{{ empleo.descripcion }}</p>
   </div>
 
+  <!-- Requisitos del empleo -->
   <div class="detalle-section">
     <h3>Requisitos</h3>
     <ul>
@@ -18,6 +32,7 @@
     </ul>
   </div>
 
+  <!-- Beneficios del empleo -->
   <div class="detalle-section">
     <h3>Beneficios</h3>
     <ul>
@@ -25,7 +40,7 @@
     </ul>
   </div>
 
-  <!-- Botón que cambia según si el usuario está autenticado -->
+  <!-- Botón para postularse o registrarse -->
   <button class="btn-postularse" (click)="onButtonClick()">
     {{ isAuthenticated ? 'Postularse' : 'Regístrate para postularte' }}
   </button>
