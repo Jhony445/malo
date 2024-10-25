@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
 import { NotificationComponent } from '../../../shared/ui/notification/notification.component';
 
+
 @Component({
   selector: 'app-sign-up',
   standalone: true,
@@ -156,9 +157,9 @@ export class SignUpComponent implements OnInit {
         contrasena: this.confirmPass,
         fecha_nacimiento: this.fechaNacimiento,
         telefono: this.telefono,
-        estado_id: estadoNombre,
-        municipio_id: municipioNombre,
-        localidad_id: localidadNombre,
+        estado: estadoNombre,
+        municipio: municipioNombre,
+        localidad: localidadNombre,
         habilidades: '',
         descripcion: '',
         imagen_perfil: '',
@@ -175,7 +176,8 @@ export class SignUpComponent implements OnInit {
           },
           error: (error) => {
             this.isLoading = false;
-            this.errorMessage = "¡Ups, El correo ya éxiste!"
+            this.errorMessage = "¡Ups, El correo ya existe!";
+
             console.error('Error al registrar la empresa', error);
             this.clearMessages();
           }
