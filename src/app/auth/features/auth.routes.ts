@@ -6,7 +6,7 @@ import { RegisterCompany } from './register-company/register-company.component';
 
 export const AUTH_ROUTES: Routes = [
   { path: 'login', component: LogInComponent },
-  { path: 'sign-up', component: SignUpComponent },
   { path: 'select-register', component: SelectRegister },
-  { path: 'register-company', component: RegisterCompany }
+  { path: 'register-company', component: RegisterCompany },
+  { path: 'sign-up', component: SignUpComponent }
 ];

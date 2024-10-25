@@ -16,29 +16,28 @@ export class NavbarComponent implements OnInit, OnDestroy {
   menuOpen = false;
   profileMenuOpen = false;
   isAuthenticated = false;
-  user = { email: '' };
+  user = { email: '', rol:'' };
   private authSubscription: Subscription;
   private routerSubscription: Subscription;
 
   constructor(private userService: UserService, private router: Router) {
-    // Suscripción a cambios de autenticación
     this.authSubscription = this.userService.isAuthenticated$.subscribe(isAuthenticated => {
       this.isAuthenticated = isAuthenticated;
       if (isAuthenticated) {
         const userData = this.userService.getUserData();
         if (userData) {
           this.user.email = userData.email;
+          this.user.rol = userData.rol;
         }
       } else {
-        this.user = { email: '' };
+        this.user = { email: '', rol:'' };
       }
     });
 
-    // Detectamos cambio de ruta
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
-      setTimeout(() => this.closeMenu(), 0); // Cierra el menú en cada cambio de ruta
+      setTimeout(() => this.closeMenu(), 0);
     });
   }
 
@@ -53,16 +52,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
     if (this.menuOpen) {
-      this.disableScroll(); // Deshabilitamos el scroll cuando el menú está abierto
+      this.disableScroll();
     } else {
-      this.enableScroll(); // Habilitamos el scroll cuando el menú está cerrado
+      this.enableScroll();
     }
   }
 
   closeMenu() {
     if (this.menuOpen) {
       this.menuOpen = false;
-      this.enableScroll(); // Aseguramos que el scroll se restaure al cerrar el menú
+      this.enableScroll();
     }
   }
 
@@ -71,7 +70,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     document.addEventListener('touchmove', this.preventScroll, { passive: false });
     document.addEventListener('wheel', this.preventScroll, { passive: false });
   }
-  
+
   enableScroll() {
     document.body.classList.remove('no-scroll');
     document.removeEventListener('touchmove', this.preventScroll);
@@ -102,16 +101,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   logout(): void {
     this.userService.clearToken();
     this.isAuthenticated = false;
-    this.user = { email: '' };
+    this.user = { email: '', rol:'' };
     this.profileMenuOpen = false;
-    this.enableScroll(); // Restauramos el scroll al hacer logout
+    this.enableScroll();
   }
 
   ngOnDestroy() {
     this.authSubscription.unsubscribe();
-    this.routerSubscription.unsubscribe(); // Desuscribimos de los eventos del router
+    this.routerSubscription.unsubscribe();
     document.removeEventListener('click', this.handleClickOutside.bind(this));
   }
-
-  
 }
