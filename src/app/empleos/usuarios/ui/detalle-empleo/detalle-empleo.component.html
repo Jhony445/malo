@@ -5,6 +5,7 @@
   
   <p class="salario">$ {{ empleo.salario_maximo }} Máximo</p>
   <p class="salario-minimo">$ {{ empleo.salario_minimo }} Mínimo</p>
+  <p class="empresa"> {{ empleo.empresaNombre }}</p>
   <p class="ubicacion">{{ empleo.ubicacion }}</p>
 
   <!-- Imagen del empleo -->
@@ -22,22 +23,6 @@
   <div class="detalle-section">
     <h3>Descripción del empleo</h3>
     <p>{{ empleo.descripcion }}</p>
-  </div>
-
-  <!-- Requisitos del empleo -->
-  <div class="detalle-section">
-    <h3>Requisitos</h3>
-    <ul>
-      <li *ngFor="let requisito of empleo.requisitos">{{ requisito }}</li>
-    </ul>
-  </div>
-
-  <!-- Beneficios del empleo -->
-  <div class="detalle-section">
-    <h3>Beneficios</h3>
-    <ul>
-      <li *ngFor="let beneficio of empleo.beneficios">{{ beneficio }}</li>
-    </ul>
   </div>
 
   <!-- Botón para postularse o registrarse -->

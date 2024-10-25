@@ -15,6 +15,7 @@ import { LoaderComponent } from '../../../../shared/ui/loader/loader.component';
 })
 export class ListaEmpleosComponent implements OnInit {
   empleos: any[] = [];
+  empresas: any[] = []; // Array para almacenar las empresas
   itemsPerPage: number = 5;
   currentPage: number = 1;
   totalPages: number = 1;
@@ -23,14 +24,33 @@ export class ListaEmpleosComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.fetchEmpleos();
+    this.fetchEmpresas();
   }
-  
+
+  fetchEmpresas() {
+    // Primero obtenemos las empresas
+    this.http.get<any[]>('https://malo-backend-empresas.onrender.com/api/Empresa/GetEmpresa')
+      .subscribe(
+        (data: any[]) => {
+          this.empresas = data;
+          this.fetchEmpleos(); // Luego obtenemos los empleos
+        },
+        error => console.error('Error al cargar empresas:', error)
+      );
+  }
+
   fetchEmpleos() {
     this.http.get<any[]>('https://malo-backend-empleos.onrender.com/api/Empleo/GetEmpleos')
       .subscribe(
         (data: any[]) => {
-          this.empleos = data;
+          // Asignar el nombre de la empresa a cada empleo
+          this.empleos = data.map(empleo => {
+            const empresa = this.empresas.find(e => e.id === empleo.empresa_id);
+            return {
+              ...empleo,
+              empresaNombre: empresa ? empresa.nombre : 'Empresa desconocida'
+            };
+          });
           this.updateTotalPages();
         },
         error => console.error('Error al cargar empleos:', error)
