@@ -10,8 +10,11 @@
     <div class="search-bar">
         <h1>Encuentra el mejor <span>empleo</span> para ti</h1>
         <div class="search-container">
-            <input type="text" placeholder="Buscar..." class="search-input">
-            <button class="search-btn" (click)="buscarEmpleo()">Buscar</button>
+          <input type="text" placeholder="Buscar..." [(ngModel)]="query" (input)="onInputChange()" class="search-input">
+          <button class="search-btn" (click)="buscarEmpleo()">Buscar</button>
         </div>
-    </div>
+        <ul *ngIf="suggestions.length > 0" class="suggestions-list">
+          <li *ngFor="let suggestion of suggestions" (click)="query = suggestion; buscarEmpleo()">{{ suggestion }}</li>
+        </ul>
+      </div>
 </div>
