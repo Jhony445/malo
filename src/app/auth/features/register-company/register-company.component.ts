@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
 import { NotificationComponent } from '../../../shared/ui/notification/notification.component';
-import { EmailService } from '../../services/email.service';
+import { EmailService } from '../../../core/services/email.service';
 import emailjs from '@emailjs/browser'
 
 @Component({
@@ -109,7 +109,7 @@ export class RegisterCompany {
       setTimeout(() => {
         this.verificationCode = ''; // Borra el código de verificación
         this.emailButtonClicked = false; // Reactiva el botón
-      }, 40000);
+      }, 180000);
 
       setTimeout(() => (this.emailSent = false), 3000); // Ocultar mensaje después de 3 segundos
     }).catch((error) => {

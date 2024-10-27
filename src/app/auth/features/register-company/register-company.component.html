@@ -43,7 +43,7 @@
         </div>
         <div>
           <button class="sendEmail" (click)="sendEmail()" [disabled]="!isEmailValid(correo) || emailButtonClicked || isLoading" >
-            {{ emailButtonClicked ? 'Revisa tu Correo (60s)' : 'Enviar código' }}
+            {{ emailButtonClicked ? 'Revisa tu Correo (3m)' : 'Enviar código' }}
           </button>
         </div>
         <div class="form-group">

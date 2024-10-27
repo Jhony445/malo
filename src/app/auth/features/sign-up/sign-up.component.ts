@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
 import { NotificationComponent } from '../../../shared/ui/notification/notification.component';
-import { EmailService } from '../../services/email.service';
+import { EmailService } from '../../../core/services/email.service';
 
 
 @Component({
@@ -136,10 +136,11 @@ export class SignUpComponent implements OnInit {
       this.emailButtonClicked = true;
 
       //Activar temporizador 60s
-      setTimeout(() =>{
+      setTimeout(() => {
         this.verificationCode = '';
         this.emailButtonClicked = false;
-      }, 40000);
+      }, 180000);
+
       setTimeout(() => (this.emailSent = false), 3000);
     }).catch((error) =>{
       this.isLoading =false;
