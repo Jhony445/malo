@@ -16,7 +16,11 @@
   </div>
   <div class="div2">
     <br>
-    <app-detalle-empleo-empresa *ngIf="selectedEmpleoIndex !== null" [empleo]="empleos[selectedEmpleoIndex] ">
+    <app-detalle-empleo-empresa 
+    *ngIf="selectedEmpleoIndex !== null" 
+    [empleo]="empleos[selectedEmpleoIndex] " 
+    (empleoEliminado)="actualizarListaEmpleos($event)"
+    (empleoActualizado)="actualizarEmpleo($event)">
     </app-detalle-empleo-empresa>
     <button class="publicar-empleo-btn" (click)="onPublicarEmpleo()">¡Publica tu empleo!</button>
   </div>

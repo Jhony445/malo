@@ -1,25 +1,76 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter  } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Importar FormsModule
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-detalle-empleo-empresa',
   standalone: true,
-  imports: [CommonModule, FormsModule],  // Agregar FormsModule aquí
+  imports: [CommonModule, FormsModule],
   templateUrl: './detalle-empleo-empresa.component.html',
   styleUrls: ['./detalle-empleo-empresa.component.css']
 })
-export class DetalleEmpleoEmpresaComponent {
+export class DetalleEmpleoEmpresaComponent implements OnChanges {
   @Input() empleo: any;
-
   modoEdicion: boolean = false;
+  @Output() empleoEliminado = new EventEmitter<string>();
+  @Output() empleoActualizado = new EventEmitter<any>();
+
+  constructor(private http: HttpClient) {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['empleo'] && this.empleo) {
+      console.log('ID del empleo en detalle:', this.empleo.empleoId);
+    }
+  }
 
   activarEdicion() {
     this.modoEdicion = true;
   }
 
   guardarCambios() {
-    this.modoEdicion = false;
-    // Aquí puedes agregar la lógica para guardar los cambios, como una llamada a un servicio o API
+    if (this.empleo && this.empleo.empleoId) {
+      const payload = {
+        empleo_id: this.empleo.empleoId,
+        titulo: this.empleo.titulo,
+        descripcion: this.empleo.descripcion,
+        ubicacion: this.empleo.ubicacion,
+        salario_minimo: this.empleo.salario_minimo,
+        salario_maximo: this.empleo.salario_maximo,
+        horario: this.empleo.horario,
+        multimediaNombre: this.empleo.multimediaNombre || '',
+        multimediaTipo: this.empleo.multimediaTipo || '',
+        multimediaContenido: this.empleo.multimediaContenido
+      };
+  
+      this.http.post('https://malo-backend-empleos.onrender.com/api/Empleo/UpdateEmpleoById', payload, { responseType: 'text' })
+        .subscribe({
+          next: () => {
+            console.log('Empleo actualizado con éxito');
+            this.modoEdicion = false;
+            this.empleoActualizado.emit(this.empleo); // Emitir el empleo actualizado
+          },
+          error: (error) => console.error('Error al actualizar el empleo:', error)
+        });
+    } else {
+      console.warn('No hay empleo seleccionado para actualizar.');
+    }
+  }
+  
+
+  eliminarEmpleo() {
+    if (this.empleo && this.empleo.empleoId) {
+      const payload = { empleoId: this.empleo.empleoId };
+      this.http.post('https://malo-backend-empleos.onrender.com/api/Empleo/DeleteEmpleoById', payload, { responseType: 'text' })
+        .subscribe({
+          next: () => {
+            console.log('Empleo eliminado con éxito');
+            this.empleoEliminado.emit(this.empleo.empleoId); // Emite el ID del empleo eliminado
+          },
+          error: (error) => console.error('Error al eliminar el empleo:', error)
+        });
+    } else {
+      console.warn('No hay empleo seleccionado para eliminar.');
+    }
   }
 }

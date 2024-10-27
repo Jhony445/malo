@@ -12,7 +12,7 @@ export class AdminGuard implements CanActivate {
   canActivate(): boolean {
     const userData = this.userService.getUserData();
     
-    if (userData && userData.rol === 'Empresa') {
+    if (userData && userData.rol === '') {
       return true;
     }
 

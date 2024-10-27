@@ -1,61 +1,67 @@
 {
-  "hash": "30034fa2",
-  "configHash": "d93d9909",
-  "lockfileHash": "3accea60",
-  "browserHash": "9c82d976",
+  "hash": "ab182f9f",
+  "configHash": "cdcfed17",
+  "lockfileHash": "4802bba2",
+  "browserHash": "ea443c13",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "c8c10c23",
+      "fileHash": "55b5e283",
       "needsInterop": false
     },
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
-      "fileHash": "c9174e35",
+      "fileHash": "aa08da15",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "fb830cb5",
+      "fileHash": "3120b9bd",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "e5b29ab1",
+      "fileHash": "ea635d49",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "b60c10b1",
+      "fileHash": "f376a145",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "7d5ca85f",
+      "fileHash": "fc127def",
+      "needsInterop": false
+    },
+    "@emailjs/browser": {
+      "src": "../../../../../../node_modules/@emailjs/browser/es/index.js",
+      "file": "@emailjs_browser.js",
+      "fileHash": "054b415b",
       "needsInterop": false
     },
     "jwt-decode": {
       "src": "../../../../../../node_modules/jwt-decode/build/esm/index.js",
       "file": "jwt-decode.js",
-      "fileHash": "15d59845",
+      "fileHash": "9ef547b2",
       "needsInterop": false
     },
     "rxjs": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
       "file": "rxjs.js",
-      "fileHash": "81df6655",
+      "fileHash": "3359c704",
       "needsInterop": false
     },
     "rxjs/operators": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/operators/index.js",
       "file": "rxjs_operators.js",
-      "fileHash": "8423fa83",
+      "fileHash": "45522ba6",
       "needsInterop": false
     }
   },
@@ -72,11 +78,11 @@
     "chunk-63WYWNJW": {
       "file": "chunk-63WYWNJW.js"
     },
-    "chunk-IXUSS67I": {
-      "file": "chunk-IXUSS67I.js"
-    },
     "chunk-O6VDDHVS": {
       "file": "chunk-O6VDDHVS.js"
+    },
+    "chunk-IXUSS67I": {
+      "file": "chunk-IXUSS67I.js"
     },
     "chunk-BONRK7YY": {
       "file": "chunk-BONRK7YY.js"

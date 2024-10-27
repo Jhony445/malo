@@ -1,19 +1,20 @@
+<!-- detalle-empleo-empresa.component.html -->
 <div class="detalle-container" *ngIf="empleo">
   <div class="detalle-header">
     <h2 *ngIf="!modoEdicion">{{ empleo.titulo }}</h2>
     <input *ngIf="modoEdicion" [(ngModel)]="empleo.titulo" class="input-editar" />
   </div>
 
-  <p *ngIf="!modoEdicion" class="salario">$ {{ empleo.salario_maximo }} Maximo</p>
-  <input *ngIf="modoEdicion" [(ngModel)]="empleo.salario_maximo" class="input-editar" placeholder="Salario" />
+  <!-- Otros campos... -->
+  <p *ngIf="!modoEdicion" class="salario">$ {{ empleo.salario_maximo }} Máximo</p>
+  <input *ngIf="modoEdicion" [(ngModel)]="empleo.salario_maximo" class="input-editar" placeholder="Salario máximo" />
 
-  <p *ngIf="!modoEdicion" class="salario-minimo">$ {{ empleo.salario_minimo }} Salario minimo</p>
-  <input *ngIf="modoEdicion" [(ngModel)]=" empleo.salario_minimo" class="input-editar" placeholder="Salario minimo" />
+  <p *ngIf="!modoEdicion" class="salario-minimo">$ {{ empleo.salario_minimo }} Mínimo</p>
+  <input *ngIf="modoEdicion" [(ngModel)]="empleo.salario_minimo" class="input-editar" placeholder="Salario mínimo" />
 
-  <p *ngIf="!modoEdicion" class="ubicacion">{{ empleo.ubicacion }}</p>
+  <p *ngIf="!modoEdicion">{{ empleo.ubicacion }}</p>
   <input *ngIf="modoEdicion" [(ngModel)]="empleo.ubicacion" class="input-editar" placeholder="Ubicación" />
 
-  <!-- Imagen o campo de URL según el modo -->
   <div class="detalle-imagen" *ngIf="!modoEdicion">
     <img [src]="empleo.multimediaContenido" alt="{{ empleo.titulo }}" *ngIf="empleo.multimediaContenido">
   </div>
@@ -25,20 +26,15 @@
   <!-- Agregar el horario -->
   <div class="detalle-section">
     <h3>Horario</h3>
-    <p>{{ empleo.horario }}</p>
+    <p *ngIf="!modoEdicion">{{ empleo.horario }}</p>
+    <input *ngIf="modoEdicion" [(ngModel)]="empleo.horario" class="input-editar" placeholder="Horario" />
   </div>
 
-  <div class="detalle-section">
-    <h3>Descripción del empleo</h3>
-    <p *ngIf="!modoEdicion">{{ empleo.descripcion }}</p>
-    <textarea *ngIf="modoEdicion" [(ngModel)]="empleo.descripcion" class="input-editar"></textarea>
-  </div>
-
-  <!-- Botones Editar y Eliminar -->
+  <!-- Botones de acción -->
   <div class="action-buttons">
     <button *ngIf="!modoEdicion" class="btn-editar" (click)="activarEdicion()">Editar</button>
     <button *ngIf="modoEdicion" class="btn-guardar" (click)="guardarCambios()">Guardar</button>
     <button *ngIf="modoEdicion" class="btn-cancelar" (click)="modoEdicion = false">Cancelar</button>
-    <button class="btn-eliminar">Eliminar</button>
+    <button class="btn-eliminar" (click)="eliminarEmpleo()">Eliminar</button>
   </div>
 </div>

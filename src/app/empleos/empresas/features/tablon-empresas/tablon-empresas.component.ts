@@ -17,17 +17,18 @@ import { UserService } from '../../../../core/services/user.service';
 export class TablonEmpresasComponent implements OnInit {
   empleos: any[] = [];
   filteredEmpleos: any[] = [];
-  itemsPerPage: number = 5; // Número de empleos por página
-  currentPage: number = 1; // Página actual
-  totalPages: number = 1; // Total de páginas
+  itemsPerPage: number = 5;
+  currentPage: number = 1;
+  totalPages: number = 1;
   selectedEmpleoIndex: number | null = null;
+  empleoSeleccionado: any = null; // Agregar esta propiedad para gestionar el empleo seleccionado
   isLoading: boolean = false;
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const empresaId = this.userService.getUserData()?.sub;
@@ -37,7 +38,7 @@ export class TablonEmpresasComponent implements OnInit {
       console.error('No se encontró el ID de la empresa autenticada.');
     }
   }
-  
+
   fetchEmpleos(empresaId: string) {
     this.http.get<any[]>('https://malo-backend-empleos.onrender.com/api/Empleo/GetEmpleos')
       .subscribe(
@@ -73,9 +74,26 @@ export class TablonEmpresasComponent implements OnInit {
 
   onCardClick(index: number) {
     this.selectedEmpleoIndex = index;
+    this.empleoSeleccionado = this.empleos[index]; // Asignar el empleo seleccionado
+    console.log("ID del empleo seleccionado:", this.empleoSeleccionado.empleoId);
   }
 
   onPublicarEmpleo() {
     this.router.navigate(['empresa/crear']);
   }
+
+  actualizarListaEmpleos(empleoId: string) {
+    this.empleos = this.empleos.filter(empleo => empleo.empleoId !== empleoId);
+    this.filteredEmpleos = this.empleos; // Actualizar la lista filtrada también
+    this.updateTotalPages(); // Recalcular el número de páginas
+    this.selectedEmpleoIndex = null; // Limpiar la selección
+  }
+  actualizarEmpleo(empleoActualizado: any) {
+    const index = this.empleos.findIndex(empleo => empleo.empleoId === empleoActualizado.empleoId);
+    if (index !== -1) {
+      this.empleos[index] = empleoActualizado;
+      this.filteredEmpleos = this.empleos;
+    }
+  }
+
 }
