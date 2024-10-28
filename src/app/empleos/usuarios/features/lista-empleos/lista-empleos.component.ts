@@ -5,11 +5,12 @@ import { DetalleEmpleoComponent } from '../../ui/detalle-empleo/detalle-empleo.c
 import { TituloComponent } from "../../../../shared/ui/titulo/titulo.component";
 import { HttpClient } from '@angular/common/http';
 import { LoaderComponent } from '../../../../shared/ui/loader/loader.component';
+import { SearchBarComponent } from '../../ui/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-lista-empleos',
   standalone: true,
-  imports: [CommonModule, CardEmpleosComponent, DetalleEmpleoComponent, TituloComponent, LoaderComponent],
+  imports: [CommonModule, CardEmpleosComponent, DetalleEmpleoComponent, TituloComponent, LoaderComponent,SearchBarComponent],
   templateUrl: './lista-empleos.component.html',
   styleUrls: ['./lista-empleos.component.css']
 })

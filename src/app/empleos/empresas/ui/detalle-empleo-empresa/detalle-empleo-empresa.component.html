@@ -1,11 +1,9 @@
-<!-- detalle-empleo-empresa.component.html -->
 <div class="detalle-container" *ngIf="empleo">
   <div class="detalle-header">
     <h2 *ngIf="!modoEdicion">{{ empleo.titulo }}</h2>
     <input *ngIf="modoEdicion" [(ngModel)]="empleo.titulo" class="input-editar" />
   </div>
 
-  <!-- Otros campos... -->
   <p *ngIf="!modoEdicion" class="salario">$ {{ empleo.salario_maximo }} Máximo</p>
   <input *ngIf="modoEdicion" [(ngModel)]="empleo.salario_maximo" class="input-editar" placeholder="Salario máximo" />
 
@@ -23,14 +21,18 @@
     <input id="urlImagen" [(ngModel)]="empleo.multimediaContenido" class="input-editar" placeholder="Ingrese URL de la imagen" />
   </div>
 
-  <!-- Agregar el horario -->
   <div class="detalle-section">
     <h3>Horario</h3>
     <p *ngIf="!modoEdicion">{{ empleo.horario }}</p>
-    <input *ngIf="modoEdicion" [(ngModel)]="empleo.horario" class="input-editar" placeholder="Horario" />
+    <select *ngIf="modoEdicion" [(ngModel)]="empleo.horario" class="input-editar">
+      <option value="">Selecciona un horario</option>
+      <option value="medio tiempo">Medio Tiempo</option>
+      <option value="completo">Tiempo Completo</option>
+      <option value="temporal">Temporal</option>
+      <option value="freelance">Freelance</option>
+    </select>
   </div>
 
-  <!-- Botones de acción -->
   <div class="action-buttons">
     <button *ngIf="!modoEdicion" class="btn-editar" (click)="activarEdicion()">Editar</button>
     <button *ngIf="modoEdicion" class="btn-guardar" (click)="guardarCambios()">Guardar</button>

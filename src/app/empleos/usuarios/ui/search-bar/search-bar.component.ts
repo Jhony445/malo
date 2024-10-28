@@ -23,4 +23,9 @@ export class SearchBarComponent {
   toggleFilters(): void {
     this.isFiltersOpen = !this.isFiltersOpen;
   }
+  applyFilters(): void {
+    // Aquí se aplicarán los filtros según la lógica de búsqueda
+    console.log('Filtros aplicados');
+}
+
 }

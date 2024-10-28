@@ -99,11 +99,12 @@
     .parent {
         grid-template-columns: 1fr;
         /* Una columna en pantallas pequeñas */
+        min-width: none;
     }
 
     
     .div1, .div2, .div3 {
-        grid-area: auto; /* Asegura que cada div ocupe su espacio */
+        grid-area: 10%; /* Asegura que cada div ocupe su espacio */
     }
 
     .empleos-lista {
