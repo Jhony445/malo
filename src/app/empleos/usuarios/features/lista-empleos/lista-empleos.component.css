@@ -99,7 +99,7 @@
     .parent {
         grid-template-columns: 1fr;
         /* Una columna en pantallas pequeñas */
-        min-width: none;
+
     }
 
     

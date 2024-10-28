@@ -4,7 +4,6 @@ import { UsuariosComponent } from './empleos/usuarios/usuarios.component';
 import { empresasComponent } from './empleos/empresas/empresas.component'; 
 
 import { UserGuard } from './core/guards/user.guard';
-import { AdminGuard } from './core/guards/admin.guard';
 import { EmpresaGuard } from './core/guards/empresa.guard';
 
 export const appRoutes: Routes = [
@@ -16,8 +15,7 @@ export const appRoutes: Routes = [
   {
     path: 'usuario',
     component: UsuariosComponent,
-    loadChildren: () => import('./empleos/usuarios/usuarios.routes').then(m => m.usuariosRoutes),
-    //canActivate: [UserGuard]
+    loadChildren: () => import('./empleos/usuarios/usuarios.routes').then(m => m.usuariosRoutes)
   },
   {
     path: 'empresa',

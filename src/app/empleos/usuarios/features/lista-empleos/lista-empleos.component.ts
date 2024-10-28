@@ -16,7 +16,8 @@ import { SearchBarComponent } from '../../ui/search-bar/search-bar.component';
 })
 export class ListaEmpleosComponent implements OnInit {
   empleos: any[] = [];
-  empresas: any[] = []; // Array para almacenar las empresas
+  filteredEmpleos: any[] = [];
+  empresas: any[] = [];
   itemsPerPage: number = 5;
   currentPage: number = 1;
   totalPages: number = 1;
@@ -44,7 +45,6 @@ export class ListaEmpleosComponent implements OnInit {
     this.http.get<any[]>('https://malo-backend-empleos.onrender.com/api/Empleo/GetEmpleos')
       .subscribe(
         (data: any[]) => {
-          // Asignar el nombre de la empresa a cada empleo
           this.empleos = data.map(empleo => {
             const empresa = this.empresas.find(e => e.id === empleo.empresa_id);
             return {
@@ -52,19 +52,42 @@ export class ListaEmpleosComponent implements OnInit {
               empresaNombre: empresa ? empresa.nombre : 'Empresa desconocida'
             };
           });
+          this.filteredEmpleos = this.empleos; // Inicialmente muestra todos los empleos
           this.updateTotalPages();
         },
         error => console.error('Error al cargar empleos:', error)
       );
   }
 
+  onFiltersApplied(filters: any) {
+    console.log('Filtros aplicados:', filters); // Verificar filtros recibidos
+    
+    // Filtrar empleos según los criterios
+    this.filteredEmpleos = this.empleos.filter(empleo => {
+      return (
+        (!filters.searchKeyword || empleo.titulo.toLowerCase().includes(filters.searchKeyword.toLowerCase())) &&
+        (!filters.location || empleo.ubicacion.toLowerCase().includes(filters.location.toLowerCase())) &&
+        (!filters.schedule || empleo.horario.toLowerCase() === filters.schedule.toLowerCase()) &&
+        (!filters.salary || this.isSalaryMatch(empleo.salario_maximo, filters.salary))
+      );
+    });
+  
+    this.updateTotalPages(); // Actualizar el número de páginas en la lista filtrada
+    this.currentPage = 1; // Reiniciar a la primera página después de aplicar el filtro
+  }
+
+  isSalaryMatch(salario: number, salaryFilter: string): boolean {
+    const [min, max] = salaryFilter.split('-').map(s => parseInt(s.replace(/[^\d]/g, ''), 10));
+    return salario >= min && salario <= max;
+  }
+
   updateTotalPages() {
-    this.totalPages = Math.ceil(this.empleos.length / this.itemsPerPage);
+    this.totalPages = Math.ceil(this.filteredEmpleos.length / this.itemsPerPage);
   }
 
   get paginatedEmpleos() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.empleos.slice(startIndex, startIndex + this.itemsPerPage);
+    return this.filteredEmpleos.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
   nextPage() {
