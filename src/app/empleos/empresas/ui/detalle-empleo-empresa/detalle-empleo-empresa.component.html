@@ -30,13 +30,11 @@
     <div *ngIf="!empleo.ubicacion" class="error">Este campo es obligatorio</div>
   </div>
 
-  <!-- Mostrar imagen cuando no se está editando -->
   <div class="detalle-imagen" *ngIf="!modoEdicion && empleo.multimediaContenido">
 
     <img [src]="empleo.multimediaContenido" alt="Imagen del empleo" />
   </div>
 
-  <!-- Campo de URL de la imagen en modo edición -->
   <div class="detalle-section" *ngIf="modoEdicion">
     
     <h3>URL de la imagen</h3>
@@ -65,7 +63,6 @@
     </div>
   </div>
 
-  <!-- Botones de acción -->
   <div class="action-buttons">
     <button *ngIf="!modoEdicion" class="btn-editar" (click)="activarEdicion()">Editar</button>
     <button *ngIf="modoEdicion" class="btn-guardar" (click)="guardarCambios()">Guardar</button>
