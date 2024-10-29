@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter  } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -16,7 +16,7 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
   @Output() empleoEliminado = new EventEmitter<string>();
   @Output() empleoActualizado = new EventEmitter<any>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['empleo'] && this.empleo) {
@@ -29,6 +29,11 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
   }
 
   guardarCambios() {
+
+    if (!this.empleo.titulo || !this.empleo.descripcion || !this.empleo.ubicacion || this.empleo.salario_minimo === null || this.empleo.salario_minimo < 0 || !this.empleo.salario_maximo || !this.empleo.horario) {
+      console.warn('Por favor, completa todos los campos obligatorios');
+      return;
+    }
     if (this.empleo && this.empleo.empleoId) {
       const payload = {
         empleo_id: this.empleo.empleoId,
@@ -42,7 +47,6 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
         multimediaTipo: this.empleo.multimediaTipo || '',
         multimediaContenido: this.empleo.multimediaContenido
       };
-  
       this.http.post('https://malo-backend-empleos.onrender.com/api/Empleo/UpdateEmpleoById', payload, { responseType: 'text' })
         .subscribe({
           next: () => {
@@ -56,7 +60,6 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
       console.warn('No hay empleo seleccionado para actualizar.');
     }
   }
-  
 
   eliminarEmpleo() {
     if (this.empleo && this.empleo.empleoId) {

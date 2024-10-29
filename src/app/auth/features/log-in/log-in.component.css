@@ -148,6 +148,14 @@
     text-decoration: underline;
 }
 
+.error input {
+    border-color: red;
+}
+.error-message {
+    color: red;
+    font-size: 0.9em;
+}
+
 /* Media queries para dispositivos móviles */
 @media (max-width: 768px) {
     .container {

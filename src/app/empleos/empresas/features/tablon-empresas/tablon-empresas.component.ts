@@ -88,6 +88,7 @@ export class TablonEmpresasComponent implements OnInit {
     this.updateTotalPages(); // Recalcular el número de páginas
     this.selectedEmpleoIndex = null; // Limpiar la selección
   }
+  
   actualizarEmpleo(empleoActualizado: any) {
     const index = this.empleos.findIndex(empleo => empleo.empleoId === empleoActualizado.empleoId);
     if (index !== -1) {

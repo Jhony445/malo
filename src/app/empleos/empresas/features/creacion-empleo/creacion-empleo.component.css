@@ -106,6 +106,14 @@ select option {
     color: #333;
 }
 
+.error input {
+    border-color: red;
+}
+.error-message {
+    color: red;
+    font-size: 0.9em;
+}
+
 @media (max-width: 768px) {
     .form-grid {
         grid-template-columns: 1fr;
