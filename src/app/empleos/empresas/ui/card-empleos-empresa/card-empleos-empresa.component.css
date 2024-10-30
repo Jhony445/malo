@@ -85,8 +85,8 @@
 
 @media (max-width: 1050px) {
     .card {
-        width: 100%; /* En pantallas pequeñas, las tarjetas ocupan el 100% del contenedor */
-        max-width: 100%; /* Ajusta el ancho máximo para pantallas pequeñas */
+        
+        width: 350px; 
         margin: 0 auto; /* Centra la tarjeta horizontalmente */
     }
 

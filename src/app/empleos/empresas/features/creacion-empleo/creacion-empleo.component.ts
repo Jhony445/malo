@@ -51,6 +51,7 @@ export class CreacionEmpleoComponent {
     if (!this.empleoForm.valid) {
       console.error("Formulario inválido. Revise los datos ingresados.");
       this.errorMessage = "Formulario inválido. Revise los datos ingresados.";
+      this.clearMessagesAfterDelay();
       return;
     }
 
@@ -99,5 +100,12 @@ export class CreacionEmpleoComponent {
       ).add(() => {
         this.isLoading = false;
       });
+  }
+
+  private clearMessagesAfterDelay() {
+    setTimeout(() => {
+      this.errorMessage = '';
+      this.successMessage = '';
+    }, 3000);
   }
 }

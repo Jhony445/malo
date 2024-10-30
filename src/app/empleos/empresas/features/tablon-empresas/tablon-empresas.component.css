@@ -101,6 +101,26 @@
 .publicar-empleo-btn:hover {
     background-color: #0056b3;
 }
+
+.notificaciones {
+    display: flex;
+    flex-direction: column; /* Alinea los elementos en una columna */
+    align-items: center; /* Centra horizontalmente */
+    justify-content: center; /* Centra verticalmente (opcional, depende del contexto) */
+    width: 80%;
+    margin: 0 auto; /* Centra el div horizontalmente en el contenedor padre */
+    padding: 10px; /* Añade un poco de padding para separar de otros elementos */
+}
+
+#ordenFecha {
+    margin-bottom: 20px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 200px;
+  }
 /* Adaptación para pantallas pequeñas */
 @media (max-width: 768px) {
     .parent {
@@ -116,5 +136,9 @@
     .empleos-lista {
         align-items: center;
         /* Centra las tarjetas en pantallas pequeñas */
+    }
+
+    .notificaciones{
+        width: 80%;
     }
 }

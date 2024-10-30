@@ -1,12 +1,13 @@
 import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { NotificationComponent } from '../../../../shared/ui/notification/notification.component';
 
 @Component({
   selector: 'app-detalle-empleo-empresa',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NotificationComponent],
   templateUrl: './detalle-empleo-empresa.component.html',
   styleUrls: ['./detalle-empleo-empresa.component.css']
 })
@@ -15,6 +16,9 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
   modoEdicion: boolean = false;
   @Output() empleoEliminado = new EventEmitter<string>();
   @Output() empleoActualizado = new EventEmitter<any>();
+
+  errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(private http: HttpClient) { }
 
@@ -32,6 +36,8 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
 
     if (!this.empleo.titulo || !this.empleo.descripcion || !this.empleo.ubicacion || this.empleo.salario_minimo === null || this.empleo.salario_minimo < 0 || !this.empleo.salario_maximo || !this.empleo.horario) {
       console.warn('Por favor, completa todos los campos obligatorios');
+      this.errorMessage = 'Por favor, completa todos los campos obligatorios';
+      this.clearMessagesAfterDelay();
       return;
     }
     if (this.empleo && this.empleo.empleoId) {
@@ -51,13 +57,19 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
         .subscribe({
           next: () => {
             console.log('Empleo actualizado con éxito');
+            this.successMessage = 'Empleo actualizado con éxito';
             this.modoEdicion = false;
             this.empleoActualizado.emit(this.empleo); // Emitir el empleo actualizado
+            this.clearMessagesAfterDelay();
           },
-          error: (error) => console.error('Error al actualizar el empleo:', error)
+          error: (error: HttpErrorResponse) => {
+            this.errorMessage = `Error al eliminar el empleo: ${error.error}`;
+            this.clearMessagesAfterDelay();
+          }
         });
     } else {
       console.warn('No hay empleo seleccionado para actualizar.');
+      this.errorMessage = 'No hay empleo seleccionado para eliminar.';
     }
   }
 
@@ -75,5 +87,12 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
     } else {
       console.warn('No hay empleo seleccionado para eliminar.');
     }
+  }
+
+  private clearMessagesAfterDelay() {
+    setTimeout(() => {
+      this.errorMessage = '';
+      this.successMessage = '';
+    }, 3000);
   }
 }

@@ -6,14 +6,17 @@ import { TituloComponent } from '../../../../shared/ui/titulo/titulo.component';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../../../../core/services/user.service';
+import { NotificationComponent } from '../../../../shared/ui/notification/notification.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-tablon-empresas',
   standalone: true,
-  imports: [CommonModule, CardEmpleosEmpresaComponent, DetalleEmpleoEmpresaComponent, TituloComponent],
+  imports: [CommonModule, CardEmpleosEmpresaComponent,FormsModule, DetalleEmpleoEmpresaComponent, TituloComponent, NotificationComponent],
   templateUrl: './tablon-empresas.component.html',
   styleUrls: ['./tablon-empresas.component.css']
 })
+
 export class TablonEmpresasComponent implements OnInit {
   empleos: any[] = [];
   filteredEmpleos: any[] = [];
@@ -21,8 +24,13 @@ export class TablonEmpresasComponent implements OnInit {
   currentPage: number = 1;
   totalPages: number = 1;
   selectedEmpleoIndex: number | null = null;
-  empleoSeleccionado: any = null; // Agregar esta propiedad para gestionar el empleo seleccionado
+  empleoSeleccionado: any = null;
   isLoading: boolean = false;
+
+  successMessage: string = '';
+  errorMessage: string = '';
+
+  ordenFecha: 'asc' | 'desc' = 'asc';
 
   constructor(
     private http: HttpClient,
@@ -45,10 +53,20 @@ export class TablonEmpresasComponent implements OnInit {
         (data: any[]) => {
           this.empleos = data.filter(empleo => empleo.empresa_id === empresaId);
           this.filteredEmpleos = this.empleos;
+          this.ordenarEmpleos();
           this.updateTotalPages();
         },
         error => console.error('Error al cargar empleos:', error)
       );
+  }
+
+  ordenarEmpleos() {
+    this.filteredEmpleos.sort((a, b) => {
+      const fechaA = new Date(a.fecha_publicacion).getTime();
+      const fechaB = new Date(b.fecha_publicacion).getTime();
+      return this.ordenFecha === 'asc' ? fechaA - fechaB : fechaB - fechaA;
+    });
+    this.updateTotalPages();
   }
 
   updateTotalPages() {
@@ -74,8 +92,7 @@ export class TablonEmpresasComponent implements OnInit {
 
   onCardClick(index: number) {
     this.selectedEmpleoIndex = index;
-    this.empleoSeleccionado = this.empleos[index]; // Asignar el empleo seleccionado
-    console.log("ID del empleo seleccionado:", this.empleoSeleccionado.empleoId);
+    this.empleoSeleccionado = this.empleos[index];
   }
 
   onPublicarEmpleo() {
@@ -84,17 +101,28 @@ export class TablonEmpresasComponent implements OnInit {
 
   actualizarListaEmpleos(empleoId: string) {
     this.empleos = this.empleos.filter(empleo => empleo.empleoId !== empleoId);
-    this.filteredEmpleos = this.empleos; // Actualizar la lista filtrada también
-    this.updateTotalPages(); // Recalcular el número de páginas
-    this.selectedEmpleoIndex = null; // Limpiar la selección
+    this.filteredEmpleos = this.empleos;
+    this.ordenarEmpleos();
+    this.updateTotalPages();
+    this.selectedEmpleoIndex = null;
+    this.successMessage = 'Se eliminó el empleo correctamente';
+    this.clearMessagesAfterDelay();
   }
-  
+
   actualizarEmpleo(empleoActualizado: any) {
     const index = this.empleos.findIndex(empleo => empleo.empleoId === empleoActualizado.empleoId);
     if (index !== -1) {
       this.empleos[index] = empleoActualizado;
-      this.filteredEmpleos = this.empleos;
+      this.ordenarEmpleos();
+      this.successMessage = 'Empleo actualizado con éxito';
+      this.clearMessagesAfterDelay();
     }
   }
 
+  clearMessagesAfterDelay() {
+    setTimeout(() => {
+      this.successMessage = '';
+      this.errorMessage = '';
+    }, 3000);
+  }
 }
