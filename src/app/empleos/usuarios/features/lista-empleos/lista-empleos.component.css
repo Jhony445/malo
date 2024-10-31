@@ -171,6 +171,6 @@
 
 
   .div2 {
-    display: none; /* Oculta la vista regular del detalle en móvil */
+    display: none;
   }
 }
