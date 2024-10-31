@@ -32,6 +32,8 @@ export class TablonEmpresasComponent implements OnInit {
 
   ordenFecha: 'asc' | 'desc' = 'asc';
 
+  isDetalleVisibleMobile: boolean = false; 
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -93,6 +95,14 @@ export class TablonEmpresasComponent implements OnInit {
   onCardClick(index: number) {
     this.selectedEmpleoIndex = index;
     this.empleoSeleccionado = this.empleos[index];
+
+    if(window.innerWidth <= 768){
+      this.isDetalleVisibleMobile = true;
+    }
+  }
+
+  closeDetalleMobile() {
+    this.isDetalleVisibleMobile = false;
   }
 
   onPublicarEmpleo() {

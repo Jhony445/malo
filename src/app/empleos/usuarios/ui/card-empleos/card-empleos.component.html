@@ -2,15 +2,11 @@
   <div class="card-content">
     <div class="card-details">
       <h3>{{ empleo.titulo }}</h3>
-      <!--<span>{{ empleo.empresa_id }}</span>-->
-      <span>{{ empleo.empresaNombre }}</span>
       <span>Salario: ${{ empleo.salario_maximo }}</span>
       <span>{{ empleo.horario }}</span>
     </div>
-    <div class="card-description">
-      <p>{{ empleo.descripcion }}</p>
-    </div>
   </div>
   <div class="card-action">
+    <span>{{ empleo.fecha_publicacion.slice(0, 10)  }}</span>
   </div>
 </div>

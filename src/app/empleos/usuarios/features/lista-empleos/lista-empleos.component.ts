@@ -23,6 +23,10 @@ export class ListaEmpleosComponent implements OnInit {
   totalPages: number = 1;
   selectedEmpleoIndex: number | null = null;
 
+  empleoSeleccionado: any = null;
+
+  isDetalleVisibleMobile: boolean = false; 
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -104,5 +108,14 @@ export class ListaEmpleosComponent implements OnInit {
 
   onCardClick(index: number) {
     this.selectedEmpleoIndex = index;
+    this.empleoSeleccionado = this.empleos[index];
+
+    if(window.innerWidth <= 768){
+      this.isDetalleVisibleMobile = true;
+    }
+  }
+
+  closeDetalleMobile() {
+    this.isDetalleVisibleMobile = false;
   }
 }

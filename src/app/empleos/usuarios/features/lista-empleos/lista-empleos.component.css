@@ -27,15 +27,6 @@
     min-width: 90%;
 }
 
-.div3 {
-    grid-column: 1 / span 2;
-    /* Hace que el botón ocupe ambas columnas */
-    display: flex;
-    justify-content: center;
-    /* Centra el botón horizontalmente */
-    padding: 10px;
-    /* Espacio alrededor del botón */
-}
 
 /* Estilos de la lista de empleos */
 .empleos-lista {
@@ -94,21 +85,92 @@
 }
 
 
+.publicar-empleo-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto; /* Esto centrará el botón horizontalmente */
+}
+
+
+.publicar-empleo-btn:hover {
+    background-color: #0056b3;
+}
+
+.notificaciones {
+    display: flex;
+    flex-direction: column; /* Alinea los elementos en una columna */
+    align-items: center; /* Centra horizontalmente */
+    justify-content: center; /* Centra verticalmente (opcional, depende del contexto) */
+    width: 80%;
+    margin: 0 auto; /* Centra el div horizontalmente en el contenedor padre */
+    padding: 10px; /* Añade un poco de padding para separar de otros elementos */
+}
+
+#ordenFecha {
+    margin-bottom: 20px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .detalle-empleo-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    overflow-y: auto;
+    z-index: 1000;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Botón de cerrar el modal */
+  .close-btn {
+    align-self: flex-end;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
 /* Adaptación para pantallas pequeñas */
 @media (max-width: 768px) {
     .parent {
         grid-template-columns: 1fr;
         /* Una columna en pantallas pequeñas */
-
     }
 
     
     .div1, .div2, .div3 {
-        grid-area: 10%; /* Asegura que cada div ocupe su espacio */
+        grid-area: auto; /* Asegura que cada div ocupe su espacio */
     }
 
     .empleos-lista {
         align-items: center;
         /* Centra las tarjetas en pantallas pequeñas */
     }
+
+    .notificaciones{
+        width: 80%;
+    }
+
+
+  .div2 {
+    display: none; /* Oculta la vista regular del detalle en móvil */
+  }
 }

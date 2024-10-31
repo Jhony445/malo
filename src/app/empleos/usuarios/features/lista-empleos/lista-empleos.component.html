@@ -17,6 +17,11 @@
       </div>
     </div>
   </div>
+  <div *ngIf="isDetalleVisibleMobile && selectedEmpleoIndex !== null" class="detalle-empleo-modal">
+    <button class="close-btn" (click)="closeDetalleMobile()">✕</button>
+    <app-detalle-empleo [empleo]="empleos[selectedEmpleoIndex]"></app-detalle-empleo>
+</div>
+
   <div class="div2">
     <br>
     <app-detalle-empleo *ngIf="selectedEmpleoIndex !== null" [empleo]="filteredEmpleos[selectedEmpleoIndex]"></app-detalle-empleo>

@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NotificationComponent } from '../../../../shared/ui/notification/notification.component';
+import { ConfirmDeleteModalComponent } from '../confirm-delete-modal/confirm-delete-modal.component';
 
 @Component({
   selector: 'app-detalle-empleo-empresa',
   standalone: true,
-  imports: [CommonModule, FormsModule, NotificationComponent],
+  imports: [CommonModule, FormsModule, NotificationComponent, ConfirmDeleteModalComponent],
   templateUrl: './detalle-empleo-empresa.component.html',
   styleUrls: ['./detalle-empleo-empresa.component.css']
 })
@@ -19,6 +20,8 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
 
   errorMessage: string = '';
   successMessage: string = '';
+
+  showConfirmDeleteModal: boolean = false;
 
   constructor(private http: HttpClient) { }
 
@@ -74,13 +77,18 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
   }
 
   eliminarEmpleo() {
+    this.showConfirmDeleteModal = true; // Muestra el modal de confirmación
+  }
+
+  realizarEliminacion() {
     if (this.empleo && this.empleo.empleoId) {
       const payload = { empleoId: this.empleo.empleoId };
       this.http.post('https://malo-backend-empleos.onrender.com/api/Empleo/DeleteEmpleoById', payload, { responseType: 'text' })
         .subscribe({
           next: () => {
             console.log('Empleo eliminado con éxito');
-            this.empleoEliminado.emit(this.empleo.empleoId); // Emite el ID del empleo eliminado
+            this.empleoEliminado.emit(this.empleo.empleoId); // Emitir el ID del empleo eliminado
+            this.showConfirmDeleteModal = false; // Cerrar el modal después de eliminar
           },
           error: (error) => console.error('Error al eliminar el empleo:', error)
         });
@@ -88,6 +96,7 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
       console.warn('No hay empleo seleccionado para eliminar.');
     }
   }
+  
 
   private clearMessagesAfterDelay() {
     setTimeout(() => {
