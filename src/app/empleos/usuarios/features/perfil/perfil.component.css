@@ -1,7 +1,6 @@
 .parent {
     display: grid;
     grid-template-columns: 50% 50%;
-    /* Ajusta las columnas a estar más cerca */
     grid-template-rows: 1fr auto;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
