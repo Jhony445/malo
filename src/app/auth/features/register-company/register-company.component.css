@@ -14,7 +14,6 @@
   * {
     margin: 0;
     padding: 0;
-    font-family: system-ui, sans-serif;
   }
   
   .container {
@@ -31,8 +30,7 @@
   
   .form-1 h1, 
   .form-2 h1, 
-  .form-3 h1,
-  .form-4 h1 {
+  .form-3 h1 {
     color: #3c3744;
     margin-bottom: 16px;
     margin-left: -60%;
@@ -41,8 +39,7 @@
   
   .form-1, 
   .form-2, 
-  .form-3, 
-  .form-4 {
+  .form-3 {
     padding-top: 7%;
   }
   
@@ -87,9 +84,7 @@
 
   .conti-1, 
   .conti-2, 
-  .conti-3,
-  .conti-4,
-  .sendEmail {
+  .conti-3 {
     padding: 0.625rem 1.875rem;
     margin-top: 0.625rem;
     font-size: 1rem;
@@ -134,8 +129,7 @@
   }
   
   .bot-icon-1,
-  .bot-icon-2,
-  .bot-icon-3 {
+  .bot-icon-2 {
     font-size: 1.875rem;
     color: #c7c7c7;
     cursor: pointer;
@@ -143,8 +137,7 @@
   }
   
   .bot-icon-1.active,
-  .bot-icon-2.active,
-  .bot-icon-3.active {
+  .bot-icon-2.active {
     color: #3c3744;
   }
   
@@ -155,8 +148,7 @@
   
   /* Líneas de conexión entre los pasos */
   .line-1,
-  .line-2,
-  .line-3 {
+  .line-2 {
     height: 0.125rem;
     width: 75%;
     position: absolute;
@@ -167,8 +159,7 @@
   }
   
   .line-1.active,
-  .line-2.active,
-  .line-3.active {
+  .line-2.active {
     background-color: #3c3744;
   }
   
@@ -213,8 +204,7 @@
     margin: 4rem 13%;
   }
   .line-1, 
-  .line-2, 
-  .line-3 {
+  .line-2 {
     width: 70%;
   }
   .progress-bar {
@@ -228,8 +218,7 @@
   }
 
   .line-1, 
-  .line-2, 
-  .line-3 {
+  .line-2 {
     width: 50%;
   }
 
@@ -237,8 +226,7 @@
 
 @media (max-width: 22.5rem) {
   .line-1, 
-  .line-2, 
-  .line-3 {
+  .line-2 {
     display: none; /* Oculta las líneas en pantallas muy pequeñas */
   }
 }
