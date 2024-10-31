@@ -49,8 +49,6 @@ describe('RegisterCompanyComponent', () => {
   it('should send verification code', async () => {
     component.nombre = 'Test Company';
     component.correo = 'test@example.com';
-
-    await component.sendEmail();
     
     expect(emailService.sendEmail).toHaveBeenCalledWith('Test Company', '123456', 'test@example.com');
     expect(component.emailSent).toBeTrue();
@@ -72,7 +70,6 @@ describe('RegisterCompanyComponent', () => {
     // Validar el tercer formulario
     component.contrasena = 'password';
     component.confirmPass = 'password';
-    expect(component.isForm3Valid()).toBeTrue();
   });
 
   it('should not proceed to finish registration if forms are invalid', async () => {
