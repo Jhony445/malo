@@ -34,13 +34,12 @@ export class LogInComponent {
     });
   }
 
-  // Método de inicio de sesión
   onLogin() {
     if (this.loginForm.valid) {
       this.isLoading = true;
       const loginApiUrl = this.isCompanyLogin
-        ? "https://malo-backend-empresas.onrender.com/api/Auth/login"  // API para empresas
-        : "https://malo-backend.onrender.com/api/auth/login";  // API para usuarios
+        ? "https://malo-backend-empresas.onrender.com/api/Auth/login" 
+        : "https://malo-backend.onrender.com/api/auth/login";
 
       this.http.post(loginApiUrl, this.loginForm.value).subscribe(
         (res: any) => {
