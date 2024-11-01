@@ -15,6 +15,6 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./notification.component.css']
 })
 export class NotificationComponent {
-  @Input() message: string = '';
-  @Input() isError: boolean = false;
+  @Input() message = '';
+  @Input() isError = false;
 }

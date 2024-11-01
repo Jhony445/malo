@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './select-register.component.html',
   styleUrls: ['./select-register.component.css']
 })
-export class SelectRegister implements OnInit {
+export class SelectRegisterComponent implements OnInit {
 
   router = inject(Router);
   isSignUpActive = false; // Saber si signup está activo

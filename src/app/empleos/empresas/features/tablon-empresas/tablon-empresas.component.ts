@@ -20,19 +20,19 @@ import { FormsModule } from '@angular/forms';
 export class TablonEmpresasComponent implements OnInit {
   empleos: any[] = [];
   filteredEmpleos: any[] = [];
-  itemsPerPage: number = 5;
-  currentPage: number = 1;
-  totalPages: number = 1;
+  itemsPerPage = 5;
+  currentPage = 1;
+  totalPages = 1;
   selectedEmpleoIndex: number | null = null;
   empleoSeleccionado: any = null;
-  isLoading: boolean = false;
+  isLoading = false;
 
-  successMessage: string = '';
-  errorMessage: string = '';
+  successMessage = '';
+  errorMessage = '';
 
   ordenFecha: 'asc' | 'desc' = 'asc';
 
-  isDetalleVisibleMobile: boolean = false; 
+  isDetalleVisibleMobile = false; 
 
   constructor(
     private http: HttpClient,

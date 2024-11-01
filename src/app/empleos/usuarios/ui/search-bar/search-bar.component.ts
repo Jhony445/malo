@@ -12,13 +12,13 @@ import { FormsModule } from '@angular/forms'; // Importar FormsModule
 export class SearchBarComponent {
   @Output() filtersApplied = new EventEmitter<any>();
   
-  searchKeyword: string = '';
-  location: string = '';
-  schedule: string = '';
-  salary: string = '';
+  searchKeyword = '';
+  location = '';
+  schedule = '';
+  salary = '';
   
-  isMobile: boolean = false;
-  isFiltersOpen: boolean = false;
+  isMobile = false;
+  isFiltersOpen = false;
 
   constructor() {
     this.checkIfMobile();

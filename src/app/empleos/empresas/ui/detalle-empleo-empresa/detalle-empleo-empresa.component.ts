@@ -14,14 +14,14 @@ import { ConfirmDeleteModalComponent } from '../confirm-delete-modal/confirm-del
 })
 export class DetalleEmpleoEmpresaComponent implements OnChanges {
   @Input() empleo: any;
-  modoEdicion: boolean = false;
+  modoEdicion = false;
   @Output() empleoEliminado = new EventEmitter<string>();
   @Output() empleoActualizado = new EventEmitter<any>();
 
-  errorMessage: string = '';
-  successMessage: string = '';
+  errorMessage = '';
+  successMessage = '';
 
-  showConfirmDeleteModal: boolean = false;
+  showConfirmDeleteModal = false;
 
   constructor(private http: HttpClient) { }
 

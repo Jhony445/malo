@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./busqueda.component.css']
 })
 export class BusquedaComponent {
-  query: string = '';
+  query = '';
   suggestions: string[] = [];
   empleos: string[] = [
     'Vendedor de pollos',

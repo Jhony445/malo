@@ -17,9 +17,9 @@ import { NotificationComponent } from '../../../../shared/ui/notification/notifi
 })
 export class CreacionEmpleoComponent {
   empleoForm: FormGroup;
-  isLoading: boolean = false;
-  errorMessage: string = '';
-  successMessage: string = '';
+  isLoading = false;
+  errorMessage = '';
+  successMessage = '';
   
   constructor(
     private userService: UserService,

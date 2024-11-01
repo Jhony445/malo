@@ -29,7 +29,7 @@ export class EmailService {
   }
 
   // Función para generar el código aleatorio
-  generateRandomCode(length: number = 6): string {
+  generateRandomCode(length = 6): string {
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let code = '';
     for (let i = 0; i < length; i++) {

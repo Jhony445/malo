@@ -17,10 +17,10 @@ import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
 export class LogInComponent {
 
   loginForm: FormGroup;
-  errorMessage: string = '';
-  successMessage: string = '';
-  isLoading: boolean = false;
-  isCompanyLogin: boolean = false;
+  errorMessage = '';
+  successMessage = '';
+  isLoading = false;
+  isCompanyLogin = false;
 
   http = inject(HttpClient);
   router = inject(Router);

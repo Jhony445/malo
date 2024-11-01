@@ -8,6 +8,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './titulo.component.css'
 })
 export class TituloComponent {
-  @Input() primeraPalabra: string = '';
-  @Input() segundaPalabra: string = '';
+  @Input() primeraPalabra = '';
+  @Input() segundaPalabra = '';
 }

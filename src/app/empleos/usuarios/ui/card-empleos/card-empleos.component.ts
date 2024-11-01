@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter  } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit  } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 
 
@@ -9,9 +9,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './card-empleos.component.html',
   styleUrls: ['./card-empleos.component.css']
 })
-export class CardEmpleosComponent {
+export class CardEmpleosComponent implements OnInit {
   @Input() empleo: any;
-  @Input() selected: boolean = false; // Nuevo input para indicar si la tarjeta está seleccionada
+  @Input() selected = false; // Nuevo input para indicar si la tarjeta está seleccionada
   @Output() cardClick = new EventEmitter<void>(); 
 
   ngOnInit() {

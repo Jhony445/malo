@@ -3,7 +3,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { UsuariosComponent } from './empleos/usuarios/usuarios.component';
 import { empresasComponent } from './empleos/empresas/empresas.component'; 
 
-import { UserGuard } from './core/guards/user.guard';
+//import { UserGuard } from './core/guards/user.guard';
 import { EmpresaGuard } from './core/guards/empresa.guard';
 
 export const appRoutes: Routes = [

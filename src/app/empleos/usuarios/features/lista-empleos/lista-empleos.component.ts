@@ -18,14 +18,14 @@ export class ListaEmpleosComponent implements OnInit {
   empleos: any[] = [];
   filteredEmpleos: any[] = [];
   empresas: any[] = [];
-  itemsPerPage: number = 5;
-  currentPage: number = 1;
-  totalPages: number = 1;
+  itemsPerPage = 5;
+  currentPage = 1;
+  totalPages = 1;
   selectedEmpleoIndex: number | null = null;
 
   empleoSeleccionado: any = null;
 
-  isDetalleVisibleMobile: boolean = false; 
+  isDetalleVisibleMobile = false; 
 
   constructor(private http: HttpClient) {}
 

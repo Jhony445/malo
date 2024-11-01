@@ -7,9 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class UserService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.isTokenExpired() === false);
-  isAuthenticated$ = this.isAuthenticatedSubject.asObservable(); // Observable para que otros componentes se suscriban
-
-  constructor() {}
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   getToken(): string | null {
     return localStorage.getItem('authToken');
@@ -40,10 +38,9 @@ export class UserService {
 
   clearToken(): void {
     localStorage.removeItem('authToken');
-    this.isAuthenticatedSubject.next(false); // Notifica que el usuario ha cerrado sesión
+    this.isAuthenticatedSubject.next(false);
   }
 
-  // Método para actualizar el estado de autenticación
   setAuthenticationState(state: boolean): void {
     this.isAuthenticatedSubject.next(state);
   }

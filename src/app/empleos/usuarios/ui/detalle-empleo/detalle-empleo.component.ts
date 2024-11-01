@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class DetalleEmpleoComponent {
   @Input() empleo: any;
-  isAuthenticated: boolean = false;
+  isAuthenticated = false;
 
   constructor(private userService: UserService, private router: Router) {
     // Suscribirse al estado de autenticación
