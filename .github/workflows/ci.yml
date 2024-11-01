@@ -31,7 +31,7 @@ jobs:
         run: npm run test -- --watch=false --no-progress --browsers=ChromeHeadless
 
       - name: Build Angular project
-        run: npm run build -- --prod
+        run: npm run build
 
       - name: Upload build artifacts
         if: success()
