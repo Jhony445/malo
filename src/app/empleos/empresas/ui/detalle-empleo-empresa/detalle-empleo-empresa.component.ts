@@ -10,7 +10,7 @@ import { ConfirmDeleteModalComponent } from '../confirm-delete-modal/confirm-del
   standalone: true,
   imports: [CommonModule, FormsModule, NotificationComponent, ConfirmDeleteModalComponent],
   templateUrl: './detalle-empleo-empresa.component.html',
-  styleUrls: ['./detalle-empleo-empresa.component.css']
+  styleUrls: ['./detalle-empleo-empresa.component.css', 'detalle-empleo-empresa-styleDos.css']
 })
 export class DetalleEmpleoEmpresaComponent implements OnChanges {
   @Input() empleo: any;

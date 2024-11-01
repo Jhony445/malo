@@ -1,0 +1,212 @@
+/* Botones de acción */
+.action-buttons {
+    display: flex;
+    gap: 10px; /* Espacio entre los botones */
+  }
+  
+  /* Estilos del botón de editar */
+  .btn-editar {
+    width: 150px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #28a745; /* Color base verde */
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+  
+  /* Botón de guardar con estilo animado en verde */
+  .btn-guardar {
+    width: 150px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #28a745; /* Color base verde */
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-editar, .btn-guardar, .btn-eliminar, .btn-editar span, .btn-guardar span, .btn-eliminar span {
+    transition: 200ms;
+  }
+  
+  /* Estilo del texto y el ícono para editar y guardar */
+  .btn-editar .text, .btn-guardar .text {
+    transform: translateX(35px);
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .btn-editar .icon, .btn-guardar .icon {
+    position: absolute;
+    right: 10px;
+    border-left: 1px solid #218838;
+    transform: translateX(110px);
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, width 0.3s ease;
+  }
+  
+  .btn-editar:hover, .btn-guardar:hover {
+    background-color: #218838;
+  }
+  
+  .btn-editar:hover .text, .btn-guardar:hover .text {
+    color: transparent;
+  }
+  
+  .btn-editar:hover .icon, .btn-guardar:hover .icon {
+    width: 150px;
+    border-left: none;
+    transform: translateX(0);
+  }
+  
+  .btn-editar:active .icon svg, .btn-guardar:active .icon svg {
+    transform: scale(0.8);
+  }
+  
+  /* Botón de cancelar en rojo simple */
+  .btn-cancelar {
+    width: 150px;
+    height: 50px;
+    background-color: #e62222;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-cancelar:hover {
+    background-color: #c41b1b;
+  }
+  
+  /* Estilos del botón de eliminar con efecto animado */
+  .btn-eliminar {
+    width: 150px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #e62222; /* Color base rojo */
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-eliminar .text {
+    transform: translateX(35px);
+    color: white;
+    font-weight: bold;
+  }
+  
+  .btn-eliminar .icon {
+    position: absolute;
+    right: 10px;
+    border-left: 1px solid #c41b1b;
+    transform: translateX(110px);
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, width 0.3s ease;
+  }
+  
+  .btn-eliminar:hover {
+    background-color: #ff3636;
+  }
+  
+  .btn-eliminar:hover .text {
+    color: transparent;
+  }
+  
+  .btn-eliminar:hover .icon {
+    width: 150px;
+    border-left: none;
+    transform: translateX(0);
+  }
+  
+  .btn-eliminar:active .icon svg {
+    transform: scale(0.8);
+  }
+  
+  .btn-editar svg, .btn-guardar svg, .btn-eliminar svg {
+    fill: #fff;
+  }
+  
+  .btn-cancelar {
+    width: 150px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #e62222; /* Color base rojo */
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-cancelar .text {
+    transform: translateX(35px);
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .btn-cancelar .icon {
+    position: absolute;
+    right: 10px;
+    border-left: 1px solid #c41b1b;
+    transform: translateX(110px);
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, width 0.3s ease;
+  }
+  
+  .btn-cancelar:hover {
+    background-color: #c41b1b;
+  }
+  
+  .btn-cancelar:hover .text {
+    color: transparent;
+  }
+  
+  .btn-cancelar:hover .icon {
+    width: 150px;
+    border-left: none;
+    transform: translateX(0);
+  }
+  
+  .btn-cancelar:active .icon svg {
+    transform: scale(0.8);
+  }
+  

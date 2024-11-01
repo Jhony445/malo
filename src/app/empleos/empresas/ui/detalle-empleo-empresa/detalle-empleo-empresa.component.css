@@ -74,43 +74,85 @@
 }
 
 /* Botones de acción */
-/* Botones de acción */
-.action-buttons {
-  display: flex;
-  gap: 10px; /* Espacio entre los botones */
-}
 
-/* Estilos del botón de editar */
-.btn-editar {
-  width: 150px;
-  height: 50px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  background-color: #28a745; /* Color base verde */
-  border: none;
-  border-radius: 5px;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
-  position: relative;
-  overflow: hidden;
-  transition: background 0.3s ease;
-}
-
-/* Botón de guardar con estilo animado en verde */
-.btn-guardar {
-  width: 150px;
-  height: 50px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  background-color: #28a745; /* Color base verde */
-  border: none;
-  border-radius: 5px;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
-  position: relative;
-  overflow: hidden;
-  transition: background 0.3s ease;
-}
-
+  /* Contenedor de la imagen */
+  .detalle-imagen {
+    display: flex;
+    justify-content: center; /* Centrar la imagen */
+    margin-bottom: 15px; /* Espacio inferior */
+  }
+  
+  /* Estilos para la imagen dentro del contenedor */
+  .detalle-imagen img {
+    max-width: 100%; /* Asegura que la imagen no se salga horizontalmente */
+    max-height: 300px; /* Altura máxima para limitar imágenes muy altas */
+    width: auto; /* Mantiene el aspecto de la imagen */
+    border-radius: 8px; /* Bordes redondeados para armonizar con el diseño */
+    object-fit: cover; /* Ajusta la imagen para llenar el espacio sin deformarse */
+  }
+  
+  /* Estilo del campo URL en modo edición */
+  .input-editar {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+  
+  .error input {
+    border-color: #e74c3c;
+    background-color: #fdecea;
+  }
+  
+  .error {
+    color: red;
+    font-size: 0.85em; /* Ajusta el tamaño según prefieras */
+    margin-top: 4px;    /* Añade espacio para separar del campo */
+  }
+  
+  .detalle-section h3 {
+    color: #2980b9;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    font-size: 0.85em;
+    margin-top: -8px;
+    margin-bottom: 10px;
+    padding-left: 5px;
+  }
+  
+  .input-editar:required:invalid {
+    border-color: #e74c3c;
+    background-color: #fdecea;
+  }
+  
+  
+  .input-editar {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+  
+  .input-editar:focus {
+    outline: none;
+    border-color: #2980b9;
+    background-color: #e8f4fa;
+  }
+  
+  /* Estilos específicos para los placeholders */
+  .input-editar::placeholder {
+    color: #b3b3b3;
+  }
