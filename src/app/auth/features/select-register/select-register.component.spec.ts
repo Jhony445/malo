@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectRegister } from './select-register.component';
+import { SelectRegisterComponent } from './select-register.component';
 
 describe('SelectRegisterComponent', () => {
-  let component: SelectRegister;
-  let fixture: ComponentFixture<SelectRegister>;
+  let component: SelectRegisterComponent;
+  let fixture: ComponentFixture<SelectRegisterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SelectRegister]
+      imports: [SelectRegisterComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SelectRegister);
+    fixture = TestBed.createComponent(SelectRegisterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
