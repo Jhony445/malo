@@ -156,6 +156,20 @@
     font-size: 0.9em;
 }
 
+.link-button {
+    background: none;
+    border: none;
+    color: #0056FF;
+    cursor: pointer;
+    font-size: 1em;
+    text-align: right;
+    margin-left: 10px;
+}
+
+.link-button:hover {
+    text-decoration: underline;
+}
+
 /* Media queries para dispositivos móviles */
 @media (max-width: 768px) {
     .container {

@@ -15,12 +15,12 @@ import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
   styleUrls: ['./log-in.component.css']
 })
 export class LogInComponent {
-
   loginForm: FormGroup;
   errorMessage = '';
   successMessage = '';
   isLoading = false;
   isCompanyLogin = false;
+  forgotPasswordMode = false;
 
   http = inject(HttpClient);
   router = inject(Router);
@@ -35,7 +35,9 @@ export class LogInComponent {
   }
 
   onLogin() {
-    if (this.loginForm.valid) {
+    if (this.forgotPasswordMode) {
+      this.requestPasswordRecovery();
+    } else if (this.loginForm.valid) {
       this.isLoading = true;
       const loginApiUrl = this.isCompanyLogin
         ? "https://malo-backend-empresas.onrender.com/api/Auth/login" 
@@ -47,26 +49,14 @@ export class LogInComponent {
           if (res.result) {
             localStorage.setItem('authToken', res.token);
             this.userService.setAuthenticationState(true);
-            // Redirecciona según el rol
             const decodedToken = this.userService.getUserData();
-            if (decodedToken.rol === 'Empresa') {
-              this.router.navigate(['/empresa']);
-            } else {
-              this.router.navigate(['/usuario']);
-            }
+            this.router.navigate([decodedToken.rol === 'Empresa' ? '/empresa' : '/usuario']);
           } else {
             this.errorMessage = "Credenciales inválidas. Por favor, verifique su correo y contraseña.";
             this.clearMessages();
           }
         },
-        (error: HttpErrorResponse) => {
-          this.isLoading = false;
-          if (error.status === 401 || error.status === 500) {
-            this.errorMessage = "Credenciales inválidas. Por favor, verifique su correo y contraseña.";
-          } else {
-            this.errorMessage = "Error inesperado en el servidor. Inténtelo más tarde.";
-          }
-        }
+        (error: HttpErrorResponse) => this.handleLoginError(error)
       );
     } else {
       this.errorMessage = "Por favor, completa el formulario correctamente.";
@@ -74,11 +64,58 @@ export class LogInComponent {
     }
   }
 
+  toggleForgotPassword() {
+    this.forgotPasswordMode = !this.forgotPasswordMode;
+    if (this.forgotPasswordMode) {
+      this.loginForm.get('contrasena')?.disable();
+    } else {
+      this.loginForm.get('contrasena')?.enable();
+    }
+    this.errorMessage = '';
+    this.successMessage = '';
+  }
+
+  requestPasswordRecovery() {
+    this.isLoading = true;
+    const recoveryApiUrl = "https://malo-backend.onrender.com/api/Recuperacion/solicitar-recuperacion";
+    const email = this.loginForm.get('email')?.value;
+
+    this.http.post(recoveryApiUrl, { email }).subscribe(
+      (res: any) => {
+        this.isLoading = false;
+        this.successMessage = "Se ha enviado un correo de recuperación a su email.";
+        
+        // Guarda el mensaje de respuesta en consola
+        const recoveryId = res;
+        console.log("Recovery ID:", recoveryId);
+
+        this.clearMessages();
+      },
+      (error: HttpErrorResponse) => {
+        this.isLoading = false;
+        this.errorMessage = "Error al enviar el correo de recuperación. Por favor, inténtelo de nuevo más tarde.";
+        this.clearMessages();
+      }
+    );
+  }
+
+  private handleLoginError(error: HttpErrorResponse) {
+    this.isLoading = false;
+    if (error.status === 401) {
+      this.errorMessage = error.error.message === "Debe confirmar su correo antes de iniciar sesión."
+        ? "Debe confirmar su correo antes de iniciar sesión. Por favor, revise su bandeja de entrada para el enlace de confirmación."
+        : "Credenciales inválidas. Por favor, verifique su correo y contraseña.";
+    } else {
+      this.errorMessage = "Credenciales inválidas. Por favor, verifique su correo y contraseña.";
+    }
+    this.clearMessages();
+  }
+
   clearMessages() {
     setTimeout(() => {
       this.errorMessage = '';
       this.successMessage = '';
-    }, 3000);
+    }, 4500);
   }
 }
 
