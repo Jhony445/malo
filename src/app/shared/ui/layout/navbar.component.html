@@ -1,14 +1,14 @@
 <header>
-  <img class="logo" src="logoblanco.png" alt="Logo">
+  <img class="logo" src="logoblanco.png" alt="Logo" (click)="navigateToHome()">
   <button id="abrir" class="abrir-menu" (click)="toggleMenu()"><i class="fas fa-bars"></i></button>
   <nav class="nav" id="nav" [class.visible]="menuOpen">
     <button class="cerrar-menu" id="cerrar" (click)="toggleMenu()"><i class="fas fa-times"></i></button>
-    
+
     <!-- Información del usuario autenticado -->
     <div class="user-info" *ngIf="isAuthenticated">
       <p class="user-email">{{ user.email }}</p>
     </div>
-    
+
     <ul class="nav-list">
       <!-- Enlace de Inicio -->
       <li><a routerLink="/nosotros">Inicio</a></li>
@@ -23,8 +23,8 @@
         <a routerLink="/empresa">Mis empleos</a>
       </li>
 
-      <!-- Mostrar "Empleos" si el usuario está autenticado y en la ruta de perfil -->
-      <li *ngIf="isAuthenticated && isOnProfilePage() && user.rol !== 'Empresa'">
+      <!-- Mostrar "Empleos" si el usuario está autenticado y no es una Empresa -->
+      <li *ngIf="isAuthenticated && user.rol !== 'Empresa'">
         <a routerLink="/usuario">Empleos</a>
       </li>
 

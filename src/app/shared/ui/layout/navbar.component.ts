@@ -123,4 +123,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.routerSubscription.unsubscribe();
     document.removeEventListener('click', this.handleClickOutside.bind(this));
   }
+  navigateToHome() {
+    this.router.navigate(['/']);
+  }
 }
