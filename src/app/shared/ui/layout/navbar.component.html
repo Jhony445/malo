@@ -27,13 +27,11 @@
       <li *ngIf="isAuthenticated && user.rol !== 'Empresa'">
         <a routerLink="/usuario">Empleos</a>
       </li>
-
       <!-- Opciones de autenticación -->
       <ng-container *ngIf="!isAuthenticated">
         <li><a href="/auth/login">Iniciar sesión</a></li>
         <li><a href="/auth/select-register">Regístrate</a></li>
       </ng-container>
-
       <!-- Menú desplegable para el usuario autenticado -->
       <ng-container *ngIf="isAuthenticated">
         <li class="dropdown">

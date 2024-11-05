@@ -32,4 +32,5 @@ export class BusquedaComponent {
   buscarEmpleo() {
     this.router.navigate(['/usuario'], { queryParams: { search: this.query } });
   }
+  
 }
