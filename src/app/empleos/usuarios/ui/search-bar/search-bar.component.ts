@@ -43,7 +43,7 @@ export class SearchBarComponent implements OnInit {
     this.isFiltersOpen = !this.isFiltersOpen;
   }
 
-  applyFilters(autoApply: boolean = false): void {
+  applyFilters(autoApply = false): void {
     const filters = {
       searchKeyword: this.searchKeyword,
       location: this.location,

@@ -112,7 +112,7 @@ export class LogInComponent {
         this.updatePasswordMode = true;
         this.clearMessages();
       },
-      (error: HttpErrorResponse) => {
+      () => {
         this.isLoading = false;
         this.errorMessage = "Error al enviar el correo de recuperación. Por favor, inténtelo de nuevo más tarde.";
         this.clearMessages();
@@ -142,7 +142,7 @@ export class LogInComponent {
         }
         this.clearMessages();
       },
-      (error: HttpErrorResponse) => {
+      () => {
         this.isLoading = false;
         this.errorMessage = "Error al cambiar la contraseña. Intente de nuevo más tarde.";
         this.clearMessages();
@@ -151,7 +151,7 @@ export class LogInComponent {
   }
 
   passwordsMatchValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
+    return (control: AbstractControl): Record<string, boolean> | null => {
       const newPassword = control.get('newPassword')?.value;
       const confirmPassword = control.get('confirmPassword')?.value;
       return newPassword === confirmPassword ? null : { passwordsMismatch: true };
