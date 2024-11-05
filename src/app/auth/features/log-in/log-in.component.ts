@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
 import { CommonModule } from '@angular/common';
@@ -15,14 +15,13 @@ import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
   styleUrls: ['./log-in.component.css']
 })
 export class LogInComponent {
+
   loginForm: FormGroup;
   errorMessage = '';
   successMessage = '';
   isLoading = false;
   isCompanyLogin = false;
   forgotPasswordMode = false;
-  updatePasswordMode = false;
-  recoveryToken: string | null = null;
 
   http = inject(HttpClient);
   router = inject(Router);
@@ -37,13 +36,7 @@ export class LogInComponent {
   }
 
   onLogin() {
-    if (this.forgotPasswordMode) {
-      if (this.updatePasswordMode) {
-        this.changePassword();
-      } else {
-        this.requestPasswordRecovery();
-      }
-    } else if (this.loginForm.valid) {
+    if (this.loginForm.valid) {
       this.isLoading = true;
       const loginApiUrl = this.isCompanyLogin
         ? "https://malo-backend-empresas.onrender.com/api/Auth/login"
@@ -72,90 +65,44 @@ export class LogInComponent {
 
   toggleForgotPassword() {
     this.forgotPasswordMode = !this.forgotPasswordMode;
-    this.updatePasswordMode = false;
-    this.recoveryToken = null;
-    this.loginForm.reset();
     this.errorMessage = '';
     this.successMessage = '';
-
+  
     if (this.forgotPasswordMode) {
-      this.loginForm.get('contrasena')?.disable();
-      this.loginForm.addControl('newPassword', this.fb.control('', [Validators.required, Validators.minLength(6)]));
-      this.loginForm.addControl('confirmPassword', this.fb.control('', Validators.required));
-      this.loginForm.setValidators(this.passwordsMatchValidator());
+      this.loginForm.get('contrasena')?.clearValidators();
     } else {
-      this.loginForm.get('contrasena')?.enable();
-      this.loginForm.removeControl('newPassword');
-      this.loginForm.removeControl('confirmPassword');
-      this.loginForm.clearValidators();
+      this.loginForm.get('contrasena')?.setValidators(Validators.required);
     }
-    this.loginForm.updateValueAndValidity();
+  
+    this.loginForm.get('contrasena')?.updateValueAndValidity();
   }
 
   requestPasswordRecovery() {
-    if (this.loginForm.get('email')?.invalid) {
-      this.errorMessage = "Por favor, ingresa un correo válido.";
-      this.clearMessages();
-      return;
-    }
+    if (this.loginForm.get('email')?.valid) {
+      this.isLoading = true;
+      const recoveryApiUrl = "https://malo-backend.onrender.com/api/Recuperacion/solicitar-recuperacion";
 
-    this.isLoading = true;
-    const recoveryApiUrl = "https://malo-backend.onrender.com/api/Recuperacion/solicitar-recuperacion";
-    const email = this.loginForm.get('email')?.value;
-
-    this.http.post(recoveryApiUrl, { email }).subscribe(
-      (res: any) => {
-        this.isLoading = false;
-        this.recoveryToken = res;
-        console.log("Recovery Token:", this.recoveryToken);
-        this.successMessage = "Se ha enviado un correo de recuperación a su email.";
-        this.updatePasswordMode = true;
-        this.clearMessages();
-      },
-      () => {
-        this.isLoading = false;
-        this.errorMessage = "Error al enviar el correo de recuperación. Por favor, inténtelo de nuevo más tarde.";
-        this.clearMessages();
-      }
-    );
-  }
-
-  changePassword() {
-    if (this.loginForm.invalid || this.loginForm.hasError('passwordsMismatch')) {
-      this.errorMessage = "Por favor, asegúrate de que las contraseñas coincidan.";
-      this.clearMessages();
-      return;
-    }
-
-    this.isLoading = true;
-    const changePasswordApiUrl = "https://malo-backend.onrender.com/api/Recuperacion/cambiar-contrasena";
-    const newPassword = this.loginForm.get('newPassword')?.value;
-
-    this.http.post(changePasswordApiUrl, { token: this.recoveryToken, nuevaContrasena: newPassword }).subscribe(
-      (res: any) => {
-        this.isLoading = false;
-        if (res.result) {
-          this.successMessage = "Contraseña cambiada correctamente";
-          this.toggleForgotPassword();
-        } else {
-          this.errorMessage = "No se pudo cambiar la contraseña. Intente de nuevo.";
+      this.http.post(recoveryApiUrl, { email: this.loginForm.get('email')?.value }).subscribe(
+        (res: any) => {
+          this.isLoading = false;
+          this.successMessage = "Correo de recuperación enviado exitosamente.";
+          this.clearMessages();
+          setTimeout(() => this.toggleForgotPassword(), 7000);
+        },
+        (error: HttpErrorResponse) => {
+          this.isLoading = false;
+          this.errorMessage = "Error al enviar el correo de recuperación. Inténtelo más tarde.";
+          this.clearMessages();
         }
-        this.clearMessages();
-      },
-      () => {
-        this.isLoading = false;
-        this.errorMessage = "Error al cambiar la contraseña. Intente de nuevo más tarde.";
-        this.clearMessages();
-      }
-    );
+      );
+    }
   }
 
-  passwordsMatchValidator(): ValidatorFn {
-    return (control: AbstractControl): Record<string, boolean> | null => {
-      const newPassword = control.get('newPassword')?.value;
-      const confirmPassword = control.get('confirmPassword')?.value;
-      return newPassword === confirmPassword ? null : { passwordsMismatch: true };
-    };
+  clearMessages() {
+    setTimeout(() => {
+      this.errorMessage = '';
+      this.successMessage = '';
+    }, 3000);
   }
 
   private handleLoginError(error: HttpErrorResponse) {
@@ -173,14 +120,8 @@ export class LogInComponent {
     }
     this.clearMessages();
   }
-
-  clearMessages() {
-    setTimeout(() => {
-      this.errorMessage = '';
-      this.successMessage = '';
-    }, 4500);
-  }
 }
+
 
 /*
   onLogin(){

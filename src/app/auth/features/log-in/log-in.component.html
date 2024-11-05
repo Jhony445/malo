@@ -4,16 +4,13 @@
         <div class="right">
             <div class="login-box">
                 <img src="malo_logo_azul.png" alt="Logo" class="login-logo">
-                <h2 *ngIf="!forgotPasswordMode">Ingresar</h2>
-                <h2 *ngIf="forgotPasswordMode && !updatePasswordMode">Recuperar Contraseña</h2>
-                <h2 *ngIf="forgotPasswordMode && updatePasswordMode">Restablecer Contraseña</h2>
+                <h2>{{ forgotPasswordMode ? 'Recuperar Contraseña' : 'Ingresar' }}</h2>
 
                 <app-notification *ngIf="errorMessage" [message]="errorMessage" [isError]="true"></app-notification>
                 <app-notification *ngIf="successMessage" [message]="successMessage" [isError]="false"></app-notification>
 
-                <form [formGroup]="loginForm" (ngSubmit)="forgotPasswordMode ? (updatePasswordMode ? changePassword() : requestPasswordRecovery()) : onLogin()">
-                    <!-- Campo de correo solo en modo recuperación -->
-                    <div *ngIf="!updatePasswordMode" class="form-group" 
+                <form [formGroup]="loginForm" (ngSubmit)="forgotPasswordMode ? requestPasswordRecovery() : onLogin()">
+                    <div class="form-group" 
                          [ngClass]="{'error': loginForm.get('email')?.invalid && loginForm.get('email')?.touched}">
                         <label for="email">Correo</label>
                         <input type="email" formControlName="email" id="email" placeholder="example@example.com" required>
@@ -23,7 +20,7 @@
                         </div>
                     </div>
 
-                    <!-- Campo de contraseña solo para inicio de sesión -->
+                    <!-- Campo de contraseña solo visible en modo inicio de sesión -->
                     <div *ngIf="!forgotPasswordMode" class="form-group" 
                          [ngClass]="{'error': loginForm.get('contrasena')?.invalid && loginForm.get('contrasena')?.touched}">
                         <label for="contrasena">Contraseña</label>
@@ -33,42 +30,14 @@
                         </div>
                     </div>
 
-                    <!-- Campos para nueva contraseña y confirmación en modo de actualización de contraseña -->
-                    <div *ngIf="updatePasswordMode" class="form-group" 
-                         [ngClass]="{'error': loginForm.get('newPassword')?.invalid && loginForm.get('newPassword')?.touched}">
-                        <label for="newPassword">Nueva Contraseña</label>
-                        <input type="password" formControlName="newPassword" id="newPassword" placeholder="*******" required>
-                        <div *ngIf="loginForm.get('newPassword')?.invalid && loginForm.get('newPassword')?.touched" class="error-message">
-                            <span *ngIf="loginForm.get('newPassword')?.errors?.['required']">La nueva contraseña es obligatoria.</span>
-                            <span *ngIf="loginForm.hasError('passwordsMismatch')">Las contraseñas no coinciden.</span>
-                        </div>
-                    </div>
-
-                    <div *ngIf="updatePasswordMode" class="form-group" 
-                         [ngClass]="{'error': loginForm.get('confirmPassword')?.invalid && loginForm.get('confirmPassword')?.touched}">
-                        <label for="confirmPassword">Confirmar Contraseña</label>
-                        <input type="password" formControlName="confirmPassword" id="confirmPassword" placeholder="*******" required>
-                        <div *ngIf="loginForm.get('confirmPassword')?.invalid && loginForm.get('confirmPassword')?.touched" class="error-message">
-                            <span *ngIf="loginForm.get('confirmPassword')?.errors?.['required']">Debe confirmar la nueva contraseña.</span>
-                            <span *ngIf="loginForm.hasError('passwordsMismatch')">Las contraseñas no coinciden.</span>
-                        </div>
-                    </div>
-
-                    <!-- Botón de envío cambia según el modo -->
-                    <input type="submit" 
-                           [disabled]="(forgotPasswordMode && !loginForm.get('email')?.valid) || (!forgotPasswordMode && loginForm.invalid)"
-                           [value]="forgotPasswordMode ? (updatePasswordMode ? 'Actualizar Contraseña' : 'Enviar correo de recuperación') : 'Iniciar sesión'">
-
-                    <!-- Checkbox para modo inicio de sesión -->
+                    <input type="submit" [disabled]="loginForm.invalid" 
+                           [value]="forgotPasswordMode ? 'Enviar correo de recuperación' : 'Iniciar sesión'">
                     <label *ngIf="!forgotPasswordMode">
                         <input type="checkbox" [(ngModel)]="isCompanyLogin" [ngModelOptions]="{standalone: true}" name="isCompanyLogin">
                         Iniciar sesión como empresa
                     </label>
-
                     <app-loader *ngIf="isLoading"></app-loader>
                 </form>
-
-                <!-- Enlace para alternar entre los modos de inicio de sesión y recuperación de contraseña -->
                 <div class="link-container">
                     <a href="#" (click)="toggleForgotPassword(); $event.preventDefault();">
                         {{ forgotPasswordMode ? 'Volver a iniciar sesión' : 'Olvidé mi contraseña' }}
