@@ -83,13 +83,13 @@ export class LogInComponent {
       const recoveryApiUrl = "https://malo-backend.onrender.com/api/Recuperacion/solicitar-recuperacion";
 
       this.http.post(recoveryApiUrl, { email: this.loginForm.get('email')?.value }).subscribe(
-        (res: any) => {
+        () => {
           this.isLoading = false;
           this.successMessage = "Correo de recuperación enviado exitosamente.";
           this.clearMessages();
           setTimeout(() => this.toggleForgotPassword(), 7000);
         },
-        (error: HttpErrorResponse) => {
+        () => {
           this.isLoading = false;
           this.errorMessage = "Error al enviar el correo de recuperación. Inténtelo más tarde.";
           this.clearMessages();

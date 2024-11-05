@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -43,7 +43,7 @@ export class ForgotPasswordComponent {
           this.isPasswordChanged = true;
           setTimeout(() => this.router.navigate(['/auth/login']), 10000);
         },
-        (error: HttpErrorResponse) => {
+        () => {
           this.errorMessage = 'Hubo un error al cambiar la contraseña. Inténtelo de nuevo más tarde.';
         }
       );
