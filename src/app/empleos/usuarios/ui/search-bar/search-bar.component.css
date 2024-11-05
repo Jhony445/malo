@@ -13,6 +13,7 @@
     padding: 15px;
     background-color: #090C9B;
     width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .search-item {
@@ -32,6 +33,14 @@
     background-color: #fff;
     width: 100%;
     box-sizing: border-box;
+}
+
+.search-item .icon {
+    position: absolute;
+    left: 15px;
+    width: 24px;
+    height: 24px;
+    color: #1E90FF;
 }
 
 .search-item i {
@@ -56,7 +65,7 @@
     pointer-events: none;
 }
 
-.apply-btn {
+.apply-btn, .clear-btn {
     padding: 10px 20px;
     background-color: #1E90FF;
     color: white;
@@ -70,11 +79,18 @@
     height: 100%;
 }
 
+.clear-btn {
+    background-color: #FF6347;
+    margin-left: 10px;
+}
+
 .apply-btn:hover {
     background-color: #0056b3;
 }
 
-
+.clear-btn:hover {
+    background-color: #d9534f;
+}
 @media (max-width: 768px) {
     .search-bar {
         display: none;

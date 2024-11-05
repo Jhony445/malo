@@ -56,13 +56,16 @@ export class ListaEmpleosComponent implements OnInit {
               empresaNombre: empresa ? empresa.nombre : 'Empresa desconocida'
             };
           });
+  
+          // Ordenar empleos por fecha de publicación (más recientes primero)
+          this.empleos.sort((a, b) => new Date(b.fecha_publicacion).getTime() - new Date(a.fecha_publicacion).getTime());
+  
           this.filteredEmpleos = this.empleos; // Inicialmente muestra todos los empleos
           this.updateTotalPages();
         },
         error => console.error('Error al cargar empleos:', error)
       );
   }
-
   onFiltersApplied(filters: any) {
     console.log('Filtros aplicados:', filters); // Verificar filtros recibidos
     

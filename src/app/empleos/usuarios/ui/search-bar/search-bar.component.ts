@@ -20,6 +20,7 @@ export class SearchBarComponent implements OnInit {
 
   isMobile = false;
   isFiltersOpen = false;
+  hasFiltersApplied = false; // Nueva propiedad
 
   constructor(private route: ActivatedRoute) {
     this.checkIfMobile();
@@ -52,10 +53,26 @@ export class SearchBarComponent implements OnInit {
     };
     this.filtersApplied.emit(filters);
 
+    // Verificar si hay algún filtro activo
+    this.hasFiltersApplied = !!(
+      this.searchKeyword ||
+      this.location ||
+      this.schedule ||
+      this.salary
+    );
+
     // Si es un filtrado automático, aplicar lógicamente sin requerir clic
     if (autoApply) {
       console.log("Filtrando automáticamente con búsqueda:", filters);
-      // Aquí puedes colocar la lógica adicional si es necesario
     }
+  }
+
+  clearFilters(): void {
+    this.searchKeyword = '';
+    this.location = '';
+    this.schedule = '';
+    this.salary = '';
+    this.hasFiltersApplied = false; // Actualizar para ocultar el botón
+    this.applyFilters();
   }
 }
