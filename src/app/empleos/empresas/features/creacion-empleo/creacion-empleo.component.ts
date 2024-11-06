@@ -1,4 +1,3 @@
-// creacion-empleo.component.ts
 import { Component } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../../../core/services/user.service';
@@ -13,14 +12,16 @@ import { NotificationComponent } from '../../../../shared/ui/notification/notifi
   standalone: true,
   imports: [ReactiveFormsModule, LoaderComponent, CommonModule, NotificationComponent],
   templateUrl: './creacion-empleo.component.html',
-  styleUrls: ['./creacion-empleo.component.css']
+  styleUrls: ['./creacion-empleo.component.css', './icons-empleo.component.css']
 })
 export class CreacionEmpleoComponent {
   empleoForm: FormGroup;
   isLoading = false;
   errorMessage = '';
   successMessage = '';
-  
+  multimediaFile: File | null = null;
+  currentSection = 1;
+
   constructor(
     private userService: UserService,
     private http: HttpClient,
@@ -35,9 +36,32 @@ export class CreacionEmpleoComponent {
       salarioMaximo: [0, [Validators.required, Validators.min(0)]],
       horario: ['', Validators.required],
       multimediaNombre: ['', Validators.required],
-      multimediaTipo: ['', Validators.required],
-      multimediaContenido: ['', Validators.required]
+      multimediaTipo: ['', Validators.required]
     });
+  }
+
+  goToNextSection() {
+    if (this.currentSection === 1) {
+      this.currentSection = 2;
+    }
+  }
+  goToBackSection() {
+    if (this.currentSection === 2) {
+      this.currentSection = 1;
+    }
+  }
+
+
+  // Método para manejar la selección de archivos
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.multimediaFile = input.files[0];
+      this.empleoForm.patchValue({
+        multimediaNombre: this.multimediaFile.name,
+        multimediaTipo: this.multimediaFile.type
+      });
+    }
   }
 
   crearEmpleo() {
@@ -48,58 +72,57 @@ export class CreacionEmpleoComponent {
       return;
     }
 
-    if (!this.empleoForm.valid) {
-      console.error("Formulario inválido. Revise los datos ingresados.");
-      this.errorMessage = "Formulario inválido. Revise los datos ingresados.";
+    if (!this.empleoForm.valid || !this.multimediaFile) {
+      console.error("Formulario inválido o archivo de imagen no seleccionado.");
+      this.errorMessage = "Formulario inválido o archivo de imagen no seleccionado.";
       this.clearMessagesAfterDelay();
       return;
     }
 
-    const formValues = this.empleoForm.value;
-    if (typeof formValues.titulo !== 'string' || typeof formValues.descripcion !== 'string' ||
-        typeof formValues.ubicacion !== 'string' || typeof formValues.horario !== 'string' ||
-        typeof formValues.multimediaNombre !== 'string' || typeof formValues.multimediaTipo !== 'string' ||
-        typeof formValues.multimediaContenido !== 'string') {
-      console.error("Error en los tipos de datos: Algunos campos que deberían ser strings no lo son.");
-      this.errorMessage = "Error en los tipos de datos: Algunos campos que deberían ser strings no lo son.";
-      return;
-    }
+    //FormData para enviar los datos como form-data
+    const formData = new FormData();
+    formData.append('titulo', this.empleoForm.value.titulo);
+    formData.append('descripcion', this.empleoForm.value.descripcion);
+    formData.append('ubicacion', this.empleoForm.value.ubicacion);
+    formData.append('salario_minimo', this.empleoForm.value.salarioMinimo.toString());
+    formData.append('salario_maximo', this.empleoForm.value.salarioMaximo.toString());
+    formData.append('horario', this.empleoForm.value.horario);
+    formData.append('empresa_id', userData.sub);
+    formData.append('multimediaNombre', this.multimediaFile?.name || '');
+    formData.append('multimediaTipo', this.multimediaFile?.type || '');
+    formData.append('archivo', this.multimediaFile);
 
-    if (typeof formValues.salarioMinimo !== 'number' || typeof formValues.salarioMaximo !== 'number') {
-      console.error("Error en los tipos de datos: Los campos salarioMinimo y salarioMaximo deben ser números.");
-      this.errorMessage = "Error en los tipos de datos: Los campos salarioMinimo y salarioMaximo deben ser números.";
-      return;
-    }
 
-    const empleoData = {
-      ...formValues,
-      empresa_id: userData.sub,
-      salario_minimo: formValues.salarioMinimo,
-      salario_maximo: formValues.salarioMaximo
-    };
+    formData.append('ContentType', this.multimediaFile.type);
+    formData.append('ContentDisposition', `attachment; filename="${this.multimediaFile.name}"`);
+    formData.append('Length', this.multimediaFile.size.toString());
+    formData.append('Name', this.empleoForm.value.multimediaNombre);
+    formData.append('FileName', this.multimediaFile.name);
+
     this.isLoading = true;
 
-    this.http.post('https://malo-backend-empleos.onrender.com/api/Empleo/PostEmpleo', empleoData, { responseType: 'text' })
-      .subscribe(
-        response => {
-          console.log('Empleo creado exitosamente:', response);
-          this.router.navigate(['/empresa']);
-        },
-        (error: HttpErrorResponse) => {
-          if (error.status === 400) {
-            console.error("Error de validación en el servidor:", error.error);
-            this.errorMessage = "Error de validación en el servidor: " + error.error;
-          } else if (error.status === 500) {
-            console.error("Error del servidor al procesar la solicitud:", error.error);
-            this.errorMessage = "Error del servidor al procesar la solicitud: " + error.error;
-          } else {
-            console.error("Error desconocido al crear empleo:", error);
-            this.errorMessage = "Error desconocido al crear empleo: " + error.error;
-          }
-        }
-      ).add(() => {
-        this.isLoading = false;
-      });
+    this.http.post('https://malo-backend-empleos.onrender.com/api/Empleo/PostEmpleo', formData, { responseType: 'text' })
+  .subscribe(
+    response => {
+      console.log('Empleo creado exitosamente:', response);
+      this.successMessage = response; // Muestra el mensaje de éxito devuelto por el servidor
+      this.router.navigate(['/empresa']);
+    },
+    (error: HttpErrorResponse) => {
+      if (error.status === 400) {
+        console.error("Error de validación en el servidor:", error.error);
+        this.errorMessage = "Error de validación en el servidor: " + error.error;
+      } else if (error.status === 500) {
+        console.error("Error del servidor al procesar la solicitud:", error.error);
+        this.errorMessage = "Error del servidor al procesar la solicitud: " + error.error;
+      } else {
+        console.error("Error desconocido al crear empleo:", error);
+        this.errorMessage = "Error desconocido al crear empleo: " + error.error;
+      }
+    }
+  ).add(() => {
+    this.isLoading = false;
+  });
   }
 
   private clearMessagesAfterDelay() {

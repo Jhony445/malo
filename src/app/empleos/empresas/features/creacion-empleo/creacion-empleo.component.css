@@ -22,14 +22,19 @@ form {
 
 .form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 20px;
+    justify-items: center;
+}
+.form-grid > .form-section {
+    width: 80%;
 }
 
 fieldset {
     border: 2px solid #007bff; /* Cambié de dashed a solid */
     padding: 20px;
     border-radius: 8px;
+    padding-bottom: 40px;
 }
 
 legend {
@@ -75,10 +80,20 @@ button {
     border-radius: 5px;
     cursor: pointer;
     align-self: center;
+    margin-top: 20px;
 }
 
 button:hover {
     background-color: #0f8100;
+}
+
+.button-container {
+    text-align: right; /* Alinea el contenido a la derecha */
+    margin-top: 20px; /* Añade espacio sobre el botón */
+}
+
+.button-container button:first-child {
+    margin-right: 10px; /* Solo para el botón "Atras" */
 }
 
 select {

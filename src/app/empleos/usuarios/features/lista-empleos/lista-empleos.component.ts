@@ -83,9 +83,16 @@ export class ListaEmpleosComponent implements OnInit {
     this.currentPage = 1; // Reiniciar a la primera página después de aplicar el filtro
   }
 
-  isSalaryMatch(salario: number, salaryFilter: string): boolean {
-    const [min, max] = salaryFilter.split('-').map(s => parseInt(s.replace(/[^\d]/g, ''), 10));
-    return salario >= min && salario <= max;
+
+  isSalaryMatch(salario: number | undefined | null, salaryFilter: string): boolean {
+    if (!salaryFilter) return true;
+    
+    // Convertimos el filtro en un rango numérico
+    const [minSalary, maxSalary] = salaryFilter.split('-').map(s => parseInt(s.replace(/[^\d]/g, ''), 10) * 1000);
+    //console.log('Salario del empleo:', salario);
+    //console.log('Rango del filtro:', minSalary, '-', maxSalary);
+    // Verifica si el salario está dentro del rango (considerando valores nulos o indefinidos)
+    return salario !== undefined && salario !== null && salario >= minSalary && salario <= maxSalary;
   }
 
   updateTotalPages() {
