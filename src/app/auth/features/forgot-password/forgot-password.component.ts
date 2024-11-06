@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router'; // Importa ActivatedRoute
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -21,7 +21,7 @@ export class ForgotPasswordComponent implements OnInit {
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   router = inject(Router);
-  route = inject(ActivatedRoute); // Inyecta ActivatedRoute
+  route = inject(ActivatedRoute);
 
   constructor() {
     this.forgotPasswordForm = this.fb.group({
@@ -34,16 +34,19 @@ export class ForgotPasswordComponent implements OnInit {
   ngOnInit(): void {
     // Captura el parámetro 'token' de la URL
     const token = this.route.snapshot.queryParamMap.get('token');
-    console.log('Token:', token); // Muestra el token en la consola
-    this.forgotPasswordForm.patchValue({ token }); // Asigna el valor del token al formulario
+    console.log('Token:', token);
+    this.forgotPasswordForm.patchValue({ token });
   }
 
   onSubmit() {
     if (this.forgotPasswordForm.valid && !this.passwordMatchError) {
       const { token, newPassword } = this.forgotPasswordForm.value;
 
-      this.http.post('https://malo-backend.onrender.com/api/Recuperacion/cambiar-contrasena', {
-        token,
+      // Actualiza la URL para incluir el token en la ruta
+      const url = `https://malo-backend.onrender.com/api/Recuperacion/cambiar-contrasena/${token}`;
+
+      this.http.post(url, {
+        token, // Incluye el token también en el cuerpo de la solicitud
         nuevaContrasena: newPassword
       }).subscribe(
         () => {
@@ -51,8 +54,9 @@ export class ForgotPasswordComponent implements OnInit {
           this.isPasswordChanged = true;
           setTimeout(() => this.router.navigate(['/auth/login']), 10000);
         },
-        () => {
+        (error) => {
           this.errorMessage = 'Hubo un error al cambiar la contraseña. Inténtelo de nuevo más tarde.';
+          console.log('Error al cambiar la contraseña:', error); // Registro del error en consola
         }
       );
     }
