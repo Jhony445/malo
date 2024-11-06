@@ -133,6 +133,6 @@ export class TablonEmpresasComponent implements OnInit {
     setTimeout(() => {
       this.successMessage = '';
       this.errorMessage = '';
-    }, 3000);
+    }, 4000);
   }
 }

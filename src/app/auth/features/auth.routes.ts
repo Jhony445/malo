@@ -10,5 +10,5 @@ export const AUTH_ROUTES: Routes = [
   { path: 'select-register', component: SelectRegisterComponent },
   { path: 'register-company', component: RegisterCompanyComponent },
   { path: 'sign-up', component: SignUpComponent },
-  {path: 'forgot-password', component: ForgotPasswordComponent}
+  {path: 'forgot-password/cambiar-contrasena', component: ForgotPasswordComponent}
 ];

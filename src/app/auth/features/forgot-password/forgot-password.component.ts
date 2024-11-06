@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router'; // Importa ActivatedRoute
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent implements OnInit {
   forgotPasswordForm: FormGroup;
   passwordMatchError = false;
   successMessage = '';
@@ -21,6 +21,7 @@ export class ForgotPasswordComponent {
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   router = inject(Router);
+  route = inject(ActivatedRoute); // Inyecta ActivatedRoute
 
   constructor() {
     this.forgotPasswordForm = this.fb.group({
@@ -28,6 +29,13 @@ export class ForgotPasswordComponent {
       newPassword: ['', [Validators.required, Validators.minLength(5)]],
       confirmPassword: ['', Validators.required]
     });
+  }
+
+  ngOnInit(): void {
+    // Captura el parámetro 'token' de la URL
+    const token = this.route.snapshot.queryParamMap.get('token');
+    console.log('Token:', token); // Muestra el token en la consola
+    this.forgotPasswordForm.patchValue({ token }); // Asigna el valor del token al formulario
   }
 
   onSubmit() {
