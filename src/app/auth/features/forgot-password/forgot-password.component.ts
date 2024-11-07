@@ -18,8 +18,8 @@ export class ForgotPasswordComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
   isPasswordChanged = false;
-
   isLoading = false;
+  tokenFromUrl: string | null = null; // Nueva variable para almacenar el token de la URL
 
   fb = inject(FormBuilder);
   http = inject(HttpClient);
@@ -28,32 +28,32 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor() {
     this.forgotPasswordForm = this.fb.group({
-      token: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.minLength(5)]],
+      newPassword: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
-    const token = this.route.snapshot.queryParamMap.get('token');
-    console.log('Token:', token);
-    this.forgotPasswordForm.patchValue({ token });
+    // Captura el token de la URL
+    this.tokenFromUrl = this.route.snapshot.queryParamMap.get('token');
+    console.log('Token from URL:', this.tokenFromUrl);
   }
 
   onSubmit() {
     this.isLoading = true;
-    if (this.forgotPasswordForm.valid && !this.passwordMatchError) {
-      const { token, newPassword } = this.forgotPasswordForm.value;
-      const url = `https://malo-backend.onrender.com/api/Recuperacion/cambiar-contrasena/${token}`;
+    if (this.forgotPasswordForm.valid && !this.passwordMatchError && this.tokenFromUrl) {
+      const { newPassword } = this.forgotPasswordForm.value;
+      const url = `https://malo-backend.onrender.com/api/Recuperacion/cambiar-contrasena/${this.tokenFromUrl}`;
+
       this.http.post(url, {
-        token, // Incluye el token también en el cuerpo de la solicitud
+        token: this.tokenFromUrl, // Envía el token también en el cuerpo de la solicitud
         nuevaContrasena: newPassword
       }).subscribe(
         () => {
           this.successMessage = 'La contraseña se ha cambiado correctamente.';
           this.isPasswordChanged = true;
-          setTimeout(() => this.router.navigate(['/auth/login']), 10000);
           this.isLoading = false;
+          setTimeout(() => this.router.navigate(['/auth/login']), 10000);
         },
         (error) => {
           this.isLoading = false;
@@ -61,6 +61,9 @@ export class ForgotPasswordComponent implements OnInit {
           console.log('Error al cambiar la contraseña:', error); // Registro del error en consola
         }
       );
+    } else {
+      this.isLoading = false;
+      this.errorMessage = 'No se encontró un token válido en la URL.';
     }
   }
 
@@ -70,3 +73,4 @@ export class ForgotPasswordComponent implements OnInit {
     this.passwordMatchError = newPassword !== confirmPassword;
   }
 }
+
