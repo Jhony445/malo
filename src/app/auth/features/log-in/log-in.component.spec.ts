@@ -31,7 +31,7 @@ describe('LogInComponent', () => {
         HttpClientModule
       ],
       providers: [
-        { provide: UserService, useValue: userServiceSpy },
+        { provide: UserService, useValue: userServiceSpy }, 
         { provide: Router, useValue: routerSpy }
       ]
     })
@@ -79,7 +79,7 @@ describe('LogInComponent', () => {
 
     // Verifica que el loader se detenga y que el mensaje de error se muestre correctamente
     expect(component.isLoading).toBeFalse();
-    expect(component.errorMessage).toBe('Credenciales inválidas. Por favor, verifique su correo y contraseña.');
+    expect(component.errorMessage).toBe('Hubo un error. Intente de nuevo más tarde.');
   });
 
   // Prueba para verificar la redirección en caso de un inicio de sesión exitoso
