@@ -4,7 +4,10 @@
     <br><br>
     <div class="empleos-lista">
       <app-titulo [primeraPalabra]="'Lista de'" [segundaPalabra]="'Empleos'"></app-titulo>
-      <div *ngIf="filteredEmpleos.length === 0" class="no-results-message">
+      <div *ngIf="isLoading" class="loading-message">
+        Cargando empleos...
+      </div>
+      <div *ngIf="!isLoading && filteredEmpleos.length === 0" class="no-results-message">
         No se encontraron empleos que coincidan con los filtros aplicados.
       </div>
       <app-card-empleos 

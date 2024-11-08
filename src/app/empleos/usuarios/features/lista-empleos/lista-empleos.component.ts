@@ -28,6 +28,8 @@ export class ListaEmpleosComponent implements OnInit {
   empleoSeleccionado: any = null;
   isDetalleVisibleMobile = false; 
   initialFilters: any = {}; // Para almacenar filtros iniciales de la URL
+  isLoading = true; // Para manejar el estado de carga
+
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
@@ -57,6 +59,7 @@ export class ListaEmpleosComponent implements OnInit {
   }
 
   fetchEmpleos() {
+    this.isLoading = true; // Comienza a cargar
     this.http.get<any[]>('https://malo-backend-empleos.onrender.com/api/Empleo/GetEmpleos')
       .subscribe(
         (data: any[]) => {
@@ -73,8 +76,13 @@ export class ListaEmpleosComponent implements OnInit {
           this.filteredEmpleos = this.empleos; // Inicializa con todos los empleos
           this.applyInitialFilters(); // Aplica los filtros iniciales
           this.updateTotalPages();
+           this.isLoading = false; 
         },
-        error => console.error('Error al cargar empleos:', error)
+        error => {
+          console.error('Error al cargar empleos:', error);
+          this.isLoading = false; // Asegura que el estado se actualiza incluso en error
+        }
+       
       );
   }
 

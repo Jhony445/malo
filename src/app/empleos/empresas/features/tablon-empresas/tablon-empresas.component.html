@@ -6,7 +6,9 @@
   <div class="div1">
     <div class="empleos-lista">
       <app-titulo [primeraPalabra]="'Tus'" [segundaPalabra]="'Empleos'"></app-titulo>
-  
+      <div *ngIf="isLoading" class="loading-message">
+        Cargando empleos...
+      </div>
       <!-- Selector de ordenación -->
       <div class="ordenar-empleos">
         <label for="ordenFecha">Ordenar por fecha:</label>
