@@ -1,16 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { CardEmpleosComponent } from '../../ui/card-empleos/card-empleos.component';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+
+// Importa sólo los componentes que realmente uses en la plantilla
+import { CardEmpleosComponent } from '../../ui/card-empleos/card-empleos.component';
 import { DetalleEmpleoComponent } from '../../ui/detalle-empleo/detalle-empleo.component';
 import { TituloComponent } from "../../../../shared/ui/titulo/titulo.component";
-import { HttpClient } from '@angular/common/http';
-import { LoaderComponent } from '../../../../shared/ui/loader/loader.component';
 import { SearchBarComponent } from '../../ui/search-bar/search-bar.component';
+
 
 @Component({
   selector: 'app-lista-empleos',
   standalone: true,
-  imports: [CommonModule, CardEmpleosComponent, DetalleEmpleoComponent, TituloComponent, LoaderComponent,SearchBarComponent],
+  imports: [CommonModule, CardEmpleosComponent, DetalleEmpleoComponent, TituloComponent, SearchBarComponent],
+  /* imports: [
+    CommonModule,
+    CardEmpleosComponent,
+    DetalleEmpleoComponent,
+    TituloComponent,
+    LoaderComponent,
+    SearchBarComponent
+  ],
+  */
   templateUrl: './lista-empleos.component.html',
   styleUrls: ['./lista-empleos.component.css']
 })
@@ -22,24 +34,32 @@ export class ListaEmpleosComponent implements OnInit {
   currentPage = 1;
   totalPages = 1;
   selectedEmpleoIndex: number | null = null;
-
   empleoSeleccionado: any = null;
-
   isDetalleVisibleMobile = false; 
+  initialFilters: any = {}; // Para almacenar filtros iniciales de la URL
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
   ngOnInit() {
+    // Lee los filtros iniciales de la URL
+    this.route.queryParams.subscribe(params => {
+      this.initialFilters = {
+        searchKeyword: params['search'] || '',
+        location: params['location'] || '',
+        schedule: params['schedule'] || '',
+        salary: params['salary'] || ''
+      };
+    });
+
     this.fetchEmpresas();
   }
 
   fetchEmpresas() {
-    // Primero obtenemos las empresas
     this.http.get<any[]>('https://malo-backend-empresas.onrender.com/api/Empresa/GetEmpresa')
       .subscribe(
         (data: any[]) => {
           this.empresas = data;
-          this.fetchEmpleos(); // Luego obtenemos los empleos
+          this.fetchEmpleos();
         },
         error => console.error('Error al cargar empresas:', error)
       );
@@ -57,19 +77,27 @@ export class ListaEmpleosComponent implements OnInit {
             };
           });
   
-          // Ordenar empleos por fecha de publicación (más recientes primero)
           this.empleos.sort((a, b) => new Date(b.fecha_publicacion).getTime() - new Date(a.fecha_publicacion).getTime());
   
-          this.filteredEmpleos = this.empleos; // Inicialmente muestra todos los empleos
+          this.filteredEmpleos = this.empleos; // Inicializa con todos los empleos
+          this.applyInitialFilters(); // Aplica los filtros iniciales
           this.updateTotalPages();
         },
         error => console.error('Error al cargar empleos:', error)
       );
   }
+
+  applyInitialFilters() {
+    // Si hay algún filtro inicial, aplícalo automáticamente
+    if (Object.values(this.initialFilters).some(filter => filter)) {
+      this.onFiltersApplied(this.initialFilters);
+    }
+  }
+
   onFiltersApplied(filters: any) {
-    console.log('Filtros aplicados:', filters); // Verificar filtros recibidos
-    
-    // Filtrar empleos según los criterios
+    console.log('Filtros aplicados:', filters);
+
+    // Filtra empleos según los criterios
     this.filteredEmpleos = this.empleos.filter(empleo => {
       return (
         (!filters.searchKeyword || empleo.titulo.toLowerCase().includes(filters.searchKeyword.toLowerCase())) &&
@@ -79,19 +107,14 @@ export class ListaEmpleosComponent implements OnInit {
       );
     });
   
-    this.updateTotalPages(); // Actualizar el número de páginas en la lista filtrada
-    this.currentPage = 1; // Reiniciar a la primera página después de aplicar el filtro
+    this.updateTotalPages();
+    this.currentPage = 1;
   }
-
 
   isSalaryMatch(salario: number | undefined | null, salaryFilter: string): boolean {
     if (!salaryFilter) return true;
-    
-    // Convertimos el filtro en un rango numérico
+
     const [minSalary, maxSalary] = salaryFilter.split('-').map(s => parseInt(s.replace(/[^\d]/g, ''), 10) * 1000);
-    //console.log('Salario del empleo:', salario);
-    //console.log('Rango del filtro:', minSalary, '-', maxSalary);
-    // Verifica si el salario está dentro del rango (considerando valores nulos o indefinidos)
     return salario !== undefined && salario !== null && salario >= minSalary && salario <= maxSalary;
   }
 
@@ -120,7 +143,7 @@ export class ListaEmpleosComponent implements OnInit {
     this.selectedEmpleoIndex = index;
     this.empleoSeleccionado = this.empleos[index];
 
-    if(window.innerWidth <= 768){
+    if (window.innerWidth <= 768) {
       this.isDetalleVisibleMobile = true;
     }
   }

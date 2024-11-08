@@ -115,14 +115,16 @@ export class LogInComponent {
       } else {
         this.errorMessage = "Credenciales inválidas. Por favor, verifique su correo y contraseña.";
       }
-    } else {
+    }
+    if(error.status === 500){
+      this.errorMessage = "Credenciales inválidas. Por favor, verifique su correo y contraseña.";
+    }
+    else {
       this.errorMessage = "Hubo un error. Intente de nuevo más tarde.";
     }
     this.clearMessages();
   }
 }
-
-
 /*
   onLogin(){
     debugger;

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '../../../../core/services/user.service';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoaderComponent } from '../../../../shared/ui/loader/loader.component';
 import { CommonModule } from '@angular/common';
@@ -37,7 +37,16 @@ export class CreacionEmpleoComponent {
       horario: ['', Validators.required],
       multimediaNombre: ['', Validators.required],
       multimediaTipo: ['', Validators.required]
-    });
+    },{validators: this.salarioValidator });
+  } 
+
+  salarioValidator(group: AbstractControl): ValidationErrors | null {
+    const salarioMinimo = group.get('salarioMinimo')?.value;
+    const salarioMaximo = group.get('salarioMaximo')?.value;
+    if (salarioMinimo && salarioMaximo && salarioMinimo > salarioMaximo) {
+      return { salarioInvalido: true };
+    }
+    return null;
   }
 
   goToNextSection() {
@@ -51,19 +60,26 @@ export class CreacionEmpleoComponent {
     }
   }
 
-
-  // Método para manejar la selección de archivos
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      this.multimediaFile = input.files[0];
+      const file = input.files[0];
+      
+      // Verificar si el archivo es de tipo imagen
+      if (!file.type.startsWith('image/')) {
+        this.errorMessage = 'Por favor, selecciona solo archivos de imagen.';
+        this.clearMessagesAfterDelay();
+        return;
+      }
+  
+      this.multimediaFile = file;
       this.empleoForm.patchValue({
-        multimediaNombre: this.multimediaFile.name,
-        multimediaTipo: this.multimediaFile.type
+        multimediaNombre: file.name,
+        multimediaTipo: file.type
       });
     }
   }
-
+  
   crearEmpleo() {
     const userData = this.userService.getUserData();
     if (!userData) {

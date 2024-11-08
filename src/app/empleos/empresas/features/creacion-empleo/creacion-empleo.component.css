@@ -1,4 +1,3 @@
-
 .container {
     width: 100%;
     margin: 20px auto;
@@ -134,10 +133,28 @@ select option {
         grid-template-columns: 1fr;
     }
 
+    .form-grid > .form-section {
+        width: 100%; /* Asegura que el ancho se ajuste completamente a la pantalla */
+        padding: 0;
+    }
+
+    fieldset {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
     .container {
         padding: 10px;
-        max-width: 90%; /* Asegura que el ancho no supere el 100% en móviles */
+        max-width: 100%; /* Asegura que el ancho no supere el 100% en móviles */
         box-sizing: border-box; /* Incluye padding y border en el tamaño total */
+    }
+
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center; /* Centra los botones */
     }
 
     fieldset {

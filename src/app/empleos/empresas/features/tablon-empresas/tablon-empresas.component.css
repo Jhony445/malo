@@ -159,6 +159,7 @@
     .div1, .div2, .div3 {
         grid-area: auto; /* Asegura que cada div ocupe su espacio */
     }
+    
 
     .empleos-lista {
         align-items: center;
@@ -169,8 +170,7 @@
         width: 80%;
     }
 
-
-  .div2 {
+  .div2 .detalle {
     display: none; /* Oculta la vista regular del detalle en móvil */
   }
 }

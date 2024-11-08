@@ -27,14 +27,14 @@ export class SearchBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Suscribirse a los cambios en los parámetros de consulta
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
         this.searchKeyword = params['search'];
-        this.applyFilters(true); // Aplica automáticamente los filtros
+        this.applyFilters(true); // Aplica los filtros automáticamente
       }
     });
   }
+  
 
   checkIfMobile(): void {
     this.isMobile = window.innerWidth <= 768;
