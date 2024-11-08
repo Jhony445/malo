@@ -67,6 +67,8 @@ export class LogInComponent {
     this.forgotPasswordMode = !this.forgotPasswordMode;
     this.errorMessage = '';
     this.successMessage = '';
+
+    this.isCompanyLogin = false;
   
     if (this.forgotPasswordMode) {
       this.loginForm.get('contrasena')?.clearValidators();
@@ -79,24 +81,28 @@ export class LogInComponent {
 
   requestPasswordRecovery() {
     if (this.loginForm.get('email')?.valid) {
-      this.isLoading = true;
-      const recoveryApiUrl = "https://malo-backend.onrender.com/api/Recuperacion/solicitar-recuperacion";
+        this.isLoading = true;
+        
+        // URL según tipo de cuenta
+        const recoveryApiUrl = this.isCompanyLogin
+            ? "https://malo-backend-empresas.onrender.com/api/Recuperacion/solicitar-recuperacion"
+            : "https://malo-backend.onrender.com/api/Recuperacion/solicitar-recuperacion";
 
-      this.http.post(recoveryApiUrl, { email: this.loginForm.get('email')?.value }).subscribe(
-        () => {
-          this.isLoading = false;
-          this.successMessage = "Correo de recuperación enviado exitosamente.";
-          this.clearMessages();
-          setTimeout(() => this.toggleForgotPassword(), 7000);
-        },
-        () => {
-          this.isLoading = false;
-          this.errorMessage = "Error al enviar el correo de recuperación. Inténtelo más tarde.";
-          this.clearMessages();
-        }
-      );
+        this.http.post(recoveryApiUrl, { email: this.loginForm.get('email')?.value }).subscribe(
+            () => {
+                this.isLoading = false;
+                this.successMessage = "Correo de recuperación enviado exitosamente.";
+                this.clearMessages();
+                setTimeout(() => this.toggleForgotPassword(), 7000);
+            },
+            () => {
+                this.isLoading = false;
+                this.errorMessage = "Error al enviar el correo de recuperación. Inténtelo más tarde.";
+                this.clearMessages();
+            }
+        );
     }
-  }
+}
 
   clearMessages() {
     setTimeout(() => {

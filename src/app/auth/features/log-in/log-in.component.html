@@ -41,7 +41,11 @@
                                 al menos una letra mayúscula.</span> -->
                         </div>
                     </div>
-
+                    <label *ngIf="forgotPasswordMode">
+                        <input type="checkbox" [(ngModel)]="isCompanyLogin" [ngModelOptions]="{standalone: true}"
+                            name="isCompanyLogin">
+                        Cuenta de empresa
+                    </label>
                     <input type="submit" [disabled]="loginForm.invalid"
                         [value]="forgotPasswordMode ? 'Enviar correo de recuperación' : 'Iniciar sesión'">
                     <label *ngIf="!forgotPasswordMode">
