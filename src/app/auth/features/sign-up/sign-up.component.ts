@@ -5,8 +5,6 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
 import { NotificationComponent } from '../../../shared/ui/notification/notification.component';
-import { EmailService } from '../../services/email.service';
-
 
 @Component({
   selector: 'app-sign-up',
@@ -26,32 +24,32 @@ export class SignUpComponent implements OnInit {
   contrasena = '';
   confirmPass = '';
   codigoInp = '';
-  telefonoTouched = false;
-  emailTouched = false;
-  passwordTouched = false;
-  confirmPassTouched = false;
-  nombreTouched = false;
-  apellidosTouched = false;
-  fechaNacimientoTouched = false;
-  estadoTouched = false;
-  municipioTouched = false;
-  localidadTouched = false;
-  codigoInpTouched = false;
-  emailButtonClicked = false;
+  telefonoTouched: boolean = false;
+  emailTouched: boolean = false;
+  passwordTouched: boolean = false;
+  confirmPassTouched: boolean = false;
+  nombreTouched: boolean = false;
+  apellidosTouched: boolean = false;
+  fechaNacimientoTouched: boolean = false;
+  estadoTouched: boolean = false;
+  municipioTouched: boolean = false;
+  localidadTouched: boolean = false;
+  codigoInpTouched: boolean = false;
+  emailButtonClicked: boolean = false;
   //ubicacion
   estados: any[] = [];
   municipios: any[] = [];
   localidades: any[] = [];
-  estado = '';
-  municipio= '';
-  localidad= '';
+  estado: string = '';
+  municipio: string= '';
+  localidad: string= '';
   //otros
   router = inject(Router);
   http = inject(HttpClient);
-  isLoading = false;
-  emailSent = false;
-  verificationCode = '';
-  errorMessage = '';
+  isLoading: boolean = false;
+  emailSent: boolean = false;
+  verificationCode: string = '';
+  errorMessage: string = '';
 
   ngOnInit(): void {
     this.getEstados();
@@ -87,22 +85,19 @@ export class SignUpComponent implements OnInit {
 
   isForm4Valid(): boolean {
     return this.isEmailValid(this.correo) && 
-           this.isCodigoValid(this.codigoInp, this.verificationCode);
+           this.isPasswordValid(this.contrasena) && 
+           this.doPasswordsMatch(this.contrasena, this.confirmPass)
            
   }
 
-  isForm5Valid(): boolean{
-    return this.isPasswordValid(this.contrasena) && 
-           this.doPasswordsMatch(this.contrasena, this.confirmPass)
-  }
-  
   isEmailValid(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
   
   isPasswordValid(password: string): boolean {
-    return password.length >= 5;
+    const passwordRegex = /^(?=.*[A-Z]).{8,}$/;
+    return passwordRegex.test(password);
   }
   
   doPasswordsMatch(password: string, confirmPassword: string): boolean {
@@ -113,39 +108,10 @@ export class SignUpComponent implements OnInit {
     const phoneRegex = /^[0-9]{10}$/;
     return phoneRegex.test(telefono);
   }
-
-  isCodigoValid(codigo: string,  verificationCode: string): boolean {
-    return  codigo.length === 6  && codigo === verificationCode;
-  }
   
   // Función para verificar si un campo no está vacío
   isNotEmpty(value: string): boolean {
     return value.trim().length > 0;
-  }
-
-  //Enviar correo
-  constructor(private emailService: EmailService){}
-  sendEmail(){
-    this.verificationCode = this.emailService.generateRandomCode();
-    this.isLoading = true;
-
-    this.emailService.sendEmail(this.nombre, this.verificationCode, this.correo)
-    .then(()=>{
-      this.isLoading = false;
-      this.emailSent = true;
-      this.emailButtonClicked = true;
-
-      //Activar temporizador 60s
-      setTimeout(() =>{
-        this.verificationCode = '';
-        this.emailButtonClicked = false;
-      }, 40000);
-      setTimeout(() => (this.emailSent = false), 3000);
-    }).catch((error) =>{
-      this.isLoading =false;
-      this.emailButtonClicked = false;
-      console.error('Error al enviar el código:', error)
-    })
   }
 
   //Obtener estados al iniciar
@@ -183,7 +149,7 @@ export class SignUpComponent implements OnInit {
   
   //insertar usuario
   finishRegister() {
-    if(this.isForm1Valid() && this.isForm2Valid() && this.isForm3Valid() && this.isForm4Valid() && this.isForm5Valid()){
+    if(this.isForm1Valid() && this.isForm2Valid() && this.isForm3Valid() && this.isForm4Valid()){
       // Encuentra los nombres correspondientes al cvegeo seleccionado
       const estadoNombre = this.estados.find(e => e.cvegeo === this.estado)?.nomgeo || '';
       const municipioNombre = this.municipios.find(m => m.cvegeo === this.municipio)?.nomgeo || '';

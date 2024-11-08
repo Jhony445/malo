@@ -5,8 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
 import { NotificationComponent } from '../../../shared/ui/notification/notification.component';
-import { EmailService } from '../../services/email.service';
-//import emailjs from '@emailjs/browser'
 
 @Component({
   selector: 'app-sign-up',
@@ -25,21 +23,21 @@ export class RegisterCompanyComponent {
   contrasena = '';
   confirmPass = '';
   codigoInp = '';
-  nombreTouched = false;
-  industriaTouched = false;
-  ubicacionTouched = false;
-  emailTouched = false;
-  contrasenaTouched = false;
-  confirmPassTouched = false;
-  codigoInpTouched = false;
-  emailButtonClicked = false;
+  nombreTouched: boolean = false;
+  industriaTouched: boolean = false;
+  ubicacionTouched: boolean = false;
+  emailTouched: boolean = false;
+  contrasenaTouched: boolean = false;
+  confirmPassTouched: boolean = false;
+  codigoInpTouched: boolean = false;
+  emailButtonClicked: boolean = false;
   //otros
   router = inject(Router);
   http = inject(HttpClient);
-  isLoading = false;
-  emailSent = false;
-  verificationCode = '';
-  errorMessage = '';
+  isLoading: boolean = false;
+  emailSent: boolean = false;
+  verificationCode: string = '';
+  errorMessage: string = '';
 
   nextStep() {
     if (this.currentStep < 3) {
@@ -63,11 +61,7 @@ export class RegisterCompanyComponent {
 
   isForm2Valid(): boolean {
     return this.isEmailValid(this.correo) &&
-      this.isCodigoValid(this.codigoInp, this.verificationCode)
-  }
-
-  isForm3Valid(): boolean {
-    return this.isPasswordValid(this.contrasena) &&
+      this.isPasswordValid(this.contrasena) &&
       this.doPasswordsMatch(this.contrasena, this.confirmPass)
   }
 
@@ -77,15 +71,12 @@ export class RegisterCompanyComponent {
   }
 
   isPasswordValid(password: string): boolean {
-    return password.length >= 5;
+    const passwordRegex = /^(?=.*[A-Z]).{8,}$/;
+    return passwordRegex.test(password);
   }
 
   doPasswordsMatch(password: string, confirmPassword: string): boolean {
     return password === confirmPassword;
-  }
-
-  isCodigoValid(codigo: string, verificationCode: string): boolean {
-    return codigo.length === 6 && codigo === verificationCode;
   }
 
   // Función para verificar si un campo no está vacío
@@ -93,35 +84,9 @@ export class RegisterCompanyComponent {
     return value.trim().length > 0;
   }
 
-  //Enviar correo
-  constructor(private emailService: EmailService) { }
-  sendEmail() {
-    this.verificationCode = this.emailService.generateRandomCode();
-    this.isLoading = true;
-
-    this.emailService.sendEmail(this.nombre, this.verificationCode, this.correo)
-      .then(() => {
-        this.isLoading = false;
-        this.emailSent = true;
-        this.emailButtonClicked = true;
-
-        // Activar temporizador de 60s
-        setTimeout(() => {
-          this.verificationCode = ''; // Borra el código de verificación
-          this.emailButtonClicked = false; // Reactiva el botón
-        }, 40000);
-
-        setTimeout(() => (this.emailSent = false), 3000); // Ocultar mensaje después de 3 segundos
-      }).catch((error) => {
-        this.isLoading = false;
-        this.emailButtonClicked = false;
-        console.error('Error al enviar el código:', error);
-      });
-  }
-
   //insertar empresa
   finishRegister() {
-    if (this.isForm1Valid() && this.isForm2Valid() && this.isForm3Valid()) {
+    if (this.isForm1Valid() && this.isForm2Valid()) {
       const empresaData = {
         nombre: this.nombre,
         industria: this.industria,
@@ -151,11 +116,11 @@ export class RegisterCompanyComponent {
     }
   }
 
-  clearMessages(){
+  clearMessages() {
     setTimeout(() => {
       this.errorMessage = '';
-    }, 3000);
-}
+    }, 3000);  // Los mensajes desaparecen después de 3 segundos
+  }
 
   goToSignIn() {
     this.router.navigate(['/auth/login']);
