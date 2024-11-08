@@ -23,21 +23,21 @@ export class RegisterCompanyComponent {
   contrasena = '';
   confirmPass = '';
   codigoInp = '';
-  nombreTouched: boolean = false;
-  industriaTouched: boolean = false;
-  ubicacionTouched: boolean = false;
-  emailTouched: boolean = false;
-  contrasenaTouched: boolean = false;
-  confirmPassTouched: boolean = false;
-  codigoInpTouched: boolean = false;
-  emailButtonClicked: boolean = false;
+  nombreTouched = false;
+  industriaTouched = false;
+  ubicacionTouched = false;
+  emailTouched = false;
+  contrasenaTouched = false;
+  confirmPassTouched = false;
+  codigoInpTouched = false;
+  emailButtonClicked = false;
   //otros
   router = inject(Router);
   http = inject(HttpClient);
-  isLoading: boolean = false;
-  emailSent: boolean = false;
-  verificationCode: string = '';
-  errorMessage: string = '';
+  isLoading = false;
+  emailSent = false;
+  verificationCode = '';
+  errorMessage = '';
 
   nextStep() {
     if (this.currentStep < 3) {
@@ -119,7 +119,7 @@ export class RegisterCompanyComponent {
   clearMessages() {
     setTimeout(() => {
       this.errorMessage = '';
-    }, 3000);  // Los mensajes desaparecen después de 3 segundos
+    }, 3000);  // Los mensajes desaparecen después de 3 segundos
   }
 
   goToSignIn() {

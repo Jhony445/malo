@@ -24,32 +24,32 @@ export class SignUpComponent implements OnInit {
   contrasena = '';
   confirmPass = '';
   codigoInp = '';
-  telefonoTouched: boolean = false;
-  emailTouched: boolean = false;
-  passwordTouched: boolean = false;
-  confirmPassTouched: boolean = false;
-  nombreTouched: boolean = false;
-  apellidosTouched: boolean = false;
-  fechaNacimientoTouched: boolean = false;
-  estadoTouched: boolean = false;
-  municipioTouched: boolean = false;
-  localidadTouched: boolean = false;
-  codigoInpTouched: boolean = false;
-  emailButtonClicked: boolean = false;
+  telefonoTouched = false;
+  emailTouched = false;
+  passwordTouched = false;
+  confirmPassTouched = false;
+  nombreTouched = false;
+  apellidosTouched = false;
+  fechaNacimientoTouched = false;
+  estadoTouched = false;
+  municipioTouched = false;
+  localidadTouched = false;
+  codigoInpTouched = false;
+  emailButtonClicked = false;
   //ubicacion
   estados: any[] = [];
   municipios: any[] = [];
   localidades: any[] = [];
-  estado: string = '';
-  municipio: string= '';
-  localidad: string= '';
+  estado = '';
+  municipio= '';
+  localidad= '';
   //otros
   router = inject(Router);
   http = inject(HttpClient);
-  isLoading: boolean = false;
-  emailSent: boolean = false;
-  verificationCode: string = '';
-  errorMessage: string = '';
+  isLoading = false;
+  emailSent = false;
+  verificationCode = '';
+  errorMessage = '';
 
   ngOnInit(): void {
     this.getEstados();
