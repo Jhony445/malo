@@ -14,15 +14,6 @@ import { SearchBarComponent } from '../../ui/search-bar/search-bar.component';
   selector: 'app-lista-empleos',
   standalone: true,
   imports: [CommonModule, CardEmpleosComponent, DetalleEmpleoComponent, TituloComponent, SearchBarComponent],
-  /* imports: [
-    CommonModule,
-    CardEmpleosComponent,
-    DetalleEmpleoComponent,
-    TituloComponent,
-    LoaderComponent,
-    SearchBarComponent
-  ],
-  */
   templateUrl: './lista-empleos.component.html',
   styleUrls: ['./lista-empleos.component.css']
 })

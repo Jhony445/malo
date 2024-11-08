@@ -79,7 +79,7 @@ describe('LogInComponent', () => {
 
     // Verifica que el loader se detenga y que el mensaje de error se muestre correctamente
     expect(component.isLoading).toBeFalse();
-    expect(component.errorMessage).toBe('Hubo un error. Intente de nuevo más tarde.');
+    expect(component.errorMessage).toBe('Por favor, completa el formulario correctamente.');
   });
 
   // Prueba para verificar la redirección en caso de un inicio de sesión exitoso

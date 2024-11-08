@@ -31,7 +31,7 @@ export class LogInComponent {
   constructor() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      contrasena: ['', [Validators.required, Validators.minLength(8), upperCaseValidator()]]
+      contrasena: ['', [Validators.required, Validators.minLength(5)]]
     });
   }
 
