@@ -91,6 +91,26 @@
 .clear-btn:hover {
     background-color: #d9534f;
 }
+
+/* Estilo para simular el placeholder */
+select option[value=""][disabled][selected] {
+    color: #9e9e9e; /* Color gris similar al placeholder */
+  }
+  
+  /* Estilo adicional para cuando se selecciona una opción válida */
+  select:focus {
+    color: black; /* Cambiar el color a negro al seleccionar */
+  }
+
+  /* Ajuste opcional */
+select {
+    color: #9e9e9e; /* Por defecto color gris */
+}
+
+select:focus {
+    color: black; /* Cambia a negro al interactuar */
+}
+
 @media (max-width: 768px) {
     .search-bar {
         display: none;

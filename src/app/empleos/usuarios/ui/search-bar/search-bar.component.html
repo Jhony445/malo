@@ -23,7 +23,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
       </svg>
       <select [(ngModel)]="schedule">
-        <option value="" disabled selected>Horario</option>
+        <option value="" disabled selected hidden>Horario</option>
         <option value="medio tiempo">Medio Tiempo</option>
         <option value="completo">Tiempo Completo</option>
         <option value="temporal">Temporal</option>
@@ -36,7 +36,7 @@
       </svg>
       
       <select [(ngModel)]="salary">
-        <option value="" disabled selected>Sueldo</option>
+        <option value="" disabled selected hidden>Sueldo</option>
         <option value="1-5k">$1,000 - $5,000</option>
         <option value="6-9k">$6,000 - $9,000</option>
         <option value="10-20k">$10,000 - $20,000</option>
