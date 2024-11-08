@@ -38,7 +38,7 @@
           <a href="#" id="perfil" class="perfil" (click)="navigateToProfile(); $event.preventDefault(); toggleProfileMenu($event)">Perfil</a>
           <ul class="dropdown-content" [class.active]="profileMenuOpen">
             <li><a href="usuario/perfil">Configuración</a></li>
-            <li><a href="#" class="logout" (click)="logout()">Cerrar sesión</a></li>
+            <li><a href="/auth/login" class="logout" (click)="logout()">Cerrar sesión</a></li>
           </ul>
         </li>
       </ng-container>

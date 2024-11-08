@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -116,6 +117,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.user = { email: '', rol: '' };
     this.profileMenuOpen = false;
     this.enableScroll();
+    //this.router.navigate(['/auth/login']);
   }
 
   ngOnDestroy() {

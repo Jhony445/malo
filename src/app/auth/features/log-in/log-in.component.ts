@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule, ValidatorFn,AbstractControl,ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../../core/services/user.service';
 import { CommonModule } from '@angular/common';
@@ -31,7 +31,7 @@ export class LogInComponent {
   constructor() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      contrasena: ['', Validators.required]
+      contrasena: ['', [Validators.required, Validators.minLength(8), upperCaseValidator()]]
     });
   }
 
@@ -124,6 +124,13 @@ export class LogInComponent {
     }
     this.clearMessages();
   }
+}
+
+function upperCaseValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const hasUpperCase = /[A-Z]/.test(control.value);
+    return hasUpperCase ? null : { upperCase: true };
+  };
 }
 /*
   onLogin(){

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule , ValidatorFn,AbstractControl,ValidationErrors} from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -30,7 +30,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor() {
     this.forgotPasswordForm = this.fb.group({
-      newPassword: ['', [Validators.required, Validators.minLength(8)]],
+      newPassword: ['', [Validators.required, Validators.minLength(8), upperCaseValidator()]],
       confirmPassword: ['', Validators.required]
     });
   }
@@ -91,3 +91,9 @@ export class ForgotPasswordComponent implements OnInit {
   }
 }
 
+function upperCaseValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const hasUpperCase = /[A-Z]/.test(control.value);
+    return hasUpperCase ? null : { upperCase: true };
+  };
+}
