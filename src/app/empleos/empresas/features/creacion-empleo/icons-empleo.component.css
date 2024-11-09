@@ -24,3 +24,26 @@
     color: #1e90ff;
     font-size: 1.2rem; /* Ajusta el tamaño según necesites */
 }
+
+.back-button {
+    display: flex;
+    align-items: center;
+    background: none; /* Sin fondo */
+    border: none;
+    color: #007bff;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 10px;
+    text-decoration: none;
+}
+
+.back-button .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+}
+
+.back-button:hover {
+    color: #0056b3;
+}

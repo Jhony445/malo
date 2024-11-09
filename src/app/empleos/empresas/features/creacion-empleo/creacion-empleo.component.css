@@ -82,8 +82,8 @@ button {
     margin-top: 20px;
 }
 
-button:hover {
-    background-color: #0f8100;
+.button-container button:hover {
+    background-color: #0f8100; /* Aplica solo a botones dentro de .button-container */
 }
 
 .button-container {

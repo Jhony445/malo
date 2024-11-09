@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { LoaderComponent } from '../../../../shared/ui/loader/loader.component';
 import { CommonModule } from '@angular/common';
 import { NotificationComponent } from '../../../../shared/ui/notification/notification.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-creacion-empleo',
@@ -26,7 +27,8 @@ export class CreacionEmpleoComponent {
     private userService: UserService,
     private http: HttpClient,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {
     this.empleoForm = this.fb.group({
       titulo: ['', Validators.required],
@@ -145,5 +147,9 @@ export class CreacionEmpleoComponent {
       this.errorMessage = '';
       this.successMessage = '';
     }, 3000);
+  }
+
+  onCancel() {
+    this.location.back();
   }
 }
