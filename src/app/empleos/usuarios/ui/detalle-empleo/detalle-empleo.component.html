@@ -1,11 +1,12 @@
 <div class="detalle-container" *ngIf="empleo">
   <div class="detalle-header">
-    <h2>{{ empleo.titulo }}</h2>
+    <h2>{{ empleo.titulo }}</h2> 
+    <!--<h2>{{empleo.empleoId}}</h2>-->
   </div>
-  
+
   <p class="salario">$ {{ empleo.salario_maximo }} Máximo</p>
   <p class="salario-minimo">$ {{ empleo.salario_minimo }} Mínimo</p>
-  <p class="empresa"> {{ empleo.empresaNombre }}</p>
+  <p class="empresa">{{ empleo.empresaNombre }}</p>
   <p class="ubicacion">{{ empleo.ubicacion }}</p>
 
   <!-- Imagen del empleo -->
@@ -25,8 +26,40 @@
     <p>{{ empleo.descripcion }}</p>
   </div>
 
-  <!-- Botón para postularse o registrarse -->
-  <button class="btn-postularse" (click)="onButtonClick()">
+  <!-- Botón para postularse -->
+  <button class="btn-postularse" (click)="onButtonClick()" [disabled]="isEmpresa || !isAuthenticated">
     {{ isAuthenticated ? 'Postularse' : 'Regístrate para postularte' }}
   </button>
+
+  <!-- Mensaje informativo si el usuario es una empresa -->
+  <p *ngIf="isEmpresa" class="info-empresa">
+    Las empresas no pueden postularse a empleos.
+  </p>
+
+  <!-- Diálogo de confirmación -->
+  <div *ngIf="showConfirmDialog" class="confirm-dialog-overlay">
+    <div class="confirm-dialog">
+      <!-- Loader mientras se envía la postulación -->
+      <ng-container *ngIf="isSubmitting; else confirmButtons">
+        <div class="loader"></div>
+        <p>Enviando postulación...</p>
+      </ng-container>
+
+      <!-- Botones de confirmación y cancelación -->
+      <ng-template #confirmButtons>
+        <ng-container *ngIf="!showSuccess; else successMessage">
+          <p>¿Estás seguro de que deseas postularte a este empleo?</p>
+          <button class="btn-confirm" (click)="confirmApply()">Confirmar</button>
+          <button class="btn-cancel" (click)="cancelApply()">Cancelar</button>
+        </ng-container>
+      </ng-template>
+
+      <!-- Mensaje de éxito después de la postulación -->
+      <ng-template #successMessage>
+        <div class="success-icon">&#10004;</div>
+        <p>Postulación enviada con éxito</p>
+        <button class="btn-confirm" (click)="closeDialog()">Aceptar</button>
+      </ng-template>
+    </div>
+  </div>
 </div>

@@ -3,13 +3,14 @@ import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shared/ui/layout/navbar.component';
 import { FooterComponent } from './shared/ui/footer/footer.component';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  imports: [RouterOutlet, NavbarComponent, FooterComponent, CommonModule]
+  imports: [RouterOutlet, FooterComponent, CommonModule,  HttpClientModule]
 })
 export class AppComponent {}
 
