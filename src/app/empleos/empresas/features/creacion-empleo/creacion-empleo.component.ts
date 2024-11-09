@@ -108,7 +108,6 @@ export class CreacionEmpleoComponent {
     formData.append('multimediaTipo', this.multimediaFile?.type || '');
     formData.append('archivo', this.multimediaFile);
 
-
     formData.append('ContentType', this.multimediaFile.type);
     formData.append('ContentDisposition', `attachment; filename="${this.multimediaFile.name}"`);
     formData.append('Length', this.multimediaFile.size.toString());

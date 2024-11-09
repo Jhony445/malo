@@ -1,3 +1,225 @@
-<div class="parent">
-    <h1>Hola</h1>
-</div>
+<div class="profile-container" #profileContainer>
+    <div class="section perfilData">
+      <!-- Información del usuario -->
+        <div class="profile-photo" (click)="triggerFileInput()">
+          <img [src]="prevPhoto" alt="Foto de Perfil" *ngIf="prevPhoto"/>
+          <div class="overlay-text">Cambiar</div>
+          <div class="edit-icon">
+            <i class="fas fa-edit"></i>
+          </div>
+        </div>
+        <input type="file" #fileInput (change)="onFileSelectedIMG($event)" accept="image/*" style="display: none;" />
+        
+        <div class="separator-container">
+          <hr class="separator" />
+          <p>Datos personales</p>
+          <span class="separator-icon"><i class="fa fa-angle-down"></i></span> <!-- Icono al lado derecho -->
+        </div>
+        <div class="section-content visible">
+          <p>{{prevName}}</p>
+          <p>{{prevApellidos}}</p>
+          <p>{{prevCorreo}}</p>
+          <p>{{prevFechaNacimiento}}</p>
+          <p>{{prevTel}}</p>
+        </div>
+        
+        <div class="separator-container">
+          <hr class="separator" />
+          <p>Ubicación</p>
+          <span class="separator-icon"><i class="fa fa-angle-down"></i></span> <!-- Icono al lado derecho -->
+        </div>
+        <div class="section-content visible">
+          <p>{{prevEstado}}</p>
+          <p>{{prevMunicipio}}</p>
+          <p>{{prevLocalidad}}</p>
+        </div>
+        
+        <div class="separator-container">
+          <hr class="separator" />
+          <p>Empleos</p>
+          <span class="separator-icon"><i class="fa fa-angle-down"></i></span> <!-- Icono al lado derecho -->
+        </div>
+        <div class="section-content visible">
+          <p>{{prevHabilidades}}</p>
+          <p>{{prevExperiencias}}</p>
+        </div>    
+    </div>
+  
+    <div class="section editData">
+      <!-- Sección para editar los datos del usuario -->
+       <h2 *ngIf="isMessageShown()">Modifica tu perfil</h2>
+       <app-notification *ngIf="errorMessage" [message]="errorMessage" [isError]="true"></app-notification>
+       <app-notification *ngIf="successMessage" [message]="successMessage"></app-notification>
+  
+      <!-- Empleos -->
+      <div class="separator-containerE">
+        <p>Empleos</p>
+        <hr class="separatorE" />
+        <span class="separator-iconE"><i class="fa fa-angle-down"></i></span> <!-- Icono al lado derecho -->
+      </div>
+      <div class="section-content visible">
+        <p class="skills-p">Habilidades</p>
+        <div class="skills-container">
+          <div *ngFor="let habilidad of habilidadesUsuario; let i = index" class="skill">
+            {{ habilidad }} 
+            <span class="close" (click)="eliminarHabilidad(i)">&times;</span>
+          </div>
+        </div>      
+        <!-- habilidades -->
+        <div class="form-group habilidadesFG">
+          <input
+            id="habilidad"
+            type="text"
+            [(ngModel)]="nuevaHabilidadDescripcion"
+            placeholder="Buscar habilidad"
+            (input)="filtrarHabilidades(); habilidadesTouched = true"
+            (blur)="habilidadesTouched = false"
+          />
+          <button
+            class="add-button"
+            (click)="agregarHabilidad()"
+            [disabled]="!isNotEmpty(nuevaHabilidadDescripcion)"
+          >
+            +
+          </button>
+        
+          <div *ngIf="habilidadesFiltradas.length > 0 && habilidadesTouched" class="sugerencias-container">
+            <ul>
+              <li *ngFor="let habilidad of habilidadesFiltradas" 
+                  (mousedown)="seleccionarHabilidad(habilidad.id, habilidad.descripcion)">
+                {{ habilidad.descripcion }}
+              </li>
+            </ul>
+          </div>        
+        </div>      
+         <!-- fin habilidades -->
+        <div class="form-group">
+          <label *ngIf="isNotEmpty(experiencias) || !experienciaTouched" for="exp">Experiencia</label>
+          <label *ngIf="!isNotEmpty(experiencias) && experienciaTouched" for="exp" class="error">
+            ¡Agrega tu experiencia!
+          </label>
+          <textarea 
+            id="exp" 
+            [(ngModel)]="experiencias" 
+            (blur)="experienciaTouched = true"
+            rows="6" 
+            placeholder="Describe tu experiencia aquí"
+          ></textarea>
+        </div>      
+        <div class="form-group file-input">
+          <label for="cv">CV</label>
+          <input 
+            id="cv" 
+            type="file" 
+            (change)="onFileSelectedPDF($event)" 
+            accept=".pdf" 
+          />
+        </div>
+        <button class="actualizar" (click)="actualizarUsuario()" [disabled]="!isform1Valid()">Guardar cambios</button>
+      </div>
+  
+      <!-- DATOS PERSONALES -->
+      <div class="separator-containerE">
+        <p>Datos personales</p>
+        <hr class="separatorE" />
+        <span class="separator-iconE"><i class="fa fa-angle-up"></i></span> <!-- Icono al lado derecho -->
+      </div>
+      <div class="section-content rotated">
+        <div class="form-row">
+          <div class="form-group">
+            <label *ngIf="!nombreTouched || isNotEmpty(nombre)" for="nombre">Nombre</label>
+            <label *ngIf="nombreTouched && !isNotEmpty(nombre)" for="nombre" class="error">
+              Debes agregar un nombre!
+            </label>
+            <input id="nombre" type="text" [(ngModel)]="nombre" (blur)="nombreTouched = true" />
+          </div>
+          <div class="form-group">
+            <label *ngIf="!apellidosTouched || isNotEmpty(apellidos)" for="apellidos">Apellido</label>
+            <label *ngIf="apellidosTouched && !isNotEmpty(apellidos)" for="apellidos" class="error">
+              Debes agregar apellidos!
+            </label>
+            <input id="apellido" type="text" [(ngModel)]="apellidos" (blur)="apellidosTouched = true" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label *ngIf="isPhoneValid(telefono) || !telefonoTouched" for="telefono">Teléfono</label>
+            <label *ngIf="!isPhoneValid(telefono) && telefonoTouched" for="telefono" class="error">
+              El teléfono debe tener 10 dígitos!.
+            </label>
+            <input id="telefono" type="tel" [(ngModel)]="telefono" (blur)="telefonoTouched = true"/>
+          </div>
+          <!-- <div class="form-group">
+            <label *ngIf="!fechaNacimientoTouched || isNotEmpty(fechaNacimiento)" for="fechaNacimiento">Fecha de Nacimiento</label>
+            <label *ngIf="fechaNacimientoTouched && !isNotEmpty(fechaNacimiento)" for="fechaNacimiento" class="error">
+              Debes agregar una fecha de nacimiento!.
+            </label>
+            <input id="fechaNacimiento" type="date" [(ngModel)]="fechaNacimiento" (blur)="fechaNacimientoTouched = true" />
+          </div> -->
+        </div>
+        <button class="actualizar" (click)="actualizarUsuario()" [disabled]="!isform2Valid()">Guardar cambios</button>
+      </div>
+  
+      <!-- UBICACIÓN -->
+      <div class="separator-containerE">
+        <p>Ubicación</p>
+        <hr class="separatorE" />
+        <span class="separator-iconE"><i class="fa fa-angle-up"></i></span> <!-- Icono al lado derecho -->
+      </div>
+      <div class="section-content rotated">
+        <div class="form-group">
+          <label *ngIf="!estadoTouched || isNotEmpty(estado)" for="estado">Estado</label>
+          <label *ngIf="estadoTouched && !isNotEmpty(estado)" for="estado" class="error">
+            Debes seleccionar un estado!
+          </label>
+          <select id="estado" [(ngModel)]="estado" (change)="onEstadoChange(estado)" (blur)="estadoTouched = true" required>
+            <option value="" disabled selected>{{prevEstado}}</option>
+            <option *ngFor="let estado of estados" [value]="estado.cvegeo">{{ estado.nomgeo }}</option>
+          </select>
+        </div>
+  
+        <!-- Select para Municipio -->
+        <div class="form-group">
+          <label *ngIf="!municipioTouched || isNotEmpty(municipio)" for="municipio">Municipio</label>
+          <label *ngIf="municipioTouched && !isNotEmpty(municipio)" for="municipio" class="error">
+            Debes seleccionar un municipio!
+          </label>
+          <select id="municipio" [(ngModel)]="municipio" (change)="onMunicipioChange(municipio)" (blur)="municipioTouched = true" required>
+            <option value="" disabled selected>{{prevMunicipio}}</option>
+            <option *ngFor="let municipio of municipios" [value]="municipio.cvegeo">{{ municipio.nomgeo }}</option>
+          </select>
+        </div>
+  
+        <!-- Select para Localidad -->
+        <div class="form-group">
+          <label *ngIf="!localidadTouched || isNotEmpty(localidad)" for="localidad">Localidad</label>
+          <label *ngIf="localidadTouched && !isNotEmpty(localidad)" for="localidad" class="error">
+            Debes seleccionar una localidad!
+          </label>
+          <select id="localidad" [(ngModel)]="localidad" (blur)="localidadTouched = true" required>
+            <option value="" disabled selected>{{prevLocalidad}}</option>
+            <option *ngFor="let localidad of localidades" [value]="localidad.cvegeo">{{ localidad.nomgeo }}</option>
+          </select>
+        </div>
+        <button class="actualizar" (click)="actualizarUsuario()" [disabled]="!isform3Valid()">Guardar cambios</button>
+      </div>
+  
+      <!-- CREDENCIALES -->
+      <div class="separator-containerE">
+        <p>Credenciales</p>
+        <hr class="separatorE" />
+        <span class="separator-iconE"><i class="fa fa-angle-up"></i></span> <!-- Icono al lado derecho -->
+      </div>
+      <div class="section-content rotated">
+          <div class="form-group">
+            <label *ngIf="isEmailValid(correo) || !emailTouched" for="correo">Correo</label>
+            <label *ngIf="!isEmailValid(correo) && emailTouched" for="correo" class="error">
+              El correo no es válido. Debe contener "&#64;" y un formato válido!
+            </label>
+            <input id="correo" type="email" [(ngModel)]="correo" (blur)="emailTouched = true"/>
+          </div>
+        <button class="actualizar" (click)="actualizarUsuario()" [disabled]="!isform4Valid()">Guardar cambios</button>
+      </div>
+    </div>
+    <app-loader *ngIf="isLoading"></app-loader>
+  </div>
