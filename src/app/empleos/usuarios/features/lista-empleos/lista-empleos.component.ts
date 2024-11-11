@@ -72,6 +72,12 @@ export class ListaEmpleosComponent implements OnInit {
           this.empleos.sort((a, b) => new Date(b.fecha_publicacion).getTime() - new Date(a.fecha_publicacion).getTime());
   
           this.filteredEmpleos = this.empleos;
+
+                  // Seleccionar automáticamente el primer empleo
+        if (this.filteredEmpleos.length > 0) {
+          this.onCardClick(0);  // Seleccionar el primer empleo (índice 0)
+        }
+
           this.applyInitialFilters();
           this.updateTotalPages();
           this.isLoading = false;
