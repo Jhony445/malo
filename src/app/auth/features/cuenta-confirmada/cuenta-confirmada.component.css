@@ -7,4 +7,38 @@
     max-width: 400px;
     margin: auto;
     min-height: 100vh;
+    text-align: center;
+    position: relative;
   }
+  
+  #tsparticles {
+    position: fixed; /* Cambiado de absolute a fixed */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1; /* Asegura que esté por encima del contenido */
+  }
+  
+  .icono-container {
+    margin-bottom: 20px;
+  }
+  
+  .icono {
+    width: 400px; /* Ajusta el tamaño del icono según lo necesario */
+    height: 400px;
+    margin-bottom: 20px;
+  }
+  
+  .mensaje {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4caf50; /* Verde para éxito */
+  }
+  
+  .submensaje {
+    font-size: 1rem;
+    color: #555;
+  }
+  
