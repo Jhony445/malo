@@ -21,8 +21,8 @@ export class DetalleEmpleoComponent implements OnInit, OnChanges {
   showAppliedDialog = false;
   isSubmitting = false;
   showSuccess = false;
-  usuarioID: string = '';
-  appliedJobIDs: Set<string> = new Set();
+  usuarioID = '';
+  appliedJobIDs = new Set<string>();
   applicationCount: number | null = null;
 
   constructor(
