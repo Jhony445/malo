@@ -1,41 +1,70 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../../core/services/user.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-declare const confetti: any; // Declara confetti para TypeScript
+declare const confetti: any;
 
 @Component({
   selector: 'app-detalle-empleo',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './detalle-empleo.component.html',
-  styleUrls: ['./detalle-empleo.component.css']
+  styleUrls: ['./detalle-empleo.component.css', './detalle-empleoPostular.component.css']
 })
-export class DetalleEmpleoComponent {
+export class DetalleEmpleoComponent implements OnInit, OnChanges {
   @Input() empleo: any;
   isAuthenticated = false;
   isEmpresa = false;
   showConfirmDialog = false;
+  showAppliedDialog = false;
   isSubmitting = false;
   showSuccess = false;
   usuarioID: string = '';
+  appliedJobIDs: Set<string> = new Set();
+  applicationCount: number | null = null;
 
   constructor(
     private userService: UserService,
     private router: Router,
     private http: HttpClient
-  ) {
-    // Subscribe a los cambios de autenticación y obtener el usuarioID
+  ) { }
+
+  ngOnInit(): void {
+    this.subscribeToAuthState();
+    this.fetchAppliedJobs();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["empleo"] && changes["empleo"].currentValue) {
+      this.fetchApplicationCount();
+      console.log('ID de empleo:', this["empleo"].empleoId);
+    }
+  }
+
+  private subscribeToAuthState(): void {
     this.userService.isAuthenticated$.subscribe(authState => {
       this.isAuthenticated = authState;
       const userData = this.userService.getUserData();
       if (userData) {
-        this.usuarioID = userData.sub; // El usuarioID es el "sub" en el JWT
+        this.usuarioID = userData.sub;
+        this.isEmpresa = userData.rol === 'Empresa';
       }
-      this.isEmpresa = userData?.rol === 'Empresa';
     });
+  }
+
+  private fetchAppliedJobs(): void {
+    if (!this.usuarioID) return;
+  
+    const postData = { usuarioID: this.usuarioID };
+    this.http.post<any[]>('https://malo-backend-empleos.onrender.com/api/Aplicacion/obtener-empleos-por-usuario', postData)
+      .subscribe({
+        next: (appliedJobs) => {
+          this.appliedJobIDs = new Set(appliedJobs.map(job => job.empleoID));
+        },
+        error: (error) => console.error('Error fetching applied jobs:', error)
+      });
   }
 
   onButtonClick() {
@@ -43,51 +72,65 @@ export class DetalleEmpleoComponent {
       this.router.navigate(['/auth/login']);
       return;
     }
-
     if (this.isEmpresa) {
       console.log('Las empresas no pueden postularse a empleos');
       return;
     }
+    this.checkIfAlreadyApplied();
+  }
 
-    this.showConfirmDialog = true;
+  checkIfAlreadyApplied() {
+    if (this.appliedJobIDs.has(this.empleo.empleoId)) {
+      this.showAppliedDialog = true;
+    } else {
+      this.showConfirmDialog = true;
+    }
+  }
+
+  closeAppliedDialog() {
+    this.showAppliedDialog = false;
   }
 
   confirmApply() {
     this.isSubmitting = true;
 
-    // Verifica que tenemos el usuarioID antes de enviar la solicitud
-    if (!this.usuarioID) {
-      console.error('No se pudo obtener el usuarioID');
-      return;
-    }
-
-    // Datos a enviar a la API
     const postData = {
-      usuarioID: this.usuarioID,  // Enviar el usuarioID usando userData.sub
+      usuarioID: this.usuarioID,
       empleoID: this.empleo.empleoId
     };
 
-    // Realiza la solicitud HTTP POST con responseType como 'text' para evitar el error de JSON
     this.http.post('https://malo-backend-empleos.onrender.com/api/Aplicacion/aplicar-empleo', postData, { responseType: 'text' })
       .subscribe({
-        next: (response) => {
-          console.log('Respuesta de la API:', response);
+        next: () => {
           this.isSubmitting = false;
           this.showSuccess = true;
-          this.shootConfetti();  // Lanza la animación de confeti
+          this.shootConfetti();
+          this.fetchAppliedJobs();
+          this.fetchApplicationCount();  // Actualizar el conteo después de aplicar
         },
         error: (error) => {
-          console.error('Error al enviar la postulación:', error);
+          console.error('Error applying for job:', error);
           this.isSubmitting = false;
-          alert('Hubo un problema al enviar la postulación. Inténtalo de nuevo.');
         }
+      });
+  }
+
+  private fetchApplicationCount(): void {
+    if (!this["empleo"] || !this["empleo"].empleoId) return;
+  
+    const postData = { empleoID: this["empleo"].empleoId };
+    this.http.post<number>('https://malo-backend-empleos.onrender.com/api/Aplicacion/contar-aplicaciones-por-empleo', postData)
+      .subscribe({
+        next: (count) => {
+          this.applicationCount = count;
+        },
+        error: (error) => console.error('Error fetching application count:', error)
       });
   }
 
   closeDialog() {
     this.showConfirmDialog = false;
     this.showSuccess = false;
-    console.log('Postulación enviada correctamente');
   }
 
   cancelApply() {

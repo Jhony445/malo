@@ -1,7 +1,7 @@
 <div class="detalle-container" *ngIf="empleo">
   <div class="detalle-header">
-    <h2>{{ empleo.titulo }}</h2> 
-    <!--<h2>{{empleo.empleoId}}</h2>-->
+  <!-- <h2>{{ empleo.empleoId }}</h2>-->
+    <h2>{{ empleo.titulo }}</h2>
   </div>
 
   <p class="salario">$ {{ empleo.salario_maximo }} Máximo</p>
@@ -26,17 +26,39 @@
     <p>{{ empleo.descripcion }}</p>
   </div>
 
+  <div class="application-count-container">
+    <p *ngIf="applicationCount !== null" [ngClass]="{
+        'warning': applicationCount === 0,
+        'success': applicationCount === 1,
+        'info': applicationCount > 1
+    }">
+      <!-- Si no hay postulaciones, mostrar mensaje personalizado -->
+      {{ applicationCount === 0 ? '¡Sé el primero en postularte!' : (applicationCount > 1 ? 'Más de ' + applicationCount + ' personas se han postulado a este empleo' : '1 persona se ha postulado a este empleo') }}
+    </p>
+  </div>
+
   <!-- Botón para postularse -->
-  <button class="btn-postularse" (click)="onButtonClick()" [disabled]="isEmpresa || !isAuthenticated">
-    {{ isAuthenticated ? 'Postularse' : 'Regístrate para postularte' }}
-  </button>
+  <button 
+  class="btn-postularse" 
+  (click)="onButtonClick()" 
+  [disabled]="isEmpresa">
+  {{ isAuthenticated ? 'Postularse' : 'Regístrate para postularte' }}
+</button>
 
   <!-- Mensaje informativo si el usuario es una empresa -->
   <p *ngIf="isEmpresa" class="info-empresa">
     Las empresas no pueden postularse a empleos.
   </p>
 
-  <!-- Diálogo de confirmación -->
+  <!-- Diálogo cuando el usuario ya se ha postulado -->
+  <div *ngIf="showAppliedDialog" class="dialog-overlay">
+    <div class="dialog">
+      <p>Ya te has postulado a este empleo.</p>
+      <button class="btn-confirm" (click)="closeAppliedDialog()">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- Diálogo de confirmación para postularse -->
   <div *ngIf="showConfirmDialog" class="confirm-dialog-overlay">
     <div class="confirm-dialog">
       <!-- Loader mientras se envía la postulación -->

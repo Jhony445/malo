@@ -1,14 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 
-// Importa sólo los componentes que realmente uses en la plantilla
 import { CardEmpleosComponent } from '../../ui/card-empleos/card-empleos.component';
 import { DetalleEmpleoComponent } from '../../ui/detalle-empleo/detalle-empleo.component';
 import { TituloComponent } from "../../../../shared/ui/titulo/titulo.component";
 import { SearchBarComponent } from '../../ui/search-bar/search-bar.component';
-
 
 @Component({
   selector: 'app-lista-empleos',
@@ -30,11 +28,11 @@ export class ListaEmpleosComponent implements OnInit {
   initialFilters: any = {}; // Para almacenar filtros iniciales de la URL
   isLoading = true; // Para manejar el estado de carga
 
+  @Output() empleoSeleccionadoEvent = new EventEmitter<number>();
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    // Lee los filtros iniciales de la URL
     this.route.queryParams.subscribe(params => {
       this.initialFilters = {
         searchKeyword: params['search'] || '',
@@ -59,7 +57,7 @@ export class ListaEmpleosComponent implements OnInit {
   }
 
   fetchEmpleos() {
-    this.isLoading = true; // Comienza a cargar
+    this.isLoading = true;
     this.http.get<any[]>('https://malo-backend-empleos.onrender.com/api/Empleo/GetEmpleos')
       .subscribe(
         (data: any[]) => {
@@ -73,30 +71,25 @@ export class ListaEmpleosComponent implements OnInit {
   
           this.empleos.sort((a, b) => new Date(b.fecha_publicacion).getTime() - new Date(a.fecha_publicacion).getTime());
   
-          this.filteredEmpleos = this.empleos; // Inicializa con todos los empleos
-          this.applyInitialFilters(); // Aplica los filtros iniciales
+          this.filteredEmpleos = this.empleos;
+          this.applyInitialFilters();
           this.updateTotalPages();
-           this.isLoading = false; 
+          this.isLoading = false;
         },
         error => {
           console.error('Error al cargar empleos:', error);
-          this.isLoading = false; // Asegura que el estado se actualiza incluso en error
+          this.isLoading = false;
         }
-       
       );
   }
 
   applyInitialFilters() {
-    // Si hay algún filtro inicial, aplícalo automáticamente
     if (Object.values(this.initialFilters).some(filter => filter)) {
       this.onFiltersApplied(this.initialFilters);
     }
   }
 
   onFiltersApplied(filters: any) {
-    console.log('Filtros aplicados:', filters);
-
-    // Filtra empleos según los criterios
     this.filteredEmpleos = this.empleos.filter(empleo => {
       return (
         (!filters.searchKeyword || empleo.titulo.toLowerCase().includes(filters.searchKeyword.toLowerCase())) &&
@@ -141,6 +134,9 @@ export class ListaEmpleosComponent implements OnInit {
   onCardClick(index: number) {
     this.selectedEmpleoIndex = index;
     this.empleoSeleccionado = this.empleos[index];
+
+    // Emitir el empleoId del empleo seleccionado usando empleoSeleccionadoEvent
+    this.empleoSeleccionado?.empleoId && this.empleoSeleccionadoEvent.emit(this.empleoSeleccionado.empleoId);
 
     if (window.innerWidth <= 768) {
       this.isDetalleVisibleMobile = true;
