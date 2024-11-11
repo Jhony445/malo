@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from './shared/ui/layout/navbar.component';
 import { FooterComponent } from './shared/ui/footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';

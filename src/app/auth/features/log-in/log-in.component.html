@@ -56,7 +56,7 @@
                     <app-loader *ngIf="isLoading"></app-loader>
                 </form>
                 <div class="link-container">
-                    <a href="#" (click)="toggleForgotPassword(); $event.preventDefault();">
+                    <a href="#" (click)="toggleForgotPassword(); $event.preventDefault(); ">
                         {{ forgotPasswordMode ? 'Volver a iniciar sesión' : 'Olvidé mi contraseña' }}
                     </a>
                     <div *ngIf="!forgotPasswordMode" class="divider"></div>

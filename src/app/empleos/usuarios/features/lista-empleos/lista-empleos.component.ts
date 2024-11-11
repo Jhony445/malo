@@ -142,7 +142,9 @@ export class ListaEmpleosComponent implements OnInit {
     this.empleoSeleccionado = this.empleos[index];
 
     // Emitir el empleoId del empleo seleccionado usando empleoSeleccionadoEvent
-    this.empleoSeleccionado?.empleoId && this.empleoSeleccionadoEvent.emit(this.empleoSeleccionado.empleoId);
+    if (this.empleoSeleccionado?.empleoId) {
+      this.empleoSeleccionadoEvent.emit(this.empleoSeleccionado.empleoId);
+    }
 
     if (window.innerWidth <= 768) {
       this.isDetalleVisibleMobile = true;

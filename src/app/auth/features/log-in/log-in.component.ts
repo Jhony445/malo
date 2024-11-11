@@ -132,12 +132,7 @@ export class LogInComponent {
   }
 }
 
-function upperCaseValidator(): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const hasUpperCase = /[A-Z]/.test(control.value);
-    return hasUpperCase ? null : { upperCase: true };
-  };
-}
+
 /*
   onLogin(){
     debugger;
@@ -150,4 +145,11 @@ function upperCaseValidator(): ValidatorFn {
       }
     })
   }
+
+  function upperCaseValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const hasUpperCase = /[A-Z]/.test(control.value);
+    return hasUpperCase ? null : { upperCase: true };
+  };
+}
 */
