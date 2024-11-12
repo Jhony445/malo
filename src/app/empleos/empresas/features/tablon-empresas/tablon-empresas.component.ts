@@ -57,6 +57,11 @@ export class TablonEmpresasComponent implements OnInit {
           this.filteredEmpleos = this.empleos;
           this.ordenarEmpleos();
           this.updateTotalPages();
+  
+          // Seleccionar el primer empleo automáticamente
+          if (this.filteredEmpleos.length > 0) {
+            this.onCardClick(0); // Seleccionar el primer empleo
+          }
         },
         error => console.error('Error al cargar empleos:', error)
       );
@@ -66,7 +71,7 @@ export class TablonEmpresasComponent implements OnInit {
     this.filteredEmpleos.sort((a, b) => {
       const fechaA = new Date(a.fecha_publicacion).getTime();
       const fechaB = new Date(b.fecha_publicacion).getTime();
-      return this.ordenFecha === 'asc' ? fechaA - fechaB : fechaB - fechaA;
+      return this.ordenFecha === 'asc' ? fechaB - fechaA : fechaA - fechaB;
     });
     this.updateTotalPages();
   }
