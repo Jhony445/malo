@@ -84,9 +84,11 @@
   
   /* Estilos para la imagen dentro del contenedor */
   .detalle-imagen img {
-    max-width: 100%; /* Asegura que la imagen no se salga horizontalmente */
+    margin-top: 15px;
+    width: 80%;
+    max-width: 90%; /* Asegura que la imagen no se salga horizontalmente */
     max-height: 300px; /* Altura máxima para limitar imágenes muy altas */
-    width: auto; /* Mantiene el aspecto de la imagen */
+    /* Mantiene el aspecto de la imagen */
     border-radius: 8px; /* Bordes redondeados para armonizar con el diseño */
     object-fit: cover; /* Ajusta la imagen para llenar el espacio sin deformarse */
   }
