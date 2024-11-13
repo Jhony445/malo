@@ -21,6 +21,10 @@
                 required
                 pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
             />
+            <label class="checkbox-label">
+                <input type="checkbox" [(ngModel)]="isCompanyTokenRequest" name="isCompanyTokenRequest">
+                Solicitar como empresa
+            </label>
             <button type="submit" class="resend-button">Reenviar correo</button>
         </form>
     </ng-template>

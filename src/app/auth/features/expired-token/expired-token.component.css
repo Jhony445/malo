@@ -68,3 +68,38 @@
     color: #0044cc; /* Color azul principal */
     margin-top: 1.5rem;
 }
+
+/* Estilos para el checkbox y su etiqueta */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: #666666;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    border: 1px solid #cccccc;
+    border-radius: 0.25rem;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+    background-color: #0044cc; /* Azul principal */
+    border-color: #0044cc;
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+    content: '✓';
+    display: block;
+    color: white;
+    font-size: 0.8rem;
+    text-align: center;
+}

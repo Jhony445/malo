@@ -131,8 +131,6 @@ export class LogInComponent {
     this.clearMessages();
   }
 }
-
-
 /*
   onLogin(){
     debugger;

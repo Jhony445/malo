@@ -18,7 +18,10 @@ export class ExpiredTokenComponent {
   emailSent: boolean = false;
   errorMessage = '';
   isLoading = false;
+  isCompanyTokenRequest = false; // Variable para identificar el tipo de cuenta
+
   private apiUrl: string = 'https://malo-backend.onrender.com/api/Usuario/generar-nuevo-token';
+  private apiUrlsEmpresa : string = 'https://malo-backend-empresas.onrender.com/api/Empresa/generar-nuevo-token';
 
   constructor(private router: Router, private http: HttpClient) {}
 
@@ -26,20 +29,18 @@ export class ExpiredTokenComponent {
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     this.isLoading = true;
     if (this.email && emailPattern.test(this.email)) {
-      // Enviar solicitud POST a la API
-      this.http.post(this.apiUrl, { email: this.email }).subscribe({
+      const apiUrl = this.isCompanyTokenRequest ? this.apiUrlsEmpresa : this.apiUrl;
+      this.http.post(apiUrl, { email: this.email }).subscribe({
         next: (response) => {
-          console.log('Respuesta de la API:', response);
           this.emailSent = true;
           this.isLoading = false;
-          // Redirigir después de 20 segundos
           setTimeout(() => {
             this.router.navigate(['/auth/login']);
           }, 20000);
         },
         error: () => {
           this.isLoading = false;
-          this.errorMessage = "Hubo un error al enviar el correo. Intenta mas tarde.";
+          this.errorMessage = "Hubo un error al enviar el correo. Intenta más tarde.";
           this.clearMessages();
         }
       });
@@ -55,5 +56,4 @@ export class ExpiredTokenComponent {
       this.errorMessage = '';
     }, 5000);
   }
-
 }
