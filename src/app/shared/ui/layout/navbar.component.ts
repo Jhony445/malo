@@ -11,7 +11,7 @@ import { filter } from 'rxjs/operators';
   standalone: true,
   imports: [RouterModule, CommonModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css', './navbar.movil.component.css']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   menuOpen = false;
@@ -40,7 +40,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
-      setTimeout(() => this.closeMenu(), 0);
+      this.closeMenu(); // Removemos el setTimeout para ejecutar inmediatamente
     });
   }
 
@@ -74,8 +74,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   closeMenu() {
     if (this.menuOpen) {
       this.menuOpen = false;
-      this.enableScroll();
     }
+    // Aseguramos siempre quitar el bloqueo de scroll al cerrar el menú
+    this.enableScroll();
   }
 
   disableScroll() {

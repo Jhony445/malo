@@ -1,4 +1,4 @@
-import { Component, OnInit , Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -68,15 +68,15 @@ export class ListaEmpleosComponent implements OnInit {
               empresaNombre: empresa ? empresa.nombre : 'Empresa desconocida'
             };
           });
-  
+
           this.empleos.sort((a, b) => new Date(b.fecha_publicacion).getTime() - new Date(a.fecha_publicacion).getTime());
-  
+
           this.filteredEmpleos = this.empleos;
 
-                  // Seleccionar automáticamente el primer empleo
-        if (this.filteredEmpleos.length > 0) {
-          this.onCardClick(0);  // Seleccionar el primer empleo (índice 0)
-        }
+          // Solo seleccionar el primer empleo si no es vista móvil
+          if (window.innerWidth > 768 && this.filteredEmpleos.length > 0) {
+            this.onCardClick(0);  // Seleccionar el primer empleo (índice 0) solo en escritorio
+          }
 
           this.applyInitialFilters();
           this.updateTotalPages();
@@ -104,7 +104,7 @@ export class ListaEmpleosComponent implements OnInit {
         (!filters.salary || this.isSalaryMatch(empleo.salario_maximo, filters.salary))
       );
     });
-  
+
     this.updateTotalPages();
     this.currentPage = 1;
   }

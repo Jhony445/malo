@@ -12,11 +12,10 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-tablon-empresas',
   standalone: true,
-  imports: [CommonModule, CardEmpleosEmpresaComponent,FormsModule, DetalleEmpleoEmpresaComponent, TituloComponent, NotificationComponent],
+  imports: [CommonModule, CardEmpleosEmpresaComponent, FormsModule, DetalleEmpleoEmpresaComponent, TituloComponent, NotificationComponent],
   templateUrl: './tablon-empresas.component.html',
   styleUrls: ['./tablon-empresas.component.css']
 })
-
 export class TablonEmpresasComponent implements OnInit {
   empleos: any[] = [];
   filteredEmpleos: any[] = [];
@@ -32,7 +31,9 @@ export class TablonEmpresasComponent implements OnInit {
 
   ordenFecha: 'asc' | 'desc' = 'asc';
 
-  isDetalleVisibleMobile = false; 
+  isDetalleVisibleMobile = false;
+
+  isMobile: boolean = false;  // Nueva variable para detectar si es móvil
 
   constructor(
     private http: HttpClient,
@@ -41,6 +42,7 @@ export class TablonEmpresasComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.isMobile = window.innerWidth <= 768;  // Detectar si es móvil
     const empresaId = this.userService.getUserData()?.sub;
     if (empresaId) {
       this.fetchEmpleos(empresaId);
@@ -57,9 +59,9 @@ export class TablonEmpresasComponent implements OnInit {
           this.filteredEmpleos = this.empleos;
           this.ordenarEmpleos();
           this.updateTotalPages();
-  
-          // Seleccionar el primer empleo automáticamente
-          if (this.filteredEmpleos.length > 0) {
+
+          // Seleccionar el primer empleo automáticamente solo si no es móvil
+          if (!this.isMobile && this.filteredEmpleos.length > 0) {
             this.onCardClick(0); // Seleccionar el primer empleo
           }
         },
@@ -101,7 +103,7 @@ export class TablonEmpresasComponent implements OnInit {
     this.selectedEmpleoIndex = index;
     this.empleoSeleccionado = this.empleos[index];
 
-    if(window.innerWidth <= 768){
+    if (window.innerWidth <= 768) {
       this.isDetalleVisibleMobile = true;
     }
   }
