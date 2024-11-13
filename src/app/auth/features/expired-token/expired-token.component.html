@@ -1,0 +1,28 @@
+<div class="expired-token-container">
+    <div class="icono-container">
+        <img src="malo_logo_azul.png" alt="Icono de la aplicación" class="icono" />
+    </div>
+    
+    <ng-container *ngIf="emailSent; else formContent">
+        <p class="confirmation-message">Correo enviado correctamente. Por favor, revisa tu bandeja de entrada.</p>
+    </ng-container>
+    
+    <ng-template #formContent>
+        <h2 class="expired-title">Lo sentimos, tu token ha expirado</h2>
+        <p class="expired-message">Para continuar, ingresa tu correo y solicita un nuevo token de verificación.</p>
+        <app-notification *ngIf="errorMessage" [message]="errorMessage" [isError]="true"></app-notification>
+        <form class="resend-form" (ngSubmit)="onResendToken()">
+            <input
+                type="email"
+                placeholder="Ingresa tu correo"
+                class="input-email"
+                [(ngModel)]="email"
+                name="email"
+                required
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+            />
+            <button type="submit" class="resend-button">Reenviar correo</button>
+        </form>
+    </ng-template>
+    <app-loader *ngIf="isLoading"></app-loader>
+</div>

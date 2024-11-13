@@ -1,0 +1,70 @@
+.expired-token-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    max-width: 400px;
+    margin: auto;
+    min-height: 100vh;
+    text-align: center;
+    position: relative;
+}
+
+.icono-container {
+    margin-bottom: 1.5rem;
+}
+
+.icono {
+    width: 320px;
+    height: 320px;
+    margin-bottom: 1rem;
+}
+
+.expired-title {
+    font-size: 1.5rem;
+    color: #0044cc;
+    margin-bottom: 0.5rem;
+}
+
+.expired-message {
+    font-size: 1rem;
+    color: #666666;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+}
+
+.resend-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input-email {
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+    border: 1px solid #cccccc;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.resend-button {
+    padding: 0.8rem;
+    font-size: 1rem;
+    background-color: #0044cc; /* Azul principal */
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.resend-button:hover {
+    background-color: #003399; /* Tonalidad más oscura */
+}
+
+.confirmation-message {
+    font-size: 1.2rem;
+    color: #0044cc; /* Color azul principal */
+    margin-top: 1.5rem;
+}

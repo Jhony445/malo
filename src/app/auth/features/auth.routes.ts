@@ -5,6 +5,7 @@ import { SelectRegisterComponent } from './select-register/select-register.compo
 import { RegisterCompanyComponent } from './register-company/register-company.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { CuentaConfirmadaComponent } from './cuenta-confirmada/cuenta-confirmada.component';
+import { ExpiredTokenComponent } from './expired-token/expired-token.component';
 
 export const AUTH_ROUTES: Routes = [
   { path: 'login', component: LogInComponent },
@@ -12,5 +13,6 @@ export const AUTH_ROUTES: Routes = [
   { path: 'register-company', component: RegisterCompanyComponent },
   { path: 'sign-up', component: SignUpComponent },
   {path: 'forgot-password/cambiar-contrasena', component: ForgotPasswordComponent},
-  {path: 'cuenta-confirmada', component: CuentaConfirmadaComponent}
+  {path: 'cuenta-confirmada', component: CuentaConfirmadaComponent},
+  {path: 'expired-token', component: ExpiredTokenComponent}
 ];
