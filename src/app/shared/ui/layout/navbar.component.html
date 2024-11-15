@@ -35,6 +35,9 @@
             <li *ngIf="user.rol === 'Empresa'">
               <a href="/empresa/postulacion-empleos">Ver postulaciones</a>
             </li>
+            <li *ngIf="user.rol === 'Usuario'">
+              <a href="/usuario/Mis-postulaciones">Mis postulaciones</a>
+            </li>
             <li class="logout-item">
               <a href="/auth/login" class="logout" (click)="logout()">Cerrar sesión</a>
             </li>
