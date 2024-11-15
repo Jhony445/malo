@@ -30,42 +30,45 @@
         </div>
     
         <!-- Detalles del empleo -->
-        <div *ngIf="empleoVisibilidad[empleo.empleoID]" class="card-body">
-            <ng-container *ngIf="empleoDetalles[empleo.empleoID]; else loading">
-                <img *ngIf="empleoDetalles[empleo.empleoID]?.multimediaContenido" 
-                         [src]="empleoDetalles[empleo.empleoID]?.multimediaContenido" 
-                         alt="Imagen del empleo" 
-                         class="detail-image" 
-                    />
-                <div class="details-grid">
-                    <div class="detail-item">
-                        <strong>Empresa:</strong>
-                        <p>{{ empresaNombre }}</p>
-                    </div>
-                    <div class="detail-item">
-                        <strong>Descripcion:</strong>
-                        <p>{{ empleoDetalles[empleo.empleoID]?.horario }}</p>
-                    </div>
-                    <div class="detail-item">
-                        <strong>Ubicación:</strong>
-                        <p>{{ empleoDetalles[empleo.empleoID]?.ubicacion }}</p>
-                    </div>
-                    <div class="detail-item">
-                        <strong>Salario:</strong>
-                        <p>{{ empleoDetalles[empleo.empleoID]?.salario_minimo }} - {{ empleoDetalles[empleo.empleoID]?.salario_maximo }}</p>
-                    </div>
+        <!-- Detalles del empleo -->
+<div *ngIf="empleoVisibilidad[empleo.empleoID]" class="card-body">
+    <ng-container *ngIf="empleoDetalles[empleo.empleoID]; else loading">
+        <div class="details-container">
+            <img 
+                *ngIf="empleoDetalles[empleo.empleoID]?.multimediaContenido" 
+                [src]="empleoDetalles[empleo.empleoID]?.multimediaContenido" 
+                alt="Imagen del empleo" 
+                class="detail-image" 
+            />
+            <div class="details-content">
+                <div class="detail-item">
+                    <strong>Empresa:</strong>
+                    <p>{{ empresaNombre }}</p>
                 </div>
-                <div class="details-grid">
-                    <div class="detail-item">
-                        <strong>Empresa:</strong>
-                        <p>{{ empleoDetalles[empleo.empleoID]?.descripcion }}</p>
-                    </div>
+                <div class="detail-item">
+                    <strong>Descripcion:</strong>
+                    <p>{{ empleoDetalles[empleo.empleoID]?.horario }}</p>
                 </div>
-            </ng-container>
-            <ng-template #loading>
-                <p>Cargando detalles...</p>
-            </ng-template>
+                <div class="detail-item">
+                    <strong>Ubicación:</strong>
+                    <p>{{ empleoDetalles[empleo.empleoID]?.ubicacion }}</p>
+                </div>
+                <div class="detail-item">
+                    <strong>Salario:</strong>
+                    <p>{{ empleoDetalles[empleo.empleoID]?.salario_minimo }} - {{ empleoDetalles[empleo.empleoID]?.salario_maximo }}</p>
+                </div>
+                <div class="detail-item">
+                    <strong>Empresa:</strong>
+                    <p>{{ empleoDetalles[empleo.empleoID]?.descripcion }}</p>
+                </div>
+            </div>
         </div>
+    </ng-container>
+    <ng-template #loading>
+        <p>Cargando detalles...</p>
+    </ng-template>
+</div>
+
     </div>
     
   
@@ -86,4 +89,3 @@
       </button>
     </div>
   </div>
-  
