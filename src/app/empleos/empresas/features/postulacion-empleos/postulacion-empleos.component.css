@@ -1,12 +1,111 @@
-.postulacion-empleos-container {
+.container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    max-width: 400px;
-    margin: auto;
     min-height: 100vh;
-    text-align: center;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+  
+  .card {
+    width: 85%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    margin-top: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.02);
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  
+  .job-title {
+    margin: 0;
+  }
+  
+  .job-date {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    /* Centra la paginación */
+    margin-top: 20px;
+    /* Espacio superior */
+    align-items: center;
+  }
+  
+  .pagination button {
+    margin: 0 10px;
+    /* Espacio entre botones */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    background-color: #ccc;
+    /* Color para botón deshabilitado */
+    cursor: not-allowed;
+    /* Cambia el cursor */
+  }
+  
+  .pdf-container {
+    margin-top: 1.8rem;
     position: relative;
-}
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .pdf-nav-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    color: #333;
+    cursor: pointer;
+    z-index: 1;
+  }
+  
+  .pdf-nav-icon.left {
+    left: -10px;
+  }
+  
+  .pdf-nav-icon.right {
+    right: -10px;
+  }
+  
+  .pdf-nav-icon:hover {
+    color: #007bff; /* Cambia de color al pasar el mouse */
+  }
+  
+  .application-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3c3744ed;
+    color: white;
+    border-radius: 50%;
+    width: 35px; /* Ajusta el tamaño según tus necesidades */
+    height: 35px;
+    font-size: 0.8em; /* Ajusta el tamaño de fuente según tus preferencias */
+    margin-right: 8px; /* Espacio entre el contador y el título */
+  }

@@ -32,32 +32,32 @@ export class PerfilComponent implements OnInit {
   experiencias = '';
   prevExperiencias = '';
   nuevaHabilidadDescripcion = '';
-  prevPhoto: string = '';
+  prevPhoto = '';
   selectedFile: File | null = null;
   prevPDF = '';
   selectedPDF: File | null = null;
   documentoUrl: SafeResourceUrl | null = null;
 
-  telefonoTouched: boolean = false;
-  emailTouched: boolean = false;
-  nombreTouched: boolean = false;
-  apellidosTouched: boolean = false;
-  fechaNacimientoTouched: boolean = false;
-  estadoTouched: boolean = false;
-  municipioTouched: boolean = false;
-  localidadTouched: boolean = false;
-  emailButtonClicked: boolean = false;
-  experienciaTouched: boolean = false;
+  telefonoTouched = false;
+  emailTouched = false;
+  nombreTouched = false;
+  apellidosTouched = false;
+  fechaNacimientoTouched = false;
+  estadoTouched = false;
+  municipioTouched = false;
+  localidadTouched = false;
+  emailButtonClicked = false;
+  experienciaTouched = false;
 
   // Ubicación
   estados: any[] = [];
   municipios: any[] = [];
   localidades: any[] = [];
-  estado: string = '';
+  estado = '';
   prevEstado = '';
-  municipio: string = '';
+  municipio = '';
   prevMunicipio = '';
-  localidad: string = '';
+  localidad = '';
   prevLocalidad = '';
 
   // Habilidades
@@ -65,9 +65,9 @@ export class PerfilComponent implements OnInit {
   habilidadesUsuario: any[] = [];
   habilidades: any[] = [];
   habilidadesFiltradas: any[] = [];
-  prevHabilidades: string = '';
-  habilidadesIds: string = '';
-  habilidadesTouched: boolean = false;
+  prevHabilidades = '';
+  habilidadesIds = '';
+  habilidadesTouched = false;
 
   // Otros
   router = inject(Router);
@@ -76,11 +76,11 @@ export class PerfilComponent implements OnInit {
   habilidadesService = inject(HabilidadesService);
   userService = inject(UserService);
   sanitizer = inject(DomSanitizer)
-  isLoading: boolean = false;
-  emailSent: boolean = false;
-  verificationCode: string = '';
-  errorMessage: string = '';
-  successMessage: string = '';
+  isLoading = false;
+  emailSent = false;
+  verificationCode = '';
+  errorMessage = '';
+  successMessage = '';
   isPhotoHovered = false;
 
   @ViewChild('profileContainer') profileContainer!: ElementRef;
@@ -271,7 +271,7 @@ export class PerfilComponent implements OnInit {
 
     // Enviar los datos al servicio
     this.perfilService.actualizarUsuario(usuarioData).subscribe({
-        next: (response) => {
+        next: () => {
             this.obtenerUsuarioPorId();
             this.successMessage = '¡Has modificado tu perfil!';
             this.clearMessagesAfterDelay();
@@ -478,7 +478,8 @@ export class PerfilComponent implements OnInit {
     );
   }
 
-  seleccionarHabilidad(habilidadId: number, descripcion: string): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  seleccionarHabilidad(habilidadId: number, descripcion: any): void {
     // Convertimos habilidadesIds a un array y verificamos si ya contiene el ID
     if (this.habilidadesIds === '') {
       this.habilidadesIds = `${habilidadId}`;  // Solo asignamos la habilidadId seleccionada
@@ -505,7 +506,7 @@ export class PerfilComponent implements OnInit {
     console.log('Índice a eliminar:', index);
 
     // Convertimos habilidadesIds de string a array
-    let habilidadesArray = this.habilidadesIds.split(',');
+    const habilidadesArray = this.habilidadesIds.split(',');
 
     // Verificamos si el índice está dentro del rango válido
     if (index >= 0 && index < habilidadesArray.length) {
