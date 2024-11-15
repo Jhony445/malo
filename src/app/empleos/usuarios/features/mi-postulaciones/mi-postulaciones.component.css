@@ -1,12 +1,124 @@
-.mi-postulacion-container {
+.container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    max-width: 400px;
-    margin: auto;
     min-height: 100vh;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+  
+  .card {
+    width: 80%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    margin-top: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .flex-row {
+    display: flex;
+    align-items: center;
+    width: 50%;
+  }
+  
+  .card:hover {
+    transform: scale(1.02);
+  }
+  
+  .card-header {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    cursor: pointer;
+    justify-content: space-between; /* Alinea el contenido de forma que el título quede al principio */
+  }
+  
+  .job-title {
+    margin: 0;
+    max-width: 90%; /* Limita el ancho máximo del título al 40% del card */
+    overflow: hidden; /* Si el texto es demasiado largo, lo oculta */
+    text-overflow: ellipsis; /* Muestra "..." si el texto es truncado */
+    white-space: nowrap; /* Evita que el texto se desborde en múltiples líneas */
+  }
+  
+  .job-date {
+    font-size: 1rem;
+    color: #666;
+    margin-left: auto;
+  }
+  
+  .card-body {
+    padding: 1rem;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    border-radius: 0 0 8px 8px; /* Redondea solo la parte inferior */
+  }
+  
+  .details-grid {
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  
+  .detail-item {
+    height: auto;
+    background: #f0f0f0;
+    padding: 12px;
+    border-radius: 8px;
     text-align: center;
-    position: relative;
-}
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .detail-image {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    align-items: center;
+  }
+  
+  .pagination button {
+    margin: 0 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .btn-remove {
+    margin-left: 10px;
+    padding: 10px 0;
+    background-color: #3c3744; /* Rojo para indicar acción de eliminar */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 15%;
+  }
+  
+  .btn-remove:hover {
+    background-color: #c82333af; /* Color más oscuro al hacer hover */
+  }

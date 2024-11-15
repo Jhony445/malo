@@ -16,7 +16,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class PostulacionEmpleosComponent implements OnInit {
   empleosFiltrados: any[] = [];
   currentPage = 1;
-  itemsPerPage = 6;
+  itemsPerPage = 5;
   aplicacionesCount: Record<number, number> = {};
   isLoading = false;
   successMessage: Record<number, string> = {};
@@ -24,6 +24,7 @@ export class PostulacionEmpleosComponent implements OnInit {
   empleoDocumentos: Record<number, any[]> = {}; // PDFs de cada empleo
   pdfIndices: Record<number, number> = {}; // Índices actuales de PDFs
   empleoVisibilidad: Record<number, boolean> = {}; // Visibilidad de cada empleo
+  isPdfLoading: Record<number, boolean> = {}; // Para manejar el estado de carga del PDF de cada empleo
   userService = inject(UserService);
   sanitizer = inject(DomSanitizer);
 
@@ -37,24 +38,24 @@ export class PostulacionEmpleosComponent implements OnInit {
     this.isLoading = true;
     const userData = this.userService.getUserData();
     const userId = userData?.sub;
-
+  
     this.http.get<any>('https://malo-backend-empleos.onrender.com/api/Empleo/GetEmpleos').subscribe({
       next: (response) => {
-        this.empleosFiltrados = response.filter((empleo: any) => empleo.empresa_id === userId);
-        // Llamar a contarAplicacionesPorEmpleo para cada empleo filtrado
-        this.empleosFiltrados.forEach((empleo: any) => {
-          this.contarAplicacionesPorEmpleo(empleo.empleoId);
-        });
+        this.empleosFiltrados = response
+          .filter((empleo: any) => empleo.empresa_id === userId)
+          .sort((a: any, b: any) => new Date(b.fecha_publicacion).getTime() - new Date(a.fecha_publicacion).getTime());
+  
         this.isLoading = false;
       },
       error: (error) => {
-        this.isLoading = false
-        console.error('Error al obtener empleos:', error)
-        this.errorMessage = "Algo salio mal, intentalo más tarde";
+        this.isLoading = false;
+        console.error('Error al obtener empleos:', error);
+        this.errorMessage = "Algo salió mal, intentalo más tarde";
         this.clearMessagesAfterDelay();
       }
     });
   }
+  
 
   onPageChange(page: number): void {
     this.currentPage = page;
@@ -68,25 +69,6 @@ export class PostulacionEmpleosComponent implements OnInit {
 
   get totalPages(): number {
     return Math.ceil(this.empleosFiltrados.length / this.itemsPerPage);
-  }
-
-  contarAplicacionesPorEmpleo(empleoId: number): void {
-    console.log(empleoId);
-    this.isLoading = true;
-    const payload = { empleoId };
-    
-    this.http.post<number>('https://malo-backend-empleos.onrender.com/api/Aplicacion/contar-aplicaciones-por-empleo', payload).subscribe({
-      next: (countResponse) => {
-        this.aplicacionesCount[empleoId] = countResponse; // Almacena el conteo de aplicaciones
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error al contar aplicaciones por empleo:', error);
-        this.errorMessage = "Algo salió mal, inténtalo más tarde";
-        this.clearMessagesAfterDelay();
-        this.isLoading = false;
-      }
-    });
   }
 
   obtenerUsuariosPorEmpleo(empleoId: number): void {
@@ -115,58 +97,76 @@ export class PostulacionEmpleosComponent implements OnInit {
   }
 
   obtenerDocumentosPorUsuario(usuarioIds: string, empleoId: number): void {
-    this.isLoading = true;
+    this.isPdfLoading[empleoId] = true; // Empezamos a cargar el PDF
     this.http.get<any>('https://malo-backend-documentos.onrender.com/api/Documento/GetDocumentos').subscribe({
       next: (documentosResponse) => {
         const pdfs = documentosResponse.filter((documento: any) =>
           usuarioIds.includes(documento.usuario_id)
         );
-
+  
         if(pdfs.length === 0){
-          this.successMessage[empleoId] = "No hay documentos para este usuario"
-        }else{
+          this.successMessage[empleoId] = "No hay documentos que mostrar";
+        } else {
           this.empleoDocumentos[empleoId] = pdfs.map((pdf: any) =>
             this.sanitizer.bypassSecurityTrustResourceUrl(pdf.contenido)
           );
-          console.log(this.empleoDocumentos[empleoId].length)
+          console.log(this.empleoDocumentos[empleoId].length);
           this.pdfIndices[empleoId] = 0; // Iniciar en el primer PDF
         }
-        this.isLoading = false;
+        this.isPdfLoading[empleoId] = false; // Terminamos de cargar el PDF
       },
       error: (error) => {
-        this.isLoading = false;
-        console.error('Error al obtener documentos:', error)
-        this.errorMessage = "Algo salio mal, intentalo más tarde";
+        this.isPdfLoading[empleoId] = false; // En caso de error, también se marca como false
+        console.error('Error al obtener documentos:', error);
+        this.errorMessage = "Algo salió mal, intentalo más tarde";
         this.clearMessagesAfterDelay();
       }
     });
   }
+  
 
   // Navegar entre PDFs de un empleo específico
   navigatePdf(direction: 'left' | 'right', empleoId: number): void {
-    this.isLoading = true;
+    if (this.empleoDocumentos[empleoId]?.length <= 1) {
+      return; // Si hay menos de 2 documentos, no hacemos nada
+    }
+  
+    this.isPdfLoading[empleoId] = true;  // Marcar como cargando el PDF
     const totalPdfs = this.empleoDocumentos[empleoId].length;
     let currentIndex = this.pdfIndices[empleoId];
-
+  
     if (direction === 'left') {
       currentIndex = (currentIndex - 1 + totalPdfs) % totalPdfs; // Navega a la izquierda, con bucle
     } else {
       currentIndex = (currentIndex + 1) % totalPdfs; // Navega a la derecha, con bucle
     }
-
+  
     this.pdfIndices[empleoId] = currentIndex; // Actualiza el índice
-    this.isLoading = false;
+    this.isPdfLoading[empleoId] = false;  // Terminar la carga
+  
+    // Contador en consola para saber qué PDF se está viendo
+    console.log(`PDF ${currentIndex + 1} de ${totalPdfs}`);
   }
 
+  
   toggleEmpleoVisibilidad(empleoId: number): void {
-    // Cambia el estado de visibilidad del empleo
-    this.empleoVisibilidad[empleoId] = !this.empleoVisibilidad[empleoId];
+    // Si el empleo ya está visible, lo ocultamos
+    if (this.empleoVisibilidad[empleoId]) {
+      this.empleoVisibilidad[empleoId] = false;
+    } else {
+      // Si el empleo no está visible, ocultamos todos los demás y mostramos solo este
+      for (const id in this.empleoVisibilidad) {
+        this.empleoVisibilidad[id] = false; // Ocultamos todos los empleos
+      }
+      this.empleoVisibilidad[empleoId] = true; // Mostramos el empleo seleccionado
+    }
   
     // Si el contenedor se vuelve visible, carga los usuarios y documentos
     if (this.empleoVisibilidad[empleoId]) {
       this.obtenerUsuariosPorEmpleo(empleoId);
     }
-  }  
+  }
+  
 
   clearMessagesAfterDelay() {
     setTimeout(() => {
