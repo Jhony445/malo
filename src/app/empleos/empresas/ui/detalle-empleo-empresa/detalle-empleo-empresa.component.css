@@ -158,3 +158,37 @@
   .input-editar::placeholder {
     color: #b3b3b3;
   }
+
+  .postulaciones {
+    cursor: pointer;
+    background-color: #f0f8ff;
+    border: 1px solid #007bff;
+    padding: 10px;
+    margin-top: 15px;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .postulaciones:hover {
+    background-color: #e6f0ff;
+  }
+  
+  .postulaciones-mensaje {
+    color: #007bff;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .sin-postulaciones {
+    text-align: center;
+    margin-top: 10px;
+    color: gray;
+    margin-bottom: 20px;
+  }
+  
+  .sin-postulaciones-mensaje {
+    font-size: 1rem;
+    font-style: italic;
+  }

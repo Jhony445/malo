@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NotificationComponent } from '../../../../shared/ui/notification/notification.component';
 import { ConfirmDeleteModalComponent } from '../confirm-delete-modal/confirm-delete-modal.component';
 import { LoaderComponent } from '../../../../shared/ui/loader/loader.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-detalle-empleo-empresa',
@@ -29,10 +30,13 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
 
   isLoading = false;
 
-  constructor(private http: HttpClient) { }
+  postulaciones = 0;
+
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['empleo'] && this.empleo) {
+      this.obtenerPostulaciones(); 
       console.log('ID del empleo en detalle:', this.empleo.empleoId);
     }
   }
@@ -41,7 +45,7 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files[0]) {
       const file = fileInput.files[0];
-  
+
       if (file.type.startsWith('image/')) {
         this.empleo.multimediaContenido = file;
         this.empleo.multimediaNombre = file.name;
@@ -51,7 +55,7 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
       }
     }
   }
-  
+
   activarEdicion() {
     this.modoEdicion = true;
   }
@@ -60,56 +64,63 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
     this.isLoading = true;
     if (this.isUpdating) return; // Evitar múltiples envíos
 
-    if (!this.empleo.titulo || !this.empleo.descripcion || !this.empleo.ubicacion || 
-        this.empleo.salario_minimo === null || this.empleo.salario_minimo < 0 || 
-        !this.empleo.salario_maximo || !this.empleo.horario) {
+    // Validar campos obligatorios
+    if (!this.empleo.titulo || !this.empleo.descripcion || !this.empleo.ubicacion ||
+      this.empleo.salario_minimo === null || this.empleo.salario_minimo < 0 ||
+      !this.empleo.salario_maximo || !this.empleo.horario) {
       this.errorMessage = 'Por favor, completa todos los campos obligatorios';
       this.clearMessagesAfterDelay();
+      this.isLoading = false;
       return;
     }
 
-    this.isUpdating = true; // Deshabilitar el botón de actualizar mientras se realiza la solicitud
+    this.isUpdating = true; // Bloquear actualizaciones múltiples
 
-    if (this.empleo && this.empleo.empleoId) {
-      const formData = new FormData();
-      formData.append('Empleo_id', this.empleo.empleoId);
-      formData.append('titulo', this.empleo.titulo);
-      formData.append('descripcion', this.empleo.descripcion);
-      formData.append('ubicacion', this.empleo.ubicacion);
-      formData.append('salario_minimo', this.empleo.salario_minimo.toString());
-      formData.append('salario_maximo', this.empleo.salario_maximo.toString());
-      formData.append('horario', this.empleo.horario);
-      formData.append('multimediaNombre', this.empleo.multimediaNombre || '');
+    // Actualizar datos principales
+    const payload = {
+      empleo_id: this.empleo.empleoId,
+      titulo: this.empleo.titulo,
+      descripcion: this.empleo.descripcion,
+      ubicacion: this.empleo.ubicacion,
+      salario_minimo: this.empleo.salario_minimo,
+      salario_maximo: this.empleo.salario_maximo,
+      horario: this.empleo.horario
+    };
 
-      if (this.empleo.multimediaContenido instanceof File) {
-        formData.append('archivo', this.empleo.multimediaContenido);
-      }
+    this.http.post('https://malo-backend-empleos.onrender.com/api/Empleo/UpdateEmpleoById', payload, { responseType: 'text' })
+      .subscribe({
+        next: () => {
+          // Si se seleccionó una nueva imagen, actualizarla
+          if (this.empleo.multimediaContenido instanceof File) {
+            this.actualizarImagen();
+          } else {
+            this.finalizarActualizacion('Empleo actualizado con éxito', false);
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          this.errorMessage = `Error al actualizar el empleo: ${error.error}`;
+          this.clearMessagesAfterDelay();
+          this.isUpdating = false;
+          this.isLoading = false;
+        }
+      });
+  }
 
-      this.http.post('https://malo-backend-empleos.onrender.com/api/Empleo/UpdateEmpleoById', formData, { responseType: 'text' })
-        .subscribe({
-          next: () => {
-            this.isLoading = false;
-            this.successMessage = 'Empleo actualizado con éxito';
-            this.modoEdicion = false;
-            this.empleoActualizado.emit(this.empleo);
-            this.clearMessagesAfterDelay();
+  private actualizarImagen() {
+    const formData = new FormData();
+    formData.append('EmpleoId', this.empleo.empleoId);
+    formData.append('archivo', this.empleo.multimediaContenido);
 
-            setTimeout(() => {
-              window.location.reload();
-            }, 4000);
-          },
-          error: (error: HttpErrorResponse) => {
-            this.isLoading = false;
-            this.errorMessage = `Error al actualizar el empleo: ${error.error}`;
-            this.clearMessagesAfterDelay();
-          },
-          complete: () => this.isUpdating = false // Rehabilitar el botón después de completar la solicitud
-        });
-    } else {
-      this.isLoading = false;
-      this.errorMessage = 'No hay empleo seleccionado para actualizar.';
-      this.isUpdating = false;
-    }
+    this.http.post('https://malo-backend-empleos.onrender.com/api/Empleo/ActualizarMultimedia', formData, { responseType: 'text' })
+      .subscribe({
+        next: () => this.finalizarActualizacion('Empleo e imagen actualizados con éxito', true),
+        error: (error: HttpErrorResponse) => {
+          this.errorMessage = `Error al actualizar la imagen: ${error.error}`;
+          this.clearMessagesAfterDelay();
+          this.isUpdating = false;
+          this.isLoading = false;
+        }
+      });
   }
 
   eliminarEmpleo() {
@@ -156,5 +167,39 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
         },
         error: (error) => console.error('Error al recargar el empleo:', error)
       });
+  }
+
+  private finalizarActualizacion(mensaje: string, recargar: boolean) {
+    this.successMessage = mensaje;
+    this.modoEdicion = false;
+    this.empleoActualizado.emit(this.empleo);
+    this.clearMessagesAfterDelay();
+
+    this.isUpdating = false;
+    this.isLoading = false;
+
+    if (recargar) {
+      setTimeout(() => {
+        window.location.reload();
+      }, 4000);
+    }
+  }
+
+  obtenerPostulaciones() {
+    const payload = { empleoID: this.empleo.empleoId };
+    this.http.post<number>('https://malo-backend-empleos.onrender.com/api/Aplicacion/contar-aplicaciones-por-empleo', payload)
+      .subscribe({
+        next: (cantidad) => {
+          this.postulaciones = cantidad;
+        },
+        error: (error) => {
+          console.error('Error al obtener postulaciones:', error);
+          this.postulaciones = 0; // Fallback en caso de error
+        }
+      });
+  }
+
+  irAPostulaciones() {
+    this.router.navigate(['/empresa/postulacion-empleos']);
   }
 }

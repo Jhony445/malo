@@ -61,6 +61,15 @@
     </div>
   </div>
 
+  <div *ngIf="!modoEdicion && postulaciones > 0" class="postulaciones" (click)="irAPostulaciones()">
+    <p class="postulaciones-mensaje">Tu empleo tiene {{ postulaciones }} nuevas postulaciones</p>
+  </div>
+  
+  <!-- Mostrar mensaje de sin postulantes -->
+  <div *ngIf="!modoEdicion && postulaciones === 0" class="sin-postulaciones">
+    <p class="sin-postulaciones-mensaje">Este empleo aún no tiene postulantes</p>
+  </div>
+
   <div class="action-buttons">
     <button *ngIf="!modoEdicion" class="btn-editar noselect" (click)="activarEdicion()">
       <span class="text">Editar</span>
