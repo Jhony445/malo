@@ -1,156 +1,169 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    padding: 1rem;
-    box-sizing: border-box;
-  }
-  
-  .card {
-    width: 80%;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1rem 2rem;
-    margin-top: 1rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-  }
-  
-  .flex-row {
-    display: flex;
-    align-items: center;
-    width: 50%;
-  }
-  
-  .card:hover {
-    transform: scale(1.02);
-  }
-  
-  .card-header {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 8px;
-    cursor: pointer;
-    justify-content: space-between; /* Alinea el contenido de forma que el título quede al principio */
-  }
-  
-  .job-title {
-    margin: 0;
-    max-width: 90%; /* Limita el ancho máximo del título al 40% del card */
-    overflow: hidden; /* Si el texto es demasiado largo, lo oculta */
-    text-overflow: ellipsis; /* Muestra "..." si el texto es truncado */
-    white-space: nowrap; /* Evita que el texto se desborde en múltiples líneas */
-  }
-  
-  .job-date {
-    font-size: 1rem;
-    color: #666;
-    margin-left: auto;
-  }
-  
-  .card-body {
-    padding: 1rem;
-    background-color: #fff;
-    border-top: 1px solid #ddd;
-    border-radius: 0 0 8px 8px; /* Redondea solo la parte inferior */
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.card {
+  width: 80%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  margin-top: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.flex-row {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card-header {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  cursor: pointer;
+  justify-content: space-between; /* Alinea el contenido de forma que el título quede al principio */
+}
+
+.job-title {
+  margin: 0;
+  max-width: 90%; /* Limita el ancho máximo del título al 40% del card */
+  overflow: hidden; /* Si el texto es demasiado largo, lo oculta */
+  text-overflow: ellipsis; /* Muestra "..." si el texto es truncado */
+  white-space: nowrap; /* Evita que el texto se desborde en múltiples líneas */
+}
+
+.job-date {
+  font-size: 1rem;
+  color: #666;
+  margin-left: auto;
+}
+
+.card-body {
+  padding: 1rem;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  border-radius: 0 0 8px 8px; /* Redondea solo la parte inferior */
+}
+
+.details-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px; /* Espacio entre la imagen y los detalles */
+  margin-top: 16px; /* Mantiene el margen superior */
+}
+
+.detail-image {
+  width: 50%; /* Ajusta el tamaño de la imagen */
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.details-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Espacio entre los elementos de los detalles */
+  flex: 1; /* Toma el espacio restante en el contenedor */
+}
+
+.detail-item {
+  height: auto;
+  background: #f0f0f0;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: left; /* Alinea el texto a la izquierda */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.pagination button {
+  margin: 0 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.btn-remove {
+  margin-left: 10px;
+  padding: 10px 0;
+  background-color: #3c3744; /* Rojo para indicar acción de eliminar */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 15%;
+}
+
+.btn-remove:hover {
+  background-color: #c82333af; /* Color más oscuro al hacer hover */
+}
+
+.toggle-icon{
+  transition: transform 0.3s ease;
+}
+
+.toggle-icon.rotated {
+  transform: rotate(180deg);
+}
+
+/* Media Query para vista móvil */
+@media (max-width: 768px) {
   .details-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px; /* Espacio entre la imagen y los detalles */
-    margin-top: 16px; /* Mantiene el margen superior */
+    flex-direction: column; /* Cambia a diseño en columna */
+    align-items: center; /* Centra el contenido horizontalmente */
   }
-  
+
   .detail-image {
-    width: 50%; /* Ajusta el tamaño de la imagen */
-    width: 50%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra uniforme */
+    width: 100%; /* La imagen ocupa todo el ancho */
+    margin-bottom: 16px; /* Agrega espacio debajo de la imagen */
   }
-  
+
   .details-content {
-    display: flex;
-    flex-direction: column;
-    gap: 16px; /* Espacio entre los elementos de los detalles */
-    flex: 1; /* Toma el espacio restante en el contenedor */
+    width: 100%; /* Asegura que los detalles ocupen todo el ancho */
   }
-  
-  .detail-item {
-    height: auto;
-    background: #f0f0f0;
-    padding: 12px;
-    border-radius: 8px;
-    text-align: left; /* Alinea el texto a la izquierda */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .job-date{
+    display: none;
   }
-  
-  .details-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
+
+  .btn-remove{
+    width: 70%;
   }
-  
-  
-  .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    align-items: center;
-  }
-  
-  .pagination button {
-    margin: 0 10px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .pagination button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .btn-remove {
-    margin-left: 10px;
-    padding: 10px 0;
-    background-color: #3c3744; /* Rojo para indicar acción de eliminar */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 15%;
-  }
-  
-  .btn-remove:hover {
-    background-color: #c82333af; /* Color más oscuro al hacer hover */
-  }
-  
-  
-  /* Media Query para vista móvil */
-  @media (max-width: 768px) {
-    .details-container {
-      flex-direction: column; /* Cambia a diseño en columna */
-      align-items: center; /* Centra el contenido horizontalmente */
-    }
-  
-    .detail-image {
-      width: 100%; /* La imagen ocupa todo el ancho */
-      margin-bottom: 16px; /* Agrega espacio debajo de la imagen */
-    }
-  
-    .details-content {
-      width: 100%; /* Asegura que los detalles ocupen todo el ancho */
-    }
-  }
+}

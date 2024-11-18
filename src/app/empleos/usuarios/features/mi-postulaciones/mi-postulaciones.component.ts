@@ -17,7 +17,7 @@ export class MiPostulacionesComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 4;
   isLoading = false;
-  successMessage: Record<number, string> = {};
+  successMessage= '';
   empresaNombre = '';
   errorMessage = '';
   empleoVisibilidad: Record<number, boolean> = {}; // Visibilidad de cada empleo
@@ -161,7 +161,8 @@ export class MiPostulacionesComponent implements OnInit {
           next: (response) => {
             this.obtenerEmpleos();
             console.log('Postulación eliminada:', response);
-            // Aquí puedes agregar lógica para actualizar la UI después de eliminar la postulación (por ejemplo, eliminar el empleo de la lista)
+            this.successMessage = "¡Postulacion eliminada con éxito!";
+            this.clearMessagesAfterDelay();
           },
           error: (error) => {
             console.error('Error al eliminar la postulación:', error);
@@ -176,7 +177,7 @@ export class MiPostulacionesComponent implements OnInit {
   
   clearMessagesAfterDelay() {
     setTimeout(() => {
-      this.successMessage = {};
+      this.successMessage = '';
       this.errorMessage = '';
     }, 5000);
   }

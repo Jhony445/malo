@@ -1,5 +1,6 @@
 <div class="container">
     <app-notification *ngIf="errorMessage" [message]="errorMessage" [isError]="true"></app-notification>
+    <app-notification *ngIf="successMessage" [message]="successMessage"></app-notification>
     <app-loader *ngIf="isLoading"></app-loader>
   
     <!-- Mostrar empleos -->
@@ -21,7 +22,7 @@
                     {{ empleo.titulo }}
                 </p>
             </div>
-            <i class="fas fa-bars toggle-icon line-icon"></i>
+            <i class="fas fa-angle-down toggle-icon" [ngClass]="{'rotated': empleoVisibilidad[empleo.empleoID]}"></i>
             <span class="job-date">{{ empleo.fecha_aplicacion | date: 'yyyy-MM-dd' }}</span>
             <button class="btn-remove" 
                     (click)="eliminarPostulacion(empleo.empleoID)">
@@ -89,3 +90,4 @@
       </button>
     </div>
   </div>
+  

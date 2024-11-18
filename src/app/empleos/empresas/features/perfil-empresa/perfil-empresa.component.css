@@ -10,10 +10,14 @@
 }
 
 .perfilData {
-    background: url('/57-bg.png');
+    background: #f0f0f0;
     background-size: cover;
-    color: white;
+    color: black;
     width: 30%;
+}
+
+.perfilData i{
+    min-width: 20px;
 }
 
 .perfilData p {
@@ -69,7 +73,7 @@ button {
 .separator {
     flex-grow: 1;
     border: none;
-    border-top: 1px solid white;
+    border-top: 1px solid black;
     margin: 10px 0;
 }
 
@@ -84,7 +88,7 @@ button {
 .separator-icon {
     margin-left: 8px;
     font-size: 1.2em;
-    color: white;
+    color: black;
     cursor: pointer;
     transform: rotate(180deg);
     transition: transform 0.3s ease;
@@ -109,7 +113,7 @@ button {
 }
 
 .separator-container p {
-    color: #d2e3ff;
+    color: #090c9b;
     padding: 0;
     padding-left: 8px;
     margin: 0;

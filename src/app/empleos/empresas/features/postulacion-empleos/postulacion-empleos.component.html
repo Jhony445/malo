@@ -19,7 +19,7 @@
           {{ empleo.titulo }}
         </p>
       </div>
-      <i class="fas fa-bars toggle-icon line-icon"></i>
+      <i class="fas fa-angle-down toggle-icon" [ngClass]="{'rotated': empleoVisibilidad[empleo.empleoId]}"></i>
       <span class="job-date">{{ empleo.fecha_publicacion | date: 'yyyy-MM-dd' }}</span>
     </div>
 
@@ -30,6 +30,11 @@
       <app-notification *ngIf="successMessage[empleo.empleoId]" 
                         [message]="successMessage[empleo.empleoId]" 
                         [isError]="true"></app-notification>
+
+       <!-- Contador de PDFs -->
+      <div *ngIf="empleoDocumentos[empleo.empleoId]" class="pdf-counter">
+        Documento {{ pdfIndices[empleo.empleoId] + 1 }} de {{ empleoDocumentos[empleo.empleoId]?.length || 0 }}
+      </div>
       
       <!-- Icono de navegación izquierda -->
       <i *ngIf="empleoDocumentos[empleo.empleoId]"
