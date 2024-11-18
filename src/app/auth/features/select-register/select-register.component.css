@@ -244,7 +244,7 @@ form span {
 
 /* Botón para registrar compañía, centrado en la pantalla */
 .btn-register-company {
-  width: 51%;
+  width: 60%;
   display: none; /* Oculto por defecto */
   position: absolute;
   left: 50%; /* Centrar horizontalmente */
@@ -266,6 +266,11 @@ form span {
   .form__container {
     width: 100%; /* El formulario ocupará el 100% del ancho */
     transition: none;
+  }
+
+  h1{
+    width: 100%;
+    text-align: center;
   }
 
   .form__image{
