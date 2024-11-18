@@ -1,1 +1,0 @@
-import{Oa as s,Pa as a,Z as n,Za as p,fb as m}from"./chunk-T5QHMN5N.js";var e=class o{static \u0275fac=function(t){return new(t||o)};static \u0275cmp=n({type:o,selectors:[["app-tablon-empresas"]],standalone:!0,features:[m],decls:2,vars:0,template:function(t,l){t&1&&(s(0,"p"),p(1,"tablon-empresas works!"),a())}})};var b=[{path:"",component:e}];export{b as empresasRoutes};
