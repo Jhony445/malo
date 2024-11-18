@@ -3,7 +3,7 @@
     display: flex; 
     flex-wrap: wrap; /* Permite que los elementos se distribuyan en varias filas */
     justify-content: center; /* Centra los elementos horizontalmente */
-    padding: 50px;
+    padding: 0px;
     background-color: #ffffff; /* Cambia este color según tu preferencia */
 }
 

@@ -6,12 +6,13 @@ import { FeatureSectionComponent } from './feature-section/feature-section.compo
 import { BusquedaComponent } from './busqueda/busqueda.component';
 import { MoreContentComponent } from "./more-content/more-content.component";
 import { PartnersSectionComponent } from './partners-section/partners-section.component';
+import { AppMovilComponent } from './app-movil/app-movil.component';
 
 @Component({
   standalone: true,
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  imports: [CommonModule, BusquedaComponent, NosotrosComponent, NavbarComponent, FeatureSectionComponent, MoreContentComponent,PartnersSectionComponent]
+  imports: [CommonModule, BusquedaComponent, NosotrosComponent, NavbarComponent, FeatureSectionComponent, MoreContentComponent,PartnersSectionComponent, AppMovilComponent]
 })
 export class DashboardComponent {
 }
