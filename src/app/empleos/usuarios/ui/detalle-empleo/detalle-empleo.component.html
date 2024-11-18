@@ -23,7 +23,7 @@
   <!-- Descripción del empleo -->
   <div class="detalle-section">
     <h3>Descripción del empleo</h3>
-    <p>{{ empleo.descripcion }}</p>
+    <p [innerHTML]="convertirTextoHtml(empleo.descripcion)"></p>
   </div>
 
   <div class="application-count-container">

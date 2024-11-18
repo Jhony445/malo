@@ -168,4 +168,9 @@ export class DetalleEmpleoComponent implements OnInit, OnChanges {
     setTimeout(shoot, 100);
     setTimeout(shoot, 200);
   }
+
+  convertirTextoHtml(texto: string): string {
+    if (!texto) return '';
+    return texto.replace(/\n/g, '<br>');
+  }
 }

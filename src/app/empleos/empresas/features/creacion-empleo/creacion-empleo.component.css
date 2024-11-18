@@ -82,9 +82,11 @@ button {
     margin-top: 20px;
 }
 
+/*
 .button-container button:hover {
-    background-color: #0f8100; /* Aplica solo a botones dentro de .button-container */
+    background-color: #0f8100;   
 }
+    */
 
 .button-container {
     text-align: right; /* Alinea el contenido a la derecha */
@@ -163,3 +165,20 @@ select option {
         max-width: 100%; /* Ajusta la anchura de los campos de entrada */
     }
 }
+
+button.btn-next {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  button.btn-next:disabled {
+    background-color: #cccccc; /* Gris para indicar que está deshabilitado */
+    color: #666666;
+    cursor: not-allowed; /* Cursor para indicar que no se puede hacer clic */
+  }

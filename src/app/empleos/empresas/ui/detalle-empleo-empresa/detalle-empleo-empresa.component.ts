@@ -202,4 +202,9 @@ export class DetalleEmpleoEmpresaComponent implements OnChanges {
   irAPostulaciones() {
     this.router.navigate(['/empresa/postulacion-empleos']);
   }
+
+  convertirTextoHtml(texto: string): string {
+    if (!texto) return '';
+    return texto.replace(/\n/g, '<br>');
+  }
 }

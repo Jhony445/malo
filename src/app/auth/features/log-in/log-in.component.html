@@ -46,13 +46,13 @@
                             name="isCompanyLogin">
                         Cuenta de empresa
                     </label>
-                    <input type="submit" [disabled]="loginForm.invalid"
-                        [value]="forgotPasswordMode ? 'Enviar correo de recuperación' : 'Iniciar sesión'">
                     <label *ngIf="!forgotPasswordMode">
                         <input type="checkbox" [(ngModel)]="isCompanyLogin" [ngModelOptions]="{standalone: true}"
                             name="isCompanyLogin">
                         Iniciar sesión como empresa
                     </label>
+                    <input type="submit" [disabled]="loginForm.invalid"
+                        [value]="forgotPasswordMode ? 'Enviar correo de recuperación' : 'Iniciar sesión'">
                     <app-loader *ngIf="isLoading"></app-loader>
                 </form>
                 <div class="link-container">

@@ -1,7 +1,7 @@
 /* Botones de acción */
 .action-buttons {
     display: flex;
-    gap: 10px; /* Espacio entre los botones */
+    gap: 10px;
   }
   
   /* Estilos del botón de editar */
@@ -12,7 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    background-color: #28a745; /* Color base verde */
+    background-color: #28a745;
     border: none;
     border-radius: 5px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
@@ -29,7 +29,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    background-color: #28a745; /* Color base verde */
+    background-color: #28a745;
     border: none;
     border-radius: 5px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
@@ -106,7 +106,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    background-color: #e62222; /* Color base rojo */
+    background-color: #e62222;
     border: none;
     border-radius: 5px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
@@ -163,7 +163,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    background-color: #e62222; /* Color base rojo */
+    background-color: #e62222;
     border: none;
     border-radius: 5px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);

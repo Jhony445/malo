@@ -51,6 +51,13 @@ export class CreacionEmpleoComponent {
     return null;
   }
 
+  isFirstSectionValid(): boolean {
+    return !!this.empleoForm.get('titulo')?.valid &&
+           !!this.empleoForm.get('descripcion')?.valid &&
+           !!this.empleoForm.get('ubicacion')?.valid &&
+           !!this.empleoForm.get('horario')?.valid;
+  }
+
   goToNextSection() {
     if (this.currentSection === 1) {
       this.currentSection = 2;
