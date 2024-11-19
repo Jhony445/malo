@@ -1,11 +1,14 @@
+:root{
+  --hard-blue: #090c9b;
+  --ligh-blue: #85a8ea;
+}
+
 .statistics-container {
     font-family: 'Arial', sans-serif;
     color: #333;
-    padding: 2rem;
     background-color: #ffffff; /* Fondo blanco */
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 1200px; /* Más ancho */
+    max-width: 63rem; /* Más ancho */
     margin: 2rem auto; /* Centrado horizontal */
   }
   
@@ -16,7 +19,7 @@
   
   .header h1 {
     font-size: 2.5rem;
-    color: #2a9d8f;
+    color: var(--hard-blue);
   }
   
   .header p {
@@ -85,3 +88,7 @@
     font-size: 1rem;
   }
   
+  canvas{
+    max-width: 100%;
+    height: 400px;
+  }
