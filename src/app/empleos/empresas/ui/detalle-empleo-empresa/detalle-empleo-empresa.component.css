@@ -79,9 +79,7 @@
 .detalle-imagen {
   display: flex;
   justify-content: center;
-  /* Centrar la imagen */
   margin-bottom: 15px;
-  /* Espacio inferior */
 }
 
 /* Estilos para la imagen dentro del contenedor */
@@ -89,14 +87,9 @@
   margin-top: 15px;
   width: 80%;
   max-width: 90%;
-  /* Asegura que la imagen no se salga horizontalmente */
-  max-height: 300px;
-  /* Altura máxima para limitar imágenes muy altas */
-  /* Mantiene el aspecto de la imagen */
+  max-height: 500px;
   border-radius: 8px;
-  /* Bordes redondeados para armonizar con el diseño */
   object-fit: cover;
-  /* Ajusta la imagen para llenar el espacio sin deformarse */
 }
 
 /* Estilo del campo URL en modo edición */
