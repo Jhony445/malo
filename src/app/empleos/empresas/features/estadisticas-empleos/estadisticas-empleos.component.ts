@@ -26,13 +26,13 @@ export class EstadisticasEmpleosComponent implements OnInit {
   totalEmpleos = 0;
   totalAplicaciones = 0;
   aplicacionesPorEmpleo: {titulo: string, totalAplicaciones: number}[] = [];
-  barChart: Chart | undefined;
-  pieChart: Chart<'pie'>| undefined;
+  pai2Chart: Chart<'pie'> | undefined;
+  pieChart: Chart<'pie'> | undefined;
   lineChart: Chart<'line'> | undefined;
 
   lineChartData: {titulo: string; fechas: string[]; totales: number[]}[]=[];
 
-  @ViewChild('barChartCanvas') barChartCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('pie2ChartCanvas') barChartCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('pieChartCanvas') pieChartCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('lineChartCanvas') lineChartCanvas!: ElementRef<HTMLCanvasElement>;
 
@@ -41,7 +41,7 @@ export class EstadisticasEmpleosComponent implements OnInit {
   }
 
   limitarTitulo(titulo: string, limite: number): string{
-    return titulo.length > limite ? titulo.slice(0, limite) + '...' : titulo;
+    return titulo.length > limite ? titulo.slice(0, limite) + '..' : titulo;
   }
   
   mapFechasToTotales(fechasGloables: string[], fechas: string[], totales: number[]): number[]{
@@ -115,11 +115,11 @@ export class EstadisticasEmpleosComponent implements OnInit {
   }
 
   updateBarChart(): void{
-    if (this.barChart) this.barChart.destroy();
+    if (this.pai2Chart) this.pai2Chart.destroy();
 
     const labels = this.aplicacionesPorEmpleo.map((item) => item.titulo);
     const data = this.aplicacionesPorEmpleo.map((item) => item.totalAplicaciones);
-    this.barChart = this.chartService.createBarChart(this.barChartCanvas, labels, data);
+    this.pai2Chart = this.chartService.createPie2Chart(this.barChartCanvas, labels, data, this.getRandomColor);
   }
 
   updatePieChart(): void{

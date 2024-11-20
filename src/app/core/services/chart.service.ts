@@ -9,47 +9,49 @@ Chart.register(ChartDataLabels);
 })
 
 export class ChartService {
-  createBarChart(
+  createPie2Chart(
     canvas: ElementRef<HTMLCanvasElement>,
     labels: string[],
-    data: number[]
-  ): Chart<'bar'> {
+    data: number[],
+    getRandomColor: () => string,
+  ): Chart<'pie'> {
+    // Generar colores únicos para cada sector
+    const colors = labels.map(() => getRandomColor());
+  
     return new Chart(canvas.nativeElement, {
-      type: 'bar',
+      type: 'pie',
       data: {
         labels,
         datasets: [
           {
-            label: 'Postulaciones',
             data,
-            backgroundColor: 'rgba(9,12,155, 1)',
+            backgroundColor: colors, // Asignar colores a cada sector
           },
         ],
       },
       options: {
-        indexAxis: 'y',
         responsive: true,
         plugins: {
           legend: {
             display: true,
             position: 'bottom',
-            labels: { font: { size: 16 } },
+            labels: {
+              generateLabels: () => {
+                return labels.map((label, index) => ({
+                  text: label, // Título del sector
+                  fillStyle: colors[index], // Color asociado
+                  hidden: false,
+                  lineWidth: 0, // Sin bordes en la leyenda
+                }));
+              },
+              font: { size: 14 }, // Ajustar tamaño de la fuente en la leyenda
+            },
           },
-          datalabels: { display: false },
-        },
-        scales: {
-          x: {
-            beginAtZero: true,
-            ticks: { stepSize: 1, font: { size: 16 } },
-          },
-          y: {
-            beginAtZero: true,
-            ticks: { autoSkip: false, font: { size: 16 } },
-          },
+          datalabels: { display: false }, // Ocultar etiquetas dentro de los sectores
         },
       },
     });
-  }
+  }  
 
   createPieChart(
     canvas: ElementRef<HTMLCanvasElement>,
@@ -125,6 +127,20 @@ export class ChartService {
               usePointStyle: true,
               pointStyle: 'line',
             },
+          },
+          datalabels: { display: false },
+        },
+        scales: {
+          x: {
+            ticks: {
+              font: {
+                size: 16,
+              }
+            }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: { stepSize: 1, font: { size: 16 } },
           },
         },
       },
