@@ -104,7 +104,7 @@ export class EstadisticasEmpleosComponent implements OnInit {
 
         console.log("Todas: ", this.total, " | solo empresa: ", this.totalAplicaciones);
 
-        this.updateBarChart();
+        this.updatePie2Chart();
         this.updatePieChart();
         this.updateLineChart(titulo, aplicacionesPorFecha);
       },
@@ -114,15 +114,28 @@ export class EstadisticasEmpleosComponent implements OnInit {
     })
   }
 
-  updateBarChart(): void{
-    this.isLoading = true
+  updatePie2Chart(): void {
+    this.isLoading = true;
     if (this.pai2Chart) this.pai2Chart.destroy();
-
+  
     const labels = this.aplicacionesPorEmpleo.map((item) => item.titulo);
     const data = this.aplicacionesPorEmpleo.map((item) => item.totalAplicaciones);
-    this.pai2Chart = this.chartService.createPie2Chart(this.barChartCanvas, labels, data, this.getRandomColor);
+  
+    const totalAplicaciones = data.reduce((sum, val) => sum + val, 0);
+    const percentages = data.map((value) => ((value / totalAplicaciones) * 100).toFixed(1));
+  
+    // Pasar datos y porcentajes al servicio
+    this.pai2Chart = this.chartService.createPie2Chart(
+      this.barChartCanvas,
+      labels,
+      data,
+      this.getRandomColor,
+      percentages // Pasar porcentajes al servicio
+    );
+  
     this.isLoading = false;
   }
+  
 
   updatePieChart(): void{
     this.isLoading = true;

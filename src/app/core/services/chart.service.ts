@@ -14,11 +14,11 @@ export class ChartService {
     labels: string[],
     data: number[],
     getRandomColor: () => string,
-  ): Chart<'pie'> {
-    // Generar colores únicos para cada sector
+    percentages: string[], // Recibir porcentajes como argumento
+  ): Chart<'pie', number[], unknown> {
     const colors = labels.map(() => getRandomColor());
   
-    return new Chart(canvas.nativeElement, {
+    return new Chart<'pie', number[], unknown>(canvas.nativeElement, {
       type: 'pie',
       data: {
         labels,
@@ -38,16 +38,36 @@ export class ChartService {
             labels: {
               generateLabels: () => {
                 return labels.map((label, index) => ({
-                  text: label, // Título del sector
-                  fillStyle: colors[index], // Color asociado
+                  text: `${label}`, // Mostrar el porcentaje en la leyenda
+                  fillStyle: colors[index],
                   hidden: false,
-                  lineWidth: 0, // Sin bordes en la leyenda
+                  lineWidth: 0,
                 }));
               },
-              font: { size: 14 }, // Ajustar tamaño de la fuente en la leyenda
+              font: { size: 14 },
             },
           },
-          datalabels: { display: false }, // Ocultar etiquetas dentro de los sectores
+          tooltip:{
+            callbacks: {
+              label: (item: any) => {
+                const index = item.dataIndex;
+                const sectorValue = data[index];
+                return `Postulaciones: ${sectorValue}`
+              }
+            }
+          },
+          datalabels: {
+            display: true,
+            color: '#fff',
+            formatter: (_: number, context: any) => {
+              const index = context.dataIndex;
+              return `${percentages[index]}%`;
+            },
+            font: {
+              size: 16,
+              weight: 'bold',
+            },
+          },
         },
       },
     });
@@ -82,7 +102,7 @@ export class ChartService {
           },
           datalabels: {
             color: '#ffff',
-            font: { size: 18, weight: 'bold' },
+            font: { size: 16, weight: 'bold' },
             formatter: (value: number) => `${value.toFixed(1)}%`,
           },
         },
