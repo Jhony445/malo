@@ -1,5 +1,7 @@
 import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LoaderComponent } from '../../../../shared/ui/loader/loader.component';
+import { ChartService } from '../../../../core/services/chart.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../../../../core/services/user.service';
 import { Chart } from 'chart.js/auto';
@@ -10,13 +12,15 @@ Chart.register(ChartDataLabels);
 @Component({
   selector: 'app-estadisticas-empleos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoaderComponent],
   templateUrl: './estadisticas-empleos.component.html',
   styleUrl: './estadisticas-empleos.component.css'
 })
 export class EstadisticasEmpleosComponent implements OnInit { 
   userService = inject(UserService);
   http = inject(HttpClient);
+  chartService= inject(ChartService);
+  isLoading = false;
 
   total = 0;
   totalEmpleos = 0;
@@ -33,7 +37,7 @@ export class EstadisticasEmpleosComponent implements OnInit {
   @ViewChild('lineChartCanvas') lineChartCanvas!: ElementRef<HTMLCanvasElement>;
 
   ngOnInit(): void {
-      this.getEmpleoById();
+    this.getEmpleoById();
   }
 
   limitarTitulo(titulo: string, limite: number): string{
@@ -58,7 +62,7 @@ export class EstadisticasEmpleosComponent implements OnInit {
   }
 
   getEmpleoById(): void {
-
+    this.isLoading = true;
     const empresaId = this.userService.getUserData().sub;
 
     this.http.get<any>('https://malo-backend-empleos.onrender.com/api/Empleo/GetEmpleos')
@@ -66,7 +70,6 @@ export class EstadisticasEmpleosComponent implements OnInit {
         next: (response: any[]) => {
           const empleosFiltrados = response.filter(empleo => empleo.empresa_id === empresaId);
 
-          this.total = response.length;
           this.totalEmpleos = empleosFiltrados.length;
 
           empleosFiltrados.forEach(empleo=>{
@@ -75,6 +78,7 @@ export class EstadisticasEmpleosComponent implements OnInit {
             
             this.getAplicacionesPorEmpleo(body, titulo);
           })
+          this.isLoading = false;
         },
         error: (error: any) => {
           console.error('Error al obtener empleos:', error);
@@ -83,7 +87,7 @@ export class EstadisticasEmpleosComponent implements OnInit {
   }
   
   getAplicacionesPorEmpleo(body: any, titulo: string): void {
-
+    console.log(body);
     this.http.post<any>('https://malo-backend-empleos.onrender.com/api/Aplicacion/contar-aplicaciones-empleos-por-fecha', body)
     .subscribe({
       next: (response: any[]) => {
@@ -92,13 +96,13 @@ export class EstadisticasEmpleosComponent implements OnInit {
           totalAplicaciones: item.totalAplicaciones
         }))
 
-        console.log(aplicacionesPorFecha);
-
         const totalAplicaciones = aplicacionesPorFecha.reduce((sum, item) => sum +item.totalAplicaciones, 0);
 
         this.totalAplicaciones += totalAplicaciones;
 
         this.aplicacionesPorEmpleo.push({titulo, totalAplicaciones});
+
+        console.log("Todas: ", this.total, " | solo empresa: ", this.totalAplicaciones);
 
         this.updateBarChart();
         this.updatePieChart();
@@ -111,211 +115,37 @@ export class EstadisticasEmpleosComponent implements OnInit {
   }
 
   updateBarChart(): void{
-    if(this.barChart){
-      this.barChart.destroy();
-    }
+    if (this.barChart) this.barChart.destroy();
 
-    const labels = this.aplicacionesPorEmpleo.map(item => item.titulo);
-    const data = this.aplicacionesPorEmpleo.map(item => item.totalAplicaciones);
-
-    this.barChart = new Chart(this.barChartCanvas.nativeElement, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: 'Postulaciones',
-            data,
-            backgroundColor: 'rgba(9,12,155, 1)',
-          }
-        ]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        plugins:{
-          legend: {
-            display: true,
-            position: 'bottom',
-            labels:{
-              font:{
-                size: 16,
-              },
-            },
-          },
-        },
-        scales: {
-          x: {
-            beginAtZero: true,
-            ticks: {
-              stepSize: 1,
-              font: {
-                size: 16,
-              }
-            }
-          },
-          y: {
-            beginAtZero: true,
-            ticks: {
-              autoSkip: false,
-              font: {
-                size: 16,
-              }
-            }
-          }
-        }
-      }
-    });
+    const labels = this.aplicacionesPorEmpleo.map((item) => item.titulo);
+    const data = this.aplicacionesPorEmpleo.map((item) => item.totalAplicaciones);
+    this.barChart = this.chartService.createBarChart(this.barChartCanvas, labels, data);
   }
 
   updatePieChart(): void{
-    if(this.pieChart){
-      this.pieChart.destroy();
-    }
+    if(this.pieChart) this.pieChart.destroy();
 
-    const porcentajeAplicaciones = this.totalAplicaciones / this.total * 100;
-    const porcentajeRestante = 100 - porcentajeAplicaciones;
-
-    this.pieChart = new Chart(this.pieChartCanvas.nativeElement,{
-      type: 'pie',
-      data: {
-        labels: ['Tus postulaciones','Otras postulaciones'],
-        datasets: [
-          {
-            data: [porcentajeAplicaciones, porcentajeRestante],
-            backgroundColor: ['rgba(9, 12, 155, 1)', 'rgba(60, 55, 68, 1)'],
-          },
-        ],
-      },
-      options:{
-        responsive: true,
-        plugins:{
-          legend: {
-            display: true,
-            position: 'bottom',
-            labels: {
-              font: {
-                size: 16,
-              },
-            },
-          },
-          tooltip: {
-            enabled: true,
-            callbacks: {
-              label: (context) => {
-                const dataIndex = context.dataIndex;
-
-                const values = [this.totalAplicaciones, (this.total - this.totalAplicaciones)];
-                const value = values[dataIndex];
-
-                return `  ${value}`
-              }
-            }
-          },
-          datalabels: {
-            color: '#ffff',
-            font: {
-              size: 18,
-              weight: 'bold',
-            },
-            formatter: (value: number) => `${value.toFixed(1)}%`,
-          }
-        },
-      }
-    });
+    this.pieChart = this.chartService.createPieChart(
+      this.pieChartCanvas,
+      this.totalAplicaciones,
+      this.total
+    )
   }
 
   updateLineChart(titulo: string, aplicacionesPOrFecha: {fecha: string; totalAplicaciones:number}[]): void{
-    const fechas = aplicacionesPOrFecha.map(item => item.fecha);
-    const totales = aplicacionesPOrFecha.map(item => item.totalAplicaciones);
-    this.lineChartData.push({titulo, fechas, totales})
-    
-    if (this.lineChart) {
-      this.lineChart.destroy();
-    }
+    const fechas = aplicacionesPOrFecha.map((item) => item.fecha);
+    const totales = aplicacionesPOrFecha.map((item) => item.totalAplicaciones);
+    this.lineChartData.push({titulo, fechas, totales});
 
-    const fechasGlobales = [...new Set(this.lineChartData.flatMap(item => item.fechas))].sort();
-    
-    this.lineChart = new Chart(this.lineChartCanvas.nativeElement, {
-      type: 'line',
-      data: {
-        labels: fechasGlobales,
-        datasets: this.lineChartData.map((item) => {
-          const color = this.getRandomColor();
-          return {
-            label: item.titulo,
-            data: this.mapFechasToTotales(fechasGlobales, item.fechas, item.totales),
-            borderColor: color,
-            backgroundColor: 'rgba(0,0,0,0',
-            borderWidth: 2,
-            tension: 0.3,
-            pointRadius: 6,
-            pointHoverRadius: 8,
-            pointBackgroundColor: color,
-          }
-        }),
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true,
-            labels:{
-              font: {
-                size: 16,
-              },
-              boxWidth: 30,
-              usePointStyle: true,
-              pointStyle: 'line',
-            },
-          },
-          tooltip: {
-            enabled: true,
-            mode: 'nearest',
-            callbacks: {
-              label: (context) => {
-                const empleo = context.dataset.label;
-                const postulaciones = context.raw;
-                return `${empleo}:  ${postulaciones}`
-              },
-            },
-          },
-          datalabels: {
-            display: false,
-          }
-        },
-        scales: {
-          x: {
-            ticks: {
-              font: {
-                size: 16,
-              },
-            },
-            title: {
-              display: true,
-              text: 'Fechas',
-              font: {
-                size: 16,
-              },
-            },
-          },
-          y: {
-            ticks: {
-              stepSize: 1,
-              font: {
-                size: 16,
-              },
-            },
-            title: {
-              display: true,
-              text: 'Cantidad de postulaciones',
-              font: {
-                size: 16,
-              },
-            },
-          },
-        },
-      },
-    });
+    if(this.lineChart) this.lineChart.destroy();
+
+    const fechasGloables = [...new Set(this.lineChartData.flatMap((item) => item.fechas))].sort();
+    this.lineChart = this.chartService. createLineChart(
+      this.lineChartCanvas,
+      fechasGloables,
+      this.lineChartData,
+      this.mapFechasToTotales,
+      this.getRandomColor
+    )
   }
 }
