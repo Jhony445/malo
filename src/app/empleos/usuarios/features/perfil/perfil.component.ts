@@ -426,7 +426,7 @@ export class PerfilComponent implements OnInit {
   agregarHabilidad() {
     this.isLoading = true;
     // Verificamos si la habilidad ya existe
-    const habilidadExistente = this.habilidades.find(
+  const habilidadExistente = this.habilidades.find(
       habilidad => habilidad.descripcion.toLowerCase() === this.nuevaHabilidadDescripcion.toLowerCase()
     );
     if (habilidadExistente) {
