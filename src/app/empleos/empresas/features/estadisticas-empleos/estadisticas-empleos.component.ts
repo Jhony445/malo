@@ -115,14 +115,17 @@ export class EstadisticasEmpleosComponent implements OnInit {
   }
 
   updateBarChart(): void{
+    this.isLoading = true
     if (this.pai2Chart) this.pai2Chart.destroy();
 
     const labels = this.aplicacionesPorEmpleo.map((item) => item.titulo);
     const data = this.aplicacionesPorEmpleo.map((item) => item.totalAplicaciones);
     this.pai2Chart = this.chartService.createPie2Chart(this.barChartCanvas, labels, data, this.getRandomColor);
+    this.isLoading = false;
   }
 
   updatePieChart(): void{
+    this.isLoading = true;
     if(this.pieChart) this.pieChart.destroy();
 
     this.pieChart = this.chartService.createPieChart(
@@ -130,9 +133,11 @@ export class EstadisticasEmpleosComponent implements OnInit {
       this.totalAplicaciones,
       this.total
     )
+    this.isLoading = false;
   }
 
   updateLineChart(titulo: string, aplicacionesPOrFecha: {fecha: string; totalAplicaciones:number}[]): void{
+    this.isLoading = true;
     const fechas = aplicacionesPOrFecha.map((item) => item.fecha);
     const totales = aplicacionesPOrFecha.map((item) => item.totalAplicaciones);
     this.lineChartData.push({titulo, fechas, totales});
@@ -147,5 +152,6 @@ export class EstadisticasEmpleosComponent implements OnInit {
       this.mapFechasToTotales,
       this.getRandomColor
     )
+    this.isLoading = false;
   }
 }
