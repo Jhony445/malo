@@ -73,7 +73,6 @@ export class PostulacionEmpleosComponent implements OnInit {
 
   obtenerUsuariosPorEmpleo(empleoId: number): void {
     console.log(empleoId)
-    this.isLoading = true;
     const payload = { empleoId };
     this.http.post<any>('https://malo-backend-empleos.onrender.com/api/Aplicacion/obtener-usuarios-por-empleo', payload).subscribe({
       next: (usuariosResponse) => {
@@ -85,19 +84,17 @@ export class PostulacionEmpleosComponent implements OnInit {
           this.successMessage[empleoId] = "No hay usuarios postulados a este empleo"
           return
         }
-        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error al obtener usuarios por empleo:', error)
         this.errorMessage = "Algo salio mal, intentalo más tarde";
         this.clearMessagesAfterDelay();
-        this.isLoading = false;
       }
     });
   }
 
   obtenerDocumentosPorUsuario(usuarioIds: string, empleoId: number): void {
-    this.isPdfLoading[empleoId] = true; // Empezamos a cargar el PDF
+    this.isLoading = true;
     this.http.get<any>('https://malo-backend-documentos.onrender.com/api/Documento/GetDocumentos').subscribe({
       next: (documentosResponse) => {
         const pdfs = documentosResponse.filter((documento: any) =>
@@ -112,13 +109,13 @@ export class PostulacionEmpleosComponent implements OnInit {
           );
           console.log(this.empleoDocumentos[empleoId].length);
           this.pdfIndices[empleoId] = 0; // Iniciar en el primer PDF
+          this.isLoading = false;
         }
-        this.isPdfLoading[empleoId] = false; // Terminamos de cargar el PDF
       },
       error: (error) => {
-        this.isPdfLoading[empleoId] = false; // En caso de error, también se marca como false
         console.error('Error al obtener documentos:', error);
         this.errorMessage = "Algo salió mal, intentalo más tarde";
+        this.isLoading = false;
         this.clearMessagesAfterDelay();
       }
     });
@@ -130,8 +127,8 @@ export class PostulacionEmpleosComponent implements OnInit {
     if (this.empleoDocumentos[empleoId]?.length <= 1) {
       return; // Si hay menos de 2 documentos, no hacemos nada
     }
-  
-    this.isPdfLoading[empleoId] = true;  // Marcar como cargando el PDF
+    
+    this.isLoading = true;
     const totalPdfs = this.empleoDocumentos[empleoId].length;
     let currentIndex = this.pdfIndices[empleoId];
   
@@ -142,7 +139,7 @@ export class PostulacionEmpleosComponent implements OnInit {
     }
   
     this.pdfIndices[empleoId] = currentIndex; // Actualiza el índice
-    this.isPdfLoading[empleoId] = false;  // Terminar la carga
+    this.isLoading = false;
   
     // Contador en consola para saber qué PDF se está viendo
     console.log(`PDF ${currentIndex + 1} de ${totalPdfs}`);
@@ -151,19 +148,23 @@ export class PostulacionEmpleosComponent implements OnInit {
   
   toggleEmpleoVisibilidad(empleoId: number): void {
     // Si el empleo ya está visible, lo ocultamos
+    this.isLoading = true;
     if (this.empleoVisibilidad[empleoId]) {
       this.empleoVisibilidad[empleoId] = false;
+      this.isLoading = false;
     } else {
       // Si el empleo no está visible, ocultamos todos los demás y mostramos solo este
       for (const id in this.empleoVisibilidad) {
         this.empleoVisibilidad[id] = false; // Ocultamos todos los empleos
       }
       this.empleoVisibilidad[empleoId] = true; // Mostramos el empleo seleccionado
+      this.isLoading = false;
     }
   
     // Si el contenedor se vuelve visible, carga los usuarios y documentos
     if (this.empleoVisibilidad[empleoId]) {
       this.obtenerUsuariosPorEmpleo(empleoId);
+      this.isLoading = false;
     }
   }
   
