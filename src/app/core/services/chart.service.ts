@@ -81,7 +81,7 @@ export class ChartService {
     const porcentajeAplicaciones = (totalAplicaciones / total) * 100;
     const porcentajeRestante = 100 - porcentajeAplicaciones;
 
-    return new Chart(canvas.nativeElement, {
+    return new Chart<'pie', number[], unknown>(canvas.nativeElement, {
       type: 'pie',
       data: {
         labels: ['Tus postulaciones', 'Otras postulaciones'],
@@ -99,6 +99,21 @@ export class ChartService {
             display: true,
             position: 'bottom',
             labels: { font: { size: 16 } },
+          },
+          tooltip:{
+            callbacks: {
+              label: (item: any) => {
+                const index = item.dataIndex;
+
+                if (index === 0) {
+                  return `Postulaciones: ${totalAplicaciones}`;
+                }
+                if (index === 1) {
+                  return `Postulaciones: ${total - totalAplicaciones}`;
+                }
+                return 'postulaciones'
+              }
+            }
           },
           datalabels: {
             color: '#ffff',
