@@ -22,9 +22,11 @@ export class EstadisticasEmpleosComponent implements OnInit {
   chartService= inject(ChartService);
   isLoading = false;
 
+  titulo = '';
   total = 0;
   totalEmpleos = 0;
   totalAplicaciones = 0;
+  aplicacionesPorFecha: {fecha: string, totalAplicaciones: number}[] = [];
   aplicacionesPorEmpleo: {titulo: string, totalAplicaciones: number}[] = [];
   pai2Chart: Chart<'pie'> | undefined;
   pieChart: Chart<'pie'> | undefined;
@@ -73,64 +75,70 @@ export class EstadisticasEmpleosComponent implements OnInit {
     })
   }
 
-  getEmpleoById(): void {
+  async getEmpleoById(): Promise<void> {
     this.isLoading = true;
     const empresaId = this.userService.getUserData().sub;
-
-    this.http.get<any>('https://malo-backend-empleos.onrender.com/api/Empleo/GetEmpleos')
-      .subscribe({
-        next: (response: any[]) => {
-          const empleosFiltrados = response.filter(empleo => empleo.empresa_id === empresaId);
-
-          this.totalEmpleos = empleosFiltrados.length;
-
-          empleosFiltrados.forEach(empleo=>{
-            const body = { empleoID: empleo.empleoId };
-            const titulo = this.limitarTitulo(empleo.titulo, 20)
-            
-            this.getAplicacionesPorEmpleo(body, titulo);
-          })
-          this.isLoading = false;
-        },
-        error: (error: any) => {
-          console.error('Error al obtener empleos:', error);
-        }
-      });
+  
+    try {
+      const response = await this.http.get<any[]>('https://malo-backend-empleos.onrender.com/api/Empleo/GetEmpleos').toPromise();
+      
+      if (!response) {
+        throw new Error('No se obtuvo respuesta de la API');
+      }
+      const empleosFiltrados = response.filter(empleo => empleo.empresa_id === empresaId);
+      this.totalEmpleos = empleosFiltrados.length;
+  
+      for (const empleo of empleosFiltrados) {
+        const body = { empleoID: empleo.empleoId };
+        this.titulo = this.limitarTitulo(empleo.titulo, 20);
+        
+        await this.getAplicacionesPorEmpleo(body, this.titulo);  // Suponiendo que `getAplicacionesPorEmpleo` es una función asincrónica
+      }
+    } catch (error) {
+      console.error('Error al obtener empleos:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
   
-  getAplicacionesPorEmpleo(body: any, titulo: string): void {
-    console.log(body);
-    this.http.post<any>('https://malo-backend-empleos.onrender.com/api/Aplicacion/contar-aplicaciones-empleos-por-fecha', body)
-    .subscribe({
-      next: (response: any[]) => {
-        const aplicacionesPorFecha: {fecha: string; totalAplicaciones: number}[] = response.map(item => ({
-          fecha: item.fecha.split('T')[0],
-          totalAplicaciones: item.totalAplicaciones
-        }))
+  
+  async getAplicacionesPorEmpleo(body: any, titulo: string): Promise<void> {
+    try {
+      const response = await this.http
+        .post<any[]>('https://malo-backend-empleos.onrender.com/api/Aplicacion/contar-aplicaciones-empleos-por-fecha', body)
+        .toPromise();
 
-        const totalAplicaciones = aplicacionesPorFecha.reduce((sum, item) => sum +item.totalAplicaciones, 0);
-
-        this.totalAplicaciones += totalAplicaciones;
-
-        this.aplicacionesPorEmpleo.push({titulo, totalAplicaciones});
-
-        this.updatePie2Chart();
-        this.updatePieChart();
-        this.updateLineChart(titulo, aplicacionesPorFecha);
-      },
-      error: (error: any) => {
-        console.error('Error al obtener aplicaciones:', error);
+      if (!response) {
+        throw new Error('No se obtuvo respuesta de la API');
       }
-    })
+  
+      this.aplicacionesPorFecha = response.map(item => ({
+        fecha: item.fecha.split('T')[0],
+        totalAplicaciones: item.totalAplicaciones
+      }));
+  
+      const totalAplicaciones = this.aplicacionesPorFecha.reduce((sum, item) => sum + item.totalAplicaciones, 0);
+  
+      this.totalAplicaciones += totalAplicaciones;
+  
+      this.aplicacionesPorEmpleo.push({ titulo, totalAplicaciones });
+
+      this.updateLineChart();
+      this.updatePie2Chart();
+      this.updatePieChart();
+    } catch (error) {
+      console.error('Error al obtener aplicaciones:', error);
+    }
   }
+  
 
   updatePie2Chart(): void {
     this.isLoading = true;
+
     if (this.pai2Chart) this.pai2Chart.destroy();
   
     const labels = this.aplicacionesPorEmpleo.map((item) => item.titulo);
     const data = this.aplicacionesPorEmpleo.map((item) => item.totalAplicaciones);
-  
     const totalAplicaciones = data.reduce((sum, val) => sum + val, 0);
     const percentages = data.map((value) => ((value / totalAplicaciones) * 100).toFixed(1));
   
@@ -170,14 +178,14 @@ export class EstadisticasEmpleosComponent implements OnInit {
     })
   }
 
-  updateLineChart(titulo: string, aplicacionesPOrFecha: {fecha: string; totalAplicaciones:number}[]): void{
+  updateLineChart(): void{
     this.isLoading = true;
-    const fechas = aplicacionesPOrFecha.map((item) => item.fecha);
-    const totales = aplicacionesPOrFecha.map((item) => item.totalAplicaciones);
-    this.lineChartData.push({titulo, fechas, totales});
+    const fechas = this.aplicacionesPorFecha.map((item) => item.fecha);
+    const totales = this.aplicacionesPorFecha.map((item) => item.totalAplicaciones);
+    this.lineChartData.push({titulo: this.titulo, fechas, totales});
 
     if(this.lineChart) this.lineChart.destroy();
-
+    
     const fechasGloables = [...new Set(this.lineChartData.flatMap((item) => item.fechas))].sort();
     this.lineChart = this.chartService. createLineChart(
       this.lineChartCanvas,
