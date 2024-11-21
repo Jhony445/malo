@@ -26,17 +26,32 @@
     <div class="graphs">
       <div class="graph">
         <h3>Empleos Más Populares</h3>
-        <canvas #pie2ChartCanvas></canvas>
+        <ng-container *ngIf="aplicacionesPorEmpleo.length > 0; else noDataPaiChart2">
+          <canvas #pie2ChartCanvas></canvas>
+        </ng-container>
+        <ng-template #noDataPaiChart2>
+          <p class="no-data-message">No hay datos que mostrar</p>
+        </ng-template>
       </div>
       <div class="graph">
         <h3>Preferencia de los usuarios</h3>
-        <canvas #pieChartCanvas></canvas>
+        <ng-container *ngIf="total > 0; else noDataPaiChart">
+          <canvas #pieChartCanvas></canvas>
+        </ng-container>
+        <ng-template #noDataPaiChart>
+          <p class="no-data-message">No hay datos que mostrar</p>
+        </ng-template>
       </div>
     </div>
     <div class="graphs">
       <div class="graph">
         <h3>Fechas de postulación</h3>
-        <canvas #lineChartCanvas></canvas>
+        <ng-container *ngIf="lineChartData.length > 0; else noDataLineChart">
+          <canvas #lineChartCanvas></canvas>
+        </ng-container>
+        <ng-template #noDataLineChart>
+          <p class="no-data-message">No hay datos que mostrar</p>
+        </ng-template>
       </div>
     </div>
   </div>

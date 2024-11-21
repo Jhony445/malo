@@ -1,84 +1,91 @@
 <div class="container">
   <app-notification *ngIf="errorMessage" [message]="errorMessage" [isError]="true"></app-notification>
   <app-loader *ngIf="isLoading"></app-loader>
-  <div *ngFor="let empleo of paginatedEmpleos" class="card">
-    <div 
-      class="card-header"
-      (click)="toggleEmpleoVisibilidad(empleo.empleoId)" 
-      (keyup.enter)="toggleEmpleoVisibilidad(empleo.empleoId)"
-      tabindex="0" 
-      role="button"
-    >
-      <div class="flex-row">
-        <img *ngIf="empleo.multimediaContenido" 
-            [src]="empleo.multimediaContenido" 
-            alt="Imagen del empleo" 
-            class="job-image" 
-        />
-        <p class="job-title">
-          {{ empleo.titulo }}
-        </p>
-      </div>
-      <i class="fas fa-angle-down toggle-icon" [ngClass]="{'rotated': empleoVisibilidad[empleo.empleoId]}"></i>
-      <span class="job-date">{{ empleo.fecha_publicacion | date: 'yyyy-MM-dd' }}</span>
-    </div>
 
-
-    <!-- Contenedor para mostrar el PDF y los iconos de navegación -->
-    <div *ngIf="empleoVisibilidad[empleo.empleoId]" class="pdf-container">
-      <!-- Mostrar el mensaje de error solo si hay un mensaje para este empleoId -->
-      <app-notification *ngIf="successMessage[empleo.empleoId]" 
-                        [message]="successMessage[empleo.empleoId]" 
-                        [isError]="true"></app-notification>
-
-       <!-- Contador de PDFs -->
-      <div *ngIf="empleoDocumentos[empleo.empleoId]" class="pdf-counter">
-        Documento {{ pdfIndices[empleo.empleoId] + 1 }} de {{ empleoDocumentos[empleo.empleoId]?.length || 0 }}
-      </div>
-      
-      <!-- Icono de navegación izquierda -->
-      <i *ngIf="empleoDocumentos[empleo.empleoId]"
-        class="fas fa-angle-left pdf-nav-icon left" 
-        (click)="navigatePdf('left', empleo.empleoId)" 
-        (keyup.enter)="navigatePdf('left', empleo.empleoId)"
-        tabindex="0"
-        role="button"
-        aria-label="Navegar al documento anterior"
-      ></i>
-
-      <!-- Contenedor del PDF -->
-      <embed *ngIf="empleoDocumentos[empleo.empleoId]"
-            [src]="empleoDocumentos[empleo.empleoId] ? empleoDocumentos[empleo.empleoId][pdfIndices[empleo.empleoId]] : ''" 
-            type="application/pdf" 
-            width="90%" 
-            height="450px"
-      />
-
-      <!-- Icono de navegación derecha -->
-      <i *ngIf="empleoDocumentos[empleo.empleoId]"
-        class="fas fa-angle-right pdf-nav-icon right" 
-        (click)="navigatePdf('right', empleo.empleoId)" 
-        (keyup.enter)="navigatePdf('right', empleo.empleoId)"
-        tabindex="0"
-        role="button"
-        aria-label="Navegar al siguiente documento"
-      ></i>
-    </div>
+  <div *ngIf="!empleosFiltrados.length && !isLoading" class="no-empleos">
+    <p>No hay empleos publicados</p>
   </div>
 
-  <div class="pagination">
-    <button 
-      [disabled]="currentPage === 1"
-      (click)="onPageChange(currentPage - 1)"
-      class="btn btn-secondary">
-      Anterior
-    </button>
-    <span>Página {{ currentPage }} de {{ totalPages }}</span>
-    <button 
-      [disabled]="currentPage === totalPages" 
-      (click)="onPageChange(currentPage + 1)" 
-      class="btn btn-secondary">
-      Siguiente
-    </button>
+  <div *ngIf="empleosFiltrados.length" style="width: 80%;">
+    <div *ngFor="let empleo of paginatedEmpleos" class="card">
+      <div 
+        class="card-header"
+        (click)="toggleEmpleoVisibilidad(empleo.empleoId)" 
+        (keyup.enter)="toggleEmpleoVisibilidad(empleo.empleoId)"
+        tabindex="0" 
+        role="button"
+      >
+        <div class="flex-row">
+          <img *ngIf="empleo.multimediaContenido" 
+              [src]="empleo.multimediaContenido" 
+              alt="Imagen del empleo" 
+              class="job-image" 
+          />
+          <p class="job-title">
+            {{ empleo.titulo }}
+          </p>
+        </div>
+        <i class="fas fa-angle-down toggle-icon" [ngClass]="{'rotated': empleoVisibilidad[empleo.empleoId]}"></i>
+        <span class="job-date">{{ empleo.fecha_publicacion | date: 'yyyy-MM-dd' }}</span>
+      </div>
+    
+    
+      <!-- Contenedor para mostrar el PDF y los iconos de navegación -->
+      <div *ngIf="empleoVisibilidad[empleo.empleoId]" class="pdf-container">
+        <!-- Mostrar el mensaje de error solo si hay un mensaje para este empleoId -->
+        <app-notification *ngIf="successMessage[empleo.empleoId]" 
+                          [message]="successMessage[empleo.empleoId]" 
+                          [isError]="true"></app-notification>
+    
+         <!-- Contador de PDFs -->
+        <div *ngIf="empleoDocumentos[empleo.empleoId]" class="pdf-counter">
+          Documento {{ pdfIndices[empleo.empleoId] + 1 }} de {{ empleoDocumentos[empleo.empleoId].length || 0 }}
+        </div>
+        
+        <!-- Icono de navegación izquierda -->
+        <i *ngIf="empleoDocumentos[empleo.empleoId]"
+          class="fas fa-angle-left pdf-nav-icon left" 
+          (click)="navigatePdf('left', empleo.empleoId)" 
+          (keyup.enter)="navigatePdf('left', empleo.empleoId)"
+          tabindex="0"
+          role="button"
+          aria-label="Navegar al documento anterior"
+        ></i>
+    
+        <!-- Contenedor del PDF -->
+        <embed *ngIf="empleoDocumentos[empleo.empleoId]"
+              [src]="empleoDocumentos[empleo.empleoId] ? empleoDocumentos[empleo.empleoId][pdfIndices[empleo.empleoId]] : ''" 
+              type="application/pdf" 
+              width="90%" 
+              height="450px"
+        />
+    
+        <!-- Icono de navegación derecha -->
+        <i *ngIf="empleoDocumentos[empleo.empleoId]"
+          class="fas fa-angle-right pdf-nav-icon right" 
+          (click)="navigatePdf('right', empleo.empleoId)" 
+          (keyup.enter)="navigatePdf('right', empleo.empleoId)"
+          tabindex="0"
+          role="button"
+          aria-label="Navegar al siguiente documento"
+        ></i>
+      </div>
+    </div>
+    
+    <div class="pagination">
+      <button 
+        [disabled]="currentPage === 1"
+        (click)="onPageChange(currentPage - 1)"
+        class="btn btn-secondary">
+        Anterior
+      </button>
+      <span>Página {{ currentPage }} de {{ totalPages }}</span>
+      <button 
+        [disabled]="currentPage === totalPages" 
+        (click)="onPageChange(currentPage + 1)" 
+        class="btn btn-secondary">
+        Siguiente
+      </button>
+    </div>
   </div>
 </div>

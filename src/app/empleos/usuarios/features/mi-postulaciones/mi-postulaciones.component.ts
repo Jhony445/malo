@@ -17,6 +17,7 @@ export class MiPostulacionesComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 4;
   isLoading = false;
+  hasPostulaciones = false;
   successMessage= '';
   empresaNombre = '';
   errorMessage = '';
@@ -61,7 +62,6 @@ export class MiPostulacionesComponent implements OnInit {
         }
       });
   }
-  
 
   onPageChange(page: number): void {
     this.currentPage = page;

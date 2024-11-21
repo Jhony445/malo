@@ -8,7 +8,7 @@
 }
 
 .card {
-  width: 80%;
+  width: 100%;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1rem 2rem;
@@ -141,6 +141,13 @@
 
 .toggle-icon.rotated {
   transform: rotate(180deg);
+}
+
+.no-empleos{
+  text-align: center;
+  font-size: 1.5rem;
+  color: #777;
+  margin-top: 2rem;
 }
 
 /* Media Query para vista móvil */
