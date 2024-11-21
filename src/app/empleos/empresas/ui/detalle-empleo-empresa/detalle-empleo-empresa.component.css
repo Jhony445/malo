@@ -62,7 +62,6 @@
   margin: 0 0 15px 0;
 }
 
-/* Inputs y formularios en modo edición */
 .input-editar {
   width: 100%;
   padding: 8px;
@@ -73,16 +72,12 @@
   box-sizing: border-box;
 }
 
-/* Botones de acción */
-
-/* Contenedor de la imagen */
 .detalle-imagen {
   display: flex;
   justify-content: center;
   margin-bottom: 15px;
 }
 
-/* Estilos para la imagen dentro del contenedor */
 .detalle-imagen img {
   margin-top: 15px;
   width: 80%;
@@ -92,7 +87,6 @@
   object-fit: cover;
 }
 
-/* Estilo del campo URL en modo edición */
 .input-editar {
   width: 100%;
   padding: 8px;
@@ -111,9 +105,7 @@
 .error {
   color: red;
   font-size: 0.85em;
-  /* Ajusta el tamaño según prefieras */
   margin-top: 4px;
-  /* Añade espacio para separar del campo */
 }
 
 .detalle-section h3 {
@@ -154,7 +146,6 @@
   background-color: #e8f4fa;
 }
 
-/* Estilos específicos para los placeholders */
 .input-editar::placeholder {
   color: #b3b3b3;
 }
@@ -201,9 +192,9 @@
   border: 1px solid #ccc;
   font-size: 1em;
   box-sizing: border-box;
-  resize: vertical; /* Permite al usuario redimensionar verticalmente */
-  min-height: 100px; /* Altura inicial */
-  max-height: 300px; /* Altura máxima */
+  resize: vertical;
+  min-height: 100px;
+  max-height: 300px;
 }
 
 .textarea-editar:focus {
