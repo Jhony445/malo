@@ -30,7 +30,7 @@
 }
 
 .stat-card {
-  flex: 1 1 30%; /* Ajusta tamaño para adaptarse mejor */
+  flex: 1 1; /* Ajusta tamaño para adaptarse mejor */
   background: #f0f0f0;
   padding: 1.5rem;
   border-radius: 8px;
@@ -93,8 +93,19 @@ canvas{
   height: 400px;
 }
 
+.no-data-message {
+  text-align: center;
+  color: #777;
+  font-size: 16px;
+  margin: 20px 0;
+}
+
 @media (max-width: 768px) {
   .graphs{
+    flex-direction: column;
+  }
+
+  .content{
     flex-direction: column;
   }
 }
