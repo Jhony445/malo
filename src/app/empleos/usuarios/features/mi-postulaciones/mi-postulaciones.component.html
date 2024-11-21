@@ -1,115 +1,115 @@
 <div class="container">
-    <app-notification
-      *ngIf="errorMessage"
-      [message]="errorMessage"
-      [isError]="true"
-    ></app-notification>
-    <app-notification
-      *ngIf="successMessage"
-      [message]="successMessage"
-    ></app-notification>
-    <app-loader *ngIf="isLoading"></app-loader>
-  
-    <div *ngIf="!empleosFiltrados.length && !isLoading" class="no-empleos">
-      <p>No te has postulado a ningún empleo</p>
-    </div>
-  
-    <!-- Mostrar empleos -->
-    <div *ngIf="empleosFiltrados.length" style="width: 80%;">
-      <div *ngFor="let empleo of paginatedEmpleos" class="card">
-        <div
-          class="card-header"
-          (click)="toggleEmpleoVisibilidad(empleo.empleoID)"
-          (keyup.enter)="toggleEmpleoVisibilidad(empleo.empleoID)"
-          tabindex="0"
-          role="button"
-        >
-          <div class="flex-row">
-            <img
-              *ngIf="empleo.multimediaContenido"
-              [src]="empleo.multimediaContenido"
-              alt="Imagen del empleo"
-              class="job-image"
-            />
-            <p class="job-title">
-              {{ empleo.titulo }}
-            </p>
-          </div>
-          <i
-            class="fas fa-angle-down toggle-icon"
-            [ngClass]="{ rotated: empleoVisibilidad[empleo.empleoID] }"
-          ></i>
-          <span class="job-date">{{
-            empleo.fecha_aplicacion | date : "yyyy-MM-dd"
-          }}</span>
-          <button
-            class="btn-remove"
-            (click)="eliminarPostulacion(empleo.empleoID)"
-          >
-            Olvidar
-          </button>
+  <app-notification
+    *ngIf="errorMessage"
+    [message]="errorMessage"
+    [isError]="true"
+  ></app-notification>
+  <app-notification
+    *ngIf="successMessage"
+    [message]="successMessage"
+  ></app-notification>
+  <app-loader *ngIf="isLoading"></app-loader>
+
+  <div *ngIf="!empleosFiltrados.length && !isLoading" class="no-empleos">
+    <p>No te has postulado a ningún empleo</p>
+  </div>
+
+  <!-- Mostrar empleos -->
+  <div *ngIf="empleosFiltrados.length" style="width: 80%;">
+    <div *ngFor="let empleo of paginatedEmpleos" class="card">
+      <div
+        class="card-header"
+        (click)="toggleEmpleoVisibilidad(empleo.empleoID)"
+        (keyup.enter)="toggleEmpleoVisibilidad(empleo.empleoID)"
+        tabindex="0"
+        role="button"
+      >
+        <div class="flex-row">
+          <img
+            *ngIf="empleo.multimediaContenido"
+            [src]="empleo.multimediaContenido"
+            alt="Imagen del empleo"
+            class="job-image"
+          />
+          <p class="job-title">
+            {{ empleo.titulo }}
+          </p>
         </div>
-  
-        <!-- Detalles del empleo -->
-        <!-- Detalles del empleo -->
-        <div *ngIf="empleoVisibilidad[empleo.empleoID]" class="card-body">
-        <ng-container *ngIf="empleoDetalles[empleo.empleoID]; else loading">
-          <div class="details-container">
-            <img
-              *ngIf="empleoDetalles[empleo.empleoID]?.multimediaContenido"
-              [src]="empleoDetalles[empleo.empleoID]?.multimediaContenido"
-              alt="Imagen del empleo"
-              class="detail-image"
-            />
-            <div class="details-content">
-              <div class="detail-item">
-                <strong>Empresa:</strong>
-                <p>{{ empresaNombre }}</p>
-              </div>
-              <div class="detail-item">
-                <strong>Descripcion:</strong>
-                <p>{{ empleoDetalles[empleo.empleoID]?.horario }}</p>
-              </div>
-              <div class="detail-item">
-                <strong>Ubicación:</strong>
-                <p>{{ empleoDetalles[empleo.empleoID]?.ubicacion }}</p>
-              </div>
-              <div class="detail-item">
-                <strong>Salario:</strong>
-                <p>
-                  {{ empleoDetalles[empleo.empleoID]?.salario_minimo }} -
-                  {{ empleoDetalles[empleo.empleoID]?.salario_maximo }}
-                </p>
-              </div>
-              <div class="detail-item">
-                <strong>Empresa:</strong>
-                <p>{{ empleoDetalles[empleo.empleoID]?.descripcion }}</p>
-              </div>
+        <i
+          class="fas fa-angle-down toggle-icon"
+          [ngClass]="{ rotated: empleoVisibilidad[empleo.empleoID] }"
+        ></i>
+        <span class="job-date">{{
+          empleo.fecha_aplicacion | date : "yyyy-MM-dd"
+        }}</span>
+        <button
+          class="btn-remove"
+          (click)="eliminarPostulacion(empleo.empleoID)"
+        >
+          Olvidar
+        </button>
+      </div>
+
+      <!-- Detalles del empleo -->
+      <!-- Detalles del empleo -->
+      <div *ngIf="empleoVisibilidad[empleo.empleoID]" class="card-body">
+      <ng-container *ngIf="empleoDetalles[empleo.empleoID]; else loading">
+        <div class="details-container">
+          <img
+            *ngIf="empleoDetalles[empleo.empleoID]?.multimediaContenido"
+            [src]="empleoDetalles[empleo.empleoID]?.multimediaContenido"
+            alt="Imagen del empleo"
+            class="detail-image"
+          />
+          <div class="details-content">
+            <div class="detail-item">
+              <strong>Empresa:</strong>
+              <p>{{ empresaNombre }}</p>
+            </div>
+            <div class="detail-item">
+              <strong>Descripcion:</strong>
+              <p>{{ empleoDetalles[empleo.empleoID]?.horario }}</p>
+            </div>
+            <div class="detail-item">
+              <strong>Ubicación:</strong>
+              <p>{{ empleoDetalles[empleo.empleoID]?.ubicacion }}</p>
+            </div>
+            <div class="detail-item">
+              <strong>Salario:</strong>
+              <p>
+                {{ empleoDetalles[empleo.empleoID]?.salario_minimo }} -
+                {{ empleoDetalles[empleo.empleoID]?.salario_maximo }}
+              </p>
+            </div>
+            <div class="detail-item">
+              <strong>Empresa:</strong>
+              <p>{{ empleoDetalles[empleo.empleoID]?.descripcion }}</p>
             </div>
           </div>
-        </ng-container>
-        <ng-template #loading>
-          <p>Cargando detalles...</p>
-        </ng-template>
-      </div>
-      </div>
-      <!-- Paginación -->
-      <div class="pagination">
-        <button
-          [disabled]="currentPage === 1"
-          (click)="onPageChange(currentPage - 1)"
-          class="btn btn-secondary"
-        >
-          Anterior
-        </button>
-        <span>Página {{ currentPage }} de {{ totalPages }}</span>
-        <button
-          [disabled]="currentPage === totalPages"
-          (click)="onPageChange(currentPage + 1)"
-          class="btn btn-secondary"
-        >
-          Siguiente
-        </button>
-      </div>
+        </div>
+      </ng-container>
+      <ng-template #loading>
+        <p>Cargando detalles...</p>
+      </ng-template>
+    </div>
+    </div>
+    <!-- Paginación -->
+    <div class="pagination">
+      <button
+        [disabled]="currentPage === 1"
+        (click)="onPageChange(currentPage - 1)"
+        class="btn btn-secondary"
+      >
+        Anterior
+      </button>
+      <span>Página {{ currentPage }} de {{ totalPages }}</span>
+      <button
+        [disabled]="currentPage === totalPages"
+        (click)="onPageChange(currentPage + 1)"
+        class="btn btn-secondary"
+      >
+        Siguiente
+      </button>
     </div>
   </div>
+</div>
