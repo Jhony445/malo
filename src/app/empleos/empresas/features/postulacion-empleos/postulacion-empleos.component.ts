@@ -82,12 +82,13 @@ export class PostulacionEmpleosComponent implements OnInit {
           this.obtenerDocumentosPorUsuario(usuarioIds, empleoId);
         }else{
           this.successMessage[empleoId] = "No hay usuarios postulados a este empleo"
-          return
+          this.isLoading = false;
         }
       },
       error: (error) => {
         console.error('Error al obtener usuarios por empleo:', error)
         this.errorMessage = "Algo salio mal, intentalo más tarde";
+        this.isLoading = false;
         this.clearMessagesAfterDelay();
       }
     });
@@ -103,6 +104,7 @@ export class PostulacionEmpleosComponent implements OnInit {
   
         if(pdfs.length === 0){
           this.successMessage[empleoId] = "No hay documentos que mostrar";
+          this.isLoading = false;
         } else {
           this.empleoDocumentos[empleoId] = pdfs.map((pdf: any) =>
             this.sanitizer.bypassSecurityTrustResourceUrl(pdf.contenido)

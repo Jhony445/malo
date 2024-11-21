@@ -61,6 +61,18 @@ export class EstadisticasEmpleosComponent implements OnInit {
     return `rgb(${r}, ${g}, ${b}, 1)`
   }
 
+  getTotalAplicaciones(): any {
+    this.http.post<any>('https://malo-backend-empleos.onrender.com/api/Aplicacion/total-aplicaciones', null)
+    .subscribe({
+      next: (response: number) =>{
+        this.total = response;
+      },
+      error: (error: any) => {
+        console.error('Error al obtener aplicaciones:', error);
+      }
+    })
+  }
+
   getEmpleoById(): void {
     this.isLoading = true;
     const empresaId = this.userService.getUserData().sub;
@@ -102,8 +114,6 @@ export class EstadisticasEmpleosComponent implements OnInit {
 
         this.aplicacionesPorEmpleo.push({titulo, totalAplicaciones});
 
-        console.log("Todas: ", this.total, " | solo empresa: ", this.totalAplicaciones);
-
         this.updatePie2Chart();
         this.updatePieChart();
         this.updateLineChart(titulo, aplicacionesPorFecha);
@@ -141,12 +151,23 @@ export class EstadisticasEmpleosComponent implements OnInit {
     this.isLoading = true;
     if(this.pieChart) this.pieChart.destroy();
 
-    this.pieChart = this.chartService.createPieChart(
-      this.pieChartCanvas,
-      this.totalAplicaciones,
-      this.total
-    )
-    this.isLoading = false;
+    this.http.post<any>('https://malo-backend-empleos.onrender.com/api/Aplicacion/total-aplicaciones', null)
+    .subscribe({
+      next: (response: number) =>{
+        this.total = response;
+
+        this.pieChart = this.chartService.createPieChart(
+          this.pieChartCanvas,
+          this.totalAplicaciones,
+          this.total
+        )
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        console.error('Error al obtener aplicaciones:', error);
+      this.isLoading = false;
+      }
+    })
   }
 
   updateLineChart(titulo: string, aplicacionesPOrFecha: {fecha: string; totalAplicaciones:number}[]): void{
