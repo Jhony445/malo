@@ -116,19 +116,25 @@ export class SignUpComponent implements OnInit {
 
   //Obtener estados al iniciar
   getEstados(): void{
+    this.isLoading = true;
     this.http.get<any>('https://gaia.inegi.org.mx/wscatgeo/v2/mgee/').subscribe(response => {
       this.estados = response.datos;
+      this.isLoading = false;
     }, error =>{
       console.error('Error al obtener los estados', error);
+      this.isLoading = false;
     })
   }
   //obtener municipios al seleccionar estado
   onEstadoChange(cvegeo: string): void{
+    this.isLoading = true;
     if(cvegeo){
       this.http.get<any>(`https://gaia.inegi.org.mx/wscatgeo/v2/mgem/${cvegeo}`).subscribe(response => {
         this.municipios = response.datos
+        this.isLoading = false;
       }, error =>{
         console.error('Error al obtener los municipios', error);
+        this.isLoading = false;
       })
     }else{
       this.municipios = [];
@@ -136,14 +142,18 @@ export class SignUpComponent implements OnInit {
   }
   //obtener localidades al seleccionar municipio
   onMunicipioChange(cvegeo: string): void{
+    this.isLoading = true;
     if(cvegeo){
       this.http.get<any>(`https://gaia.inegi.org.mx/wscatgeo/v2/localidades/${cvegeo}`).subscribe(response => {
         this.localidades = response.datos
+        this.isLoading = false;
       }, error =>{
         console.error('Error al obtener los municipios', error);
+        this.isLoading = false;
       })
     }else{
       this.localidades = [];
+      this.isLoading = false;
     }
   }
   

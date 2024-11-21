@@ -1,4 +1,43 @@
-<div class="estadistica-empleos-container">
-    <p>Vista de estadisticas</p>
-    <p></p>
-</div>
+<div class="statistics-container">
+    <app-loader *ngIf="isLoading"></app-loader>
+    <!-- Header -->
+    <div class="header">
+      <h1>Datos & Estadísticas</h1>
+      <p>Visualiza el estado actual de tus empleos y sus postulaciones.</p>
+    </div>
+  
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Job Stats -->
+      <div class="stat-card">
+        <h2>Total de Empleos</h2>
+        <p class="stat-value">{{ totalEmpleos }}</p>
+        <small>Empleos públicados</small>
+      </div>
+  
+      <div class="stat-card">
+        <h2>Total de Postulaciones</h2>
+        <p class="stat-value">{{ totalAplicaciones }}</p>
+        <small>Usuarios postulados</small>
+      </div>
+    </div>
+  
+    <!-- Graphs Section -->
+    <div class="graphs">
+      <div class="graph">
+        <h3>Empleos Más Populares</h3>
+        <canvas #pie2ChartCanvas></canvas>
+      </div>
+      <div class="graph">
+        <h3>Preferencia de los usuarios</h3>
+        <canvas #pieChartCanvas></canvas>
+      </div>
+    </div>
+    <div class="graphs">
+      <div class="graph">
+        <h3>Fechas de postulación</h3>
+        <canvas #lineChartCanvas></canvas>
+      </div>
+    </div>
+  </div>
+  

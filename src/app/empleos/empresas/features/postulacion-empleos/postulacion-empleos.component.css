@@ -89,9 +89,10 @@
 }
 
 .pdf-container {
-  margin-top: 1.8rem;
+  margin-top: 1rem;
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -129,4 +130,32 @@
   height: 35px;
   font-size: 0.8em; /* Ajusta el tamaño de fuente según tus preferencias */
   margin-right: 8px; /* Espacio entre el contador y el título */
+}
+
+.toggle-icon{
+  transition: transform 0.3s ease;
+}
+
+.toggle-icon.rotated{
+  transform: rotate(180deg);
+}
+
+.pdf-counter {
+  margin-bottom: 10px;
+  background-color: #090c9b;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+
+@media (max-width: 768px) {
+  .job-image{
+    display: none;
+  }
+
+  .job-title{
+    max-width: 90%;
+  }
 }

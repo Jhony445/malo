@@ -209,10 +209,10 @@
     </div>
 
     <!-- CREDENCIALES -->
-    <div class="separator-containerE">
+    <!-- <div class="separator-containerE">
       <p>Credenciales</p>
       <hr class="separatorE" />
-      <span class="separator-iconE"><i class="fa fa-angle-up"></i></span> <!-- Icono al lado derecho -->
+      <span class="separator-iconE"><i class="fa fa-angle-up"></i></span>
     </div>
     <div class="section-content rotated">
         <div class="form-group">
@@ -223,7 +223,7 @@
           <input id="correo" type="email" [(ngModel)]="correo" (blur)="emailTouched = true"/>
         </div>
       <button class="actualizar" (click)="actualizarUsuario()" [disabled]="!isform4Valid()">Guardar cambios</button>
-    </div>
+    </div> -->
   </div>
   <app-loader *ngIf="isLoading"></app-loader>
 </div>
