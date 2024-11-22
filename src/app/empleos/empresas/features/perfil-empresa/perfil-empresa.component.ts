@@ -25,19 +25,19 @@ export class PerfilEmpresaComponent implements OnInit {
   ubicacion = '';
   prevUbicacion = '';
 
-  emailTouched: boolean = false;
-  nombreTouched: boolean = false;
-  industriaTouched: boolean = false;
-  ubicacionTouched: boolean = false;
+  emailTouched = false;
+  nombreTouched = false;
+  industriaTouched = false;
+  ubicacionTouched = false;
 
   // Otros
   router = inject(Router);
   userService = inject(UserService);
   empresasService = inject(PEmpresasService);
-  isLoading: boolean = false;
-  emailSent: boolean = false;
-  errorMessage: string = '';
-  successMessage: string = '';
+  isLoading = false;
+  emailSent = false;
+  errorMessage = '';
+  successMessage = '';
 
   @ViewChild('profileContainer') profileContainer!: ElementRef;
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -126,7 +126,7 @@ export class PerfilEmpresaComponent implements OnInit {
     };
   
     this.empresasService.actualizarEmpresa(empresaData).subscribe({
-      next: (response) => {
+      next: () => {
         this.obtenerEmpresaPorId();
         this.successMessage = '¡Has modificado tu perfil!';
         this.clearMessagesAfterDelay();

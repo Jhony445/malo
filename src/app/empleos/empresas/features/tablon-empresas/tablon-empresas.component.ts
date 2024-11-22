@@ -33,7 +33,7 @@ export class TablonEmpresasComponent implements OnInit {
 
   isDetalleVisibleMobile = false;
 
-  isMobile: boolean = false;  // Nueva variable para detectar si es móvil
+  isMobile = false;  // Nueva variable para detectar si es móvil
 
   constructor(
     private http: HttpClient,

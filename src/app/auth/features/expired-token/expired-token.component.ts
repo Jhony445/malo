@@ -14,14 +14,14 @@ import { LoaderComponent } from "../../../shared/ui/loader/loader.component";
   styleUrls: ['./expired-token.component.css']
 })
 export class ExpiredTokenComponent {
-  email: string = '';
-  emailSent: boolean = false;
+  email = '';
+  emailSent = false;
   errorMessage = '';
   isLoading = false;
   isCompanyTokenRequest = false; // Variable para identificar el tipo de cuenta
 
-  private apiUrl: string = 'https://malo-backend.onrender.com/api/Usuario/generar-nuevo-token';
-  private apiUrlsEmpresa : string = 'https://malo-backend-empresas.onrender.com/api/Empresa/generar-nuevo-token';
+  private apiUrl = 'https://malo-backend.onrender.com/api/Usuario/generar-nuevo-token';
+  private apiUrlsEmpresa  = 'https://malo-backend-empresas.onrender.com/api/Empresa/generar-nuevo-token';
 
   constructor(private router: Router, private http: HttpClient) {}
 
@@ -31,7 +31,7 @@ export class ExpiredTokenComponent {
     if (this.email && emailPattern.test(this.email)) {
       const apiUrl = this.isCompanyTokenRequest ? this.apiUrlsEmpresa : this.apiUrl;
       this.http.post(apiUrl, { email: this.email }).subscribe({
-        next: (response) => {
+        next: () => {
           this.emailSent = true;
           this.isLoading = false;
           setTimeout(() => {
