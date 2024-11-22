@@ -198,7 +198,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: url('/57-bg.png');
     background-size: cover;
     background-position: center;
   }
