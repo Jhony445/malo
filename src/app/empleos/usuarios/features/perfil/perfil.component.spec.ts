@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PerfilComponent } from './perfil.component';
 import { UserService } from '../../../../core/services/user.service'; // Asegúrate de usar la ruta correcta
-import { of } from 'rxjs'; // Import para simular observables
 
 describe('PerfilComponent', () => {
   let component: PerfilComponent;
