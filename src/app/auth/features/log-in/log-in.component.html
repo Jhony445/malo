@@ -3,13 +3,16 @@
         <div class="left"></div>
         <div class="right">
             <div class="login-box">
+                <div class="back-container">
+                    <a href="javascript:history.back()" class="back-link">
+                        <i class="fas fa-arrow-left"></i> Regresar
+                    </a>
+                </div>
                 <img src="malo_logo_azul.png" alt="Logo" class="login-logo">
                 <h2>{{ forgotPasswordMode ? 'Recuperar Contraseña' : 'Ingresar' }}</h2>
-
                 <app-notification *ngIf="errorMessage" [message]="errorMessage" [isError]="true"></app-notification>
                 <app-notification *ngIf="successMessage" [message]="successMessage"
                     [isError]="false"></app-notification>
-
                 <form [formGroup]="loginForm" (ngSubmit)="forgotPasswordMode ? requestPasswordRecovery() : onLogin()">
                     <div class="form-group"
                         [ngClass]="{'error': loginForm.get('email')?.invalid && loginForm.get('email')?.touched}">
