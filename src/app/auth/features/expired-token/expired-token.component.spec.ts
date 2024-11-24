@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ExpiredTokenComponent } from './expired-token.component';
 
 describe('ExpiredTokenComponent', () => {
@@ -8,7 +8,7 @@ describe('ExpiredTokenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ExpiredTokenComponent]
+      imports: [ExpiredTokenComponent, HttpClientTestingModule]
     })
     .compileComponents();
 

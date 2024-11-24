@@ -365,23 +365,30 @@ export class PerfilComponent implements OnInit {
   }
 
   cargarDocumentoUsuario(): void {
-    const userId = this.userService.getUserData().sub;
+    const userData = this.userService.getUserData();
 
-    this.perfilService.obtenerDocumentos().subscribe({
-        next: (response) => {
-            const documentoUsuario = response.find((doc: any) => doc.usuario_id === userId && doc.tipo === 'application/pdf');
-            
-            if (documentoUsuario && documentoUsuario.contenido) {
-                this.documentoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(documentoUsuario.contenido);
-            } else {
-                console.log('No se encontró ningún documento PDF para el usuario');
+    if (userData && userData.sub) {
+        const userId = userData.sub;
+
+        this.perfilService.obtenerDocumentos().subscribe({
+            next: (response) => {
+                const documentoUsuario = response.find((doc: any) => doc.usuario_id === userId && doc.tipo === 'application/pdf');
+                
+                if (documentoUsuario && documentoUsuario.contenido) {
+                    this.documentoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(documentoUsuario.contenido);
+                } else {
+                    console.log('No se encontró ningún documento PDF para el usuario');
+                }
+            },
+            error: (error) => {
+                console.error('Error al obtener el documento:', error);
             }
-        },
-        error: (error) => {
-            console.error('Error al obtener el documento:', error);
-        }
-    });
-  }
+        });
+    } else {
+        console.error('No se encontró información del usuario o sub está indefinido.');
+    }
+}
+
 
   onFileSelectedIMG(event: Event): void {
     const input = event.target as HTMLInputElement;
