@@ -27,6 +27,7 @@ export class ListaEmpleosComponent implements OnInit {
   isDetalleVisibleMobile = false; 
   initialFilters: any = {}; // Para almacenar filtros iniciales de la URL
   isLoading = true; // Para manejar el estado de carga
+  skeletonArray = Array(5);
 
   @Output() empleoSeleccionadoEvent = new EventEmitter<number>();
 

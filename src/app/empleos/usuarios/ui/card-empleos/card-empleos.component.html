@@ -1,4 +1,4 @@
-<div class="card" [ngClass]="{'selected': selected}" (click)="onCardClick()">
+<div class="card" [ngClass]="{'selected': selected}" *ngIf="!isSkeleton; else skeletonTemplate" (click)="onCardClick()">
   <div class="card-content">
     <div class="card-details">
       <h3>{{ empleo.titulo }}</h3>
@@ -7,6 +7,15 @@
     </div>
   </div>
   <div class="card-action">
-    <span>{{ empleo.fecha_publicacion.slice(0, 10)  }}</span>
+    <span>{{ empleo.fecha_publicacion.slice(0, 10) }}</span>
   </div>
 </div>
+
+<ng-template #skeletonTemplate>
+  <div class="skeleton">
+    <div class="skeleton-title"></div>
+    <div class="skeleton-line"></div>
+    <div class="skeleton-line"></div>
+    <div class="skeleton-line small"></div>
+  </div>
+</ng-template>

@@ -35,6 +35,8 @@ export class TablonEmpresasComponent implements OnInit {
 
   isMobile = false;  // Nueva variable para detectar si es móvil
 
+  skeletonArray = Array(5);
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -52,6 +54,7 @@ export class TablonEmpresasComponent implements OnInit {
   }
 
   fetchEmpleos(empresaId: string) {
+    this.isLoading = true; // Activar el estado de carga
     this.http.get<any[]>('https://malo-backend-empleos.onrender.com/api/Empleo/GetEmpleos')
       .subscribe(
         (data: any[]) => {
@@ -59,15 +62,21 @@ export class TablonEmpresasComponent implements OnInit {
           this.filteredEmpleos = this.empleos;
           this.ordenarEmpleos();
           this.updateTotalPages();
-
+          
           // Seleccionar el primer empleo automáticamente solo si no es móvil
           if (!this.isMobile && this.filteredEmpleos.length > 0) {
             this.onCardClick(0); // Seleccionar el primer empleo
           }
+          
+          this.isLoading = false; // Finalizar el estado de carga
         },
-        error => console.error('Error al cargar empleos:', error)
+        error => {
+          console.error('Error al cargar empleos:', error);
+          this.isLoading = false; // Finalizar el estado de carga incluso en caso de error
+        }
       );
   }
+  
 
   ordenarEmpleos() {
     this.filteredEmpleos.sort((a, b) => {

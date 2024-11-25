@@ -10,6 +10,9 @@
       <div *ngIf="!isLoading && filteredEmpleos.length === 0" class="no-results-message">
         No se encontraron empleos que coincidan con los filtros aplicados.
       </div>
+      <div *ngIf="isLoading">
+        <app-card-empleos *ngFor="let skeleton of skeletonArray" [isSkeleton]="true"></app-card-empleos>
+      </div>
       <app-card-empleos 
         *ngFor="let empleo of paginatedEmpleos; let i = index" 
         [empleo]="empleo"

@@ -6,15 +6,18 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './card-empleos-empresa.component.html',
-  styleUrl: './card-empleos-empresa.component.css'
+  styleUrls: ['./card-empleos-empresa.component.css', './skeleton-empresas.css']
 })
 export class CardEmpleosEmpresaComponent implements OnInit {
   @Input() empleo: any;
   @Input() selected = false; // Nuevo input para indicar si la tarjeta está seleccionada
-  @Output() cardClick = new EventEmitter<void>(); 
+  @Output() cardClick = new EventEmitter<void>();
+  @Input() isSkeleton = false; 
 
   ngOnInit() {
-    console.log(this.empleo);  // Verificar qué datos recibe el componente
+    if (!this.empleo) {
+      this.isSkeleton = true; // Activa skeleton si empleo está vacío
+    }
   }
 
   onCardClick() {

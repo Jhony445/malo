@@ -13,15 +13,25 @@
       <div class="ordenar-empleos">
         <label for="ordenFecha">Ordenar por fecha:</label>
         <select id="ordenFecha" [(ngModel)]="ordenFecha" (change)="ordenarEmpleos()">
-          <option value="asc">Mas reciente</option>
-          <option value="desc">Mas viejo</option>
+          <option value="asc">Más reciente</option>
+          <option value="desc">Más viejo</option>
         </select>
       </div>
-      <!-- Listado de empleos -->
-      <app-card-empleos-empresa *ngFor="let empleo of paginatedEmpleos; let i = index" [empleo]="empleo"
-        [selected]="selectedEmpleoIndex === i + (currentPage - 1) * itemsPerPage"
-        (cardClick)="onCardClick(i + (currentPage - 1) * itemsPerPage)">
-      </app-card-empleos-empresa>
+      <!-- Lista de empleos o skeletons -->
+      <div *ngIf="isLoading; else listaEmpleos">
+        <app-card-empleos-empresa
+          *ngFor="let skeleton of skeletonArray"
+          [isSkeleton]="true">
+        </app-card-empleos-empresa>
+      </div>
+      <ng-template #listaEmpleos>
+        <app-card-empleos-empresa
+          *ngFor="let empleo of paginatedEmpleos; let i = index"
+          [empleo]="empleo"
+          [selected]="selectedEmpleoIndex === i + (currentPage - 1) * itemsPerPage"
+          (cardClick)="onCardClick(i + (currentPage - 1) * itemsPerPage)">
+        </app-card-empleos-empresa>
+      </ng-template>
       <!-- Paginación -->
       <div class="pagination">
         <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
@@ -30,6 +40,7 @@
       </div>
     </div>
   </div>
+  <!-- Detalle de empleo en modal (versión móvil) -->
   <div *ngIf="isDetalleVisibleMobile" class="detalle-empleo-modal">
     <button class="close-btn" (click)="closeDetalleMobile()">✕</button>
     <app-detalle-empleo-empresa 
@@ -39,14 +50,15 @@
       (empleoActualizado)="actualizarEmpleo($event)">
     </app-detalle-empleo-empresa>
   </div>
+  <!-- Detalle de empleo en vista secundaria -->
   <div class="div2">
     <br>
     <app-detalle-empleo-empresa class="detalle"
-    *ngIf="selectedEmpleoIndex !== null" 
-    [empleo]="empleos[selectedEmpleoIndex]" 
-    (empleoEliminado)="actualizarListaEmpleos($event)"
-    (empleoActualizado)="actualizarEmpleo($event)">
+      *ngIf="selectedEmpleoIndex !== null" 
+      [empleo]="empleos[selectedEmpleoIndex]" 
+      (empleoEliminado)="actualizarListaEmpleos($event)"
+      (empleoActualizado)="actualizarEmpleo($event)">
     </app-detalle-empleo-empresa>
     <button class="publicar-empleo-btn" (click)="onPublicarEmpleo()">¡Publica tu empleo!</button>
   </div>
-</div> 
+</div>
