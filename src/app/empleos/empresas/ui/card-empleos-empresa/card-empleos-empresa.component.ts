@@ -17,6 +17,8 @@ export class CardEmpleosEmpresaComponent implements OnInit {
   ngOnInit() {
     if (!this.empleo) {
       this.isSkeleton = true; // Activa skeleton si empleo está vacío
+    } else {
+      this.empleo.fecha_publicacion = this.empleo.fecha_publicacion || ''; // Valor por defecto
     }
   }
 
